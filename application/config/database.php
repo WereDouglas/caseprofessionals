@@ -63,12 +63,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+/** start: hack for cross dev-machine database headaches **/
+$db_name = 'case';
+$db_username = 'root';
+$db_password = '';
+
+if(file_exists(__DIR__ .'/db_local.php')){
+    $db_local = include_once __DIR__ .'/db_local.php';
+    $db_name= $db_local['database'];
+    $db_username= $db_local['username'];
+    $db_password = $db_local['password'];
+}
+/** -------------------- end --------------------------- **/
+
+
 $db['default'] = array(
     'dsn' => '',
     'hostname' => 'localhost',
-    'username' => 'root',
-    'password' => '',
-    'database' => 'case',
+    'username' => $db_username,
+    'password' => $db_password,
+    'database' => $db_name,
     'dbdriver' => 'mysqli',
     'dbprefix' => '',
     'pconnect' => FALSE,
