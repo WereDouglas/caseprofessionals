@@ -1,8 +1,8 @@
 <div class="span10">
 
 
-    <a href="#" class="brand">
-        <div class="infobox infobox-blue2 infobox-small infobox-dark">
+     <a href="<?php echo base_url() . "index.php/schedule"; ?>" target="frame">
+        <div class="infobox infobox-orange infobox-small infobox-dark">
             <div class="infobox-icon">
                 <i class="icon-calendar"></i>
             </div>

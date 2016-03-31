@@ -201,5 +201,23 @@ cursor:pointer;
   overflow:auto;
   padding-right: 1%;
 }
+select {
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+iframe {
+    display: block;
+    width: 100%;
+    
+}
+.bootbox {
+    overflow: hidden;
+    display: block;
+    margin: 0px auto;
+}
+.modal {
+    background-color:#fff !important;
+}
 
 

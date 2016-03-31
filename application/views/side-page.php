@@ -14,7 +14,6 @@
                 <span class="menu-text"> Receipt</span>                
             </a>
 
-
         </li>
 
         <li>
@@ -22,24 +21,7 @@
                 <i class="icon-archive"></i>
                 <span class="menu-text"> Voucher</span>
             </a>
-        </li>
-
-        <li>
-            <a href="#" class="dropdown-toggle">
-                <i class="icon-calendar-empty"></i>
-                <span class="menu-text"> Schedule </span>
-
-            </a>
-
-
-        </li>
-
-        <li>
-            <a href="widgets.html">
-                <i class="icon-calendar"></i>
-                <span class="menu-text"> Calendar </span>
-            </a>
-        </li>
+        </li>           
 
         <li>
             <a href="<?php echo base_url() . "index.php/user/users"; ?>" target="frame">
