@@ -39,6 +39,32 @@ class Schedule extends CI_Controller {
 
         $this->load->view('calendar-page', $data);
     }
+    public function  all() {
+        $query = $this->Md->query("SELECT * FROM users where org = '" . $this->session->userdata('orgid') . "' ");
+        //  var_dump($query);
+        if ($query) {
+            $data['users'] = $query;
+        } else {
+            $data['users'] = array();
+        }
+
+        $query = $this->Md->query("SELECT * FROM schedule where org = '" . $this->session->userdata('orgid') . "' ");
+        //  var_dump($query);
+        if ($query) {
+            $data['sch'] = $query;
+        } else {
+            $data['sch'] = array();
+        }
+         $query = $this->Md->query("SELECT * FROM attend where org = '" . $this->session->userdata('orgid') . "'");
+        //  var_dump($query);
+        if ($query) {
+            $data['att'] = $query;
+        } else {
+            $data['att'] = array();
+        }
+
+        $this->load->view('schedule-page', $data);
+    }
 
     public function GUID() {
         if (function_exists('com_create_guid') === true) {

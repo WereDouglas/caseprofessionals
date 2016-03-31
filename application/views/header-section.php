@@ -13,10 +13,10 @@
             </div>
         </div>
     </a>
-
+<a href="<?php echo base_url() . "index.php/file"; ?>" target="frame">
     <div class="infobox infobox-grey infobox-small infobox-dark">
         <div class="infobox-icon">
-            <i class="icon-money"></i>
+            <i class="icon-folder-close"></i>
         </div>
 
         <div class="infobox-data">
@@ -24,6 +24,7 @@
             <div class="infobox-content">No.</div>
         </div>
     </div>
+</a>
 
     <div class="infobox infobox-orange infobox-small infobox-dark">
         <div class="infobox-icon">
