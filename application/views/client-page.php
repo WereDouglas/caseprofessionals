@@ -84,7 +84,7 @@
 
                 <div class="box-body">
 
-                    <table class=" table table-striped table-bordered bootstrap-datatable datatable" id="datatable">
+                    <table class="jobs table table-striped table-bordered bootstrap-datatable datatable" id="datatable">
                         <thead>
                             <tr> 
                                 <th>#</th>

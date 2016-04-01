@@ -18,14 +18,13 @@ class Welcome extends CI_Controller {
     }
 
     public function home() {
-        if ($this->session->userdata('username')!="") {
+        if ($this->session->userdata('username') != "") {
             $this->load->view('home');
-        }
-        else{
+        } else {
 
-        $this->session->sess_destroy();
-        redirect('welcome', 'refresh');
-        }       
+            $this->session->sess_destroy();
+            redirect('welcome', 'refresh');
+        }
     }
 
     public function page() {
@@ -50,7 +49,7 @@ class Welcome extends CI_Controller {
         if (!$get_user) {
 
             $results = $this->Md->get('email', $email, 'users');
-           // var_dump($results);
+            // var_dump($results);
             foreach ($results as $resv) {
                 $key = $email;
                 $password = $this->encrypt->decode($resv->password, $key);
@@ -64,20 +63,21 @@ class Welcome extends CI_Controller {
                     $ends = $res->ends;
                     $code = $res->code;
                     $license = $res->license;
+                    $address = $res->action;
                 }
                 $this->session->set_userdata('name', $name);
                 $this->session->set_userdata('orgimage', $orgimage);
+                $this->session->set_userdata('address', $address);
                 $this->session->set_userdata('starts', $starts);
                 $this->session->set_userdata('ends', $ends);
                 $this->session->set_userdata('code', $code);
                 $this->session->set_userdata('license', $license);
                 $this->session->set_userdata('username', $resv->name);
-                 $this->session->set_userdata('orgid', $resv->org);
-                
+                $this->session->set_userdata('orgid', $resv->org);
+
                 $newdata = array(
                     'id' => $resv->id,
                     'email' => $resv->email,
-                    
                     'userimage' => $resv->image,
                     'title' => $resv->types,
                     'level' => $resv->level,

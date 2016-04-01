@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class File extends CI_Controller {
+class Reciept extends CI_Controller {
 
     function __construct() {
 
@@ -11,8 +11,7 @@ class File extends CI_Controller {
         $this->load->model('Md');
         $this->load->library('session');
         $this->load->library('encrypt');
-        date_default_timezone_set( 'Africa/Kampala' );
-      
+        date_default_timezone_set('Africa/Kampala');
     }
 
     public function index() {
@@ -31,7 +30,38 @@ class File extends CI_Controller {
             $data['files'] = array();
         }
 
-        $this->load->view('file-page', $data);
+        $this->load->view('reciept-page', $data);
+    }
+
+    public function save() {
+
+        $this->load->helper(array('form', 'url'));
+
+        $values = $this->input->post('name');
+        //  name: post_this
+        $e = json_decode($values);
+        $items = (array) $e->items;
+        $ts = 0;
+        foreach ($items as $t) {
+            if (ts % 1 == 0) {
+                //store first item
+            }
+            if (ts % 2 == 0) {
+                //store second item
+            }
+            if (ts % 3 == 0) {
+                //store third item
+            }
+            if (ts % 4 == 0) {
+                //store fourth item
+            }
+            if (ts % 5 == 0) {
+                //store fifth item
+                //save items
+            }
+            $ts++;
+        }
+        echo $e->day;
     }
 
     public function view() {
@@ -89,7 +119,7 @@ class File extends CI_Controller {
         $details = $this->input->post('details');
         $subject = $this->input->post('subject');
 
-        $file = array('name' => $name, 'types' => $types, 'details' => $details,'subject' => $subject, 'created' => date('Y-m-d H:i:s'));
+        $file = array('name' => $name, 'types' => $types, 'details' => $details, 'subject' => $subject, 'created' => date('Y-m-d H:i:s'));
         $this->Md->update($id, $file, 'files');
 
         $content = json_encode($file);
@@ -104,7 +134,7 @@ class File extends CI_Controller {
 
     public function delete() {
         $this->load->helper(array('form', 'url'));
-        $id = $this->uri->segment(3);       
+        $id = $this->uri->segment(3);
         $query = $this->Md->delete($id, 'files');
         if ($this->db->affected_rows() > 0) {
 
@@ -112,7 +142,7 @@ class File extends CI_Controller {
             if ($query) {
                 foreach ($query as $res) {
                     $syc = array('object' => 'files', 'content' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
-                     $this->Md->save($syc, 'sync_data');
+                    $this->Md->save($syc, 'sync_data');
                 }
             }
             $this->session->set_flashdata('msg', '<div class="alert alert-error">
@@ -150,7 +180,7 @@ class File extends CI_Controller {
                 $app = "G";
                 break;
         }
-        $no = $this->session->userdata('code') . "/" . $app . "/" . date('y') . "/" . date('m') . (int) date('d') . (int) date('H').(int) date('i').(int) date('s');
+        $no = $this->session->userdata('code') . "/" . $app . "/" . date('y') . "/" . date('m') . (int) date('d') . (int) date('H') . (int) date('i') . (int) date('s');
 
         $orgid = $this->session->userdata('orgid');
 

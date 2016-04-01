@@ -34,7 +34,11 @@
                     <div class="span12">
                         <div class=" span6">
                             <div class="form-group">
-                                <input class="form-control" type="text"  name="names"  placeholder="Name" />
+                                <input class="form-control" type="text"  name="named"  placeholder="Name" />
+
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" type="text"  name="subject"  placeholder="Subject" />
 
                             </div>
                             <div class="row-fluid">
@@ -98,8 +102,10 @@
                     <table class="jobs table table-striped table-bordered bootstrap-datatable datatable" id="datatable">
                         <thead>
                             <tr> 
-
+                                 <th>#</th>
+                                <th>No.</th>
                                 <th>NAME</th>
+                                <th>SUBJECT</th>
                                 <th>CLIENT</th>
                                 <th>TYPE</th>
                                 <th>DETAILS</th>                                           
@@ -111,21 +117,34 @@
                         <tbody>
 
                             <?php
+                            $count=0;
                             if (is_array($files) && count($files)) {
                                 foreach ($files as $loop) {
+                                    $count++;
                                     $names = $loop->name;
+                                    $no = $loop->no;
                                     $details = $loop->details;
                                     $client = $loop->users;
                                     $id = $loop->id;
                                     $types = $loop->types;
+                                    $subject = $loop->subject;
                                     $created = $loop->created;
                                     $status = $loop->status;
                                     ?>  
                                     <tr id="<?php echo $id; ?>" class="edit_tr">
-
+                                        <td class="edit_td">
+                                            <?php echo $count; ?>
+                                        </td>
+                                        <td class="edit_td">
+                                            <?php echo $no; ?>
+                                        </td>
                                         <td class="edit_td">
                                             <span id="names_<?php echo $id; ?>" class="text"><?php echo $names; ?></span>
                                             <input type="text" value="<?php echo $names; ?>" class="editbox" id="names_input_<?php echo $id; ?>"
+                                        </td>
+                                         <td class="edit_td">
+                                            <span id="subject_<?php echo $id; ?>" class="text"><?php echo $subject; ?></span>
+                                            <input type="text" value="<?php echo $subject; ?>" class="editbox" id="subject_input_<?php echo $id; ?>"
                                         </td>
 
                                         <td class="edit_td">
@@ -138,7 +157,6 @@
                                                 }
                                             }
                                             ?>
-
                                         </td>
                                         <td class="edit_td">
                                             <span id="types_<?php echo $id; ?>" class="text"><?php echo $types; ?></span>
@@ -187,6 +205,8 @@
             var ID = $(this).attr('id');
             $("#names" + ID).hide();
             $("#names_input_" + ID).show();
+             $("#subject" + ID).hide();
+            $("#subject_input_" + ID).show();
 
             $("#types" + ID).hide();
             $("#types_input_" + ID).show();
@@ -201,14 +221,16 @@
             var name = $("#names_input_" + ID).val();
             var details = $("#details_input_" + ID).val();
             var types = $("#types_input_" + ID).val();
+            var subject = $("#subject_input_" + ID).val();
 
 
 
 
-            var dataString = 'id=' + ID + '&names=' + name + '&details=' + details + '&types=' + types;
+            var dataString = 'id=' + ID + '&names=' + name + '&details=' + details + '&types=' + types+ '&subject=' + subject;
             $("#names_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />'); // Loading image
             $("#details_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />'); // Loading image
             $("#types_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />');
+            $("#subject_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />');
             if (name.length > 0)
             {
                 $.ajax({
@@ -220,7 +242,8 @@
                     {
                         $("#names_" + ID).html(name);
                         $("#details_" + ID).html(details);
-                        $("#types_" + ID).html(contact);
+                        $("#types_" + ID).html(types);
+                        $("#subject_" + ID).html(subject);
 
 
 

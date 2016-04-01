@@ -67,6 +67,15 @@ class Md extends CI_Model {
 		$result = $query->result();
                  return $result;
 	}
+       function returns($value,$field,$table) {
+       
+       
+         return $this->db->select()
+                        ->from($table)
+                        ->where($field,$value)
+                        ->get()
+                        ->row();
+    }
 
 }
 

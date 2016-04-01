@@ -1,3 +1,15 @@
+iframe {
+    display: block;
+    width: 100%;
+    scrolling:auto;
+    height: 100%;
+    
+}
+img {
+    vertical-align: middle;
+     width: 100px;
+  height: auto;
+}
 .image-preview-container { 
   width: 120px;
   height: 120px;
@@ -206,11 +218,7 @@ select {
     background-color: #fff;
     border: 1px solid #ccc;
 }
-iframe {
-    display: block;
-    width: 100%;
-    
-}
+
 .bootbox {
     overflow: hidden;
     display: block;

@@ -32,6 +32,59 @@ class User extends CI_Controller {
         $this->load->view('client-page', $data);
     }
 
+    public function exists() {
+        $this->load->helper(array('form', 'url'));
+        $user = trim($this->input->post('user'));
+        //returns($value,$field,$table)
+        $get_result = $this->Md->returns($user, 'name', 'users');
+        //href= "index.php/patient/add_chronic/'.$chronic.'"
+        if (!$get_result)
+            echo '<span style="color:#f00"> This client <strong style="color:#555555" >' . $user . '</strong> does not exist in our database.' . '<a href= "' . $user . '" value="' . $user . '" id="myLink" style="background #555555;color:#0749BA;" onclick="NavigateToSite()">Click here to add </a></span>';
+        else
+            echo '' . $get_result->contact . '<br>';
+        echo '' . $get_result->email . '<br>';
+        echo '' . $get_result->address . '<br>';
+        echo '<input name="userid" name="userid" id="userid" type="text" value="'. $get_result->id.'">';
+    }
+
+    public function add_user() {
+
+        $user = $this->input->post('name');
+        //$chronic = $this->uri->segment(3);
+        if ($user != "") {
+
+            $this->load->helper(array('form', 'url'));
+
+            //user information
+            $userid = $this->GUID();
+            $email = ' ';
+            $name = $user;
+            $password = $this->session->userdata('code');
+            $email = " ";
+            $contact = " ";
+            $address = " ";
+            $level = 1;
+            $type = 'client';
+            $orgid = $this->session->userdata('orgid');
+
+
+            $submitted = date('Y-m-d');
+            $userfile = $data['file_name'];
+
+            $users = array('id' => $userid, 'image' => '', 'email' => '', 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => ' ', 'oid' => '', 'contact' => '', 'password' => '', 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
+            $this->Md->save($users, 'users');
+            $content = json_encode($users);
+
+            $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+            if ($query) {
+                foreach ($query as $res) {
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'content' => $content, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $file_id = $this->Md->save($syc, 'sync_data');
+                }
+            }
+        }
+    }
+
     public function view() {
 
         $this->load->helper(array('form', 'url'));

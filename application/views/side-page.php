@@ -15,7 +15,7 @@
             </a>
         </li>
         <li>
-            <a href="<?php echo base_url() . "index.php/management/tracks"; ?>" target="frame">
+            <a href="<?php echo base_url() . "index.php/reciept/"; ?>" target="frame">
                 <i class="icon-file"></i>
                 <span class="menu-text"> Receipt</span>                
             </a>
