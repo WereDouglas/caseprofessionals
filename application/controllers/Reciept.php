@@ -36,32 +36,104 @@ class Reciept extends CI_Controller {
     public function save() {
 
         $this->load->helper(array('form', 'url'));
-
+        $transactionID = $this->GUID();
         $values = $this->input->post('name');
-        //  name: post_this
         $e = json_decode($values);
+
+
+        $client = $e->userid;
+        $types = 'credit';
+        $created = $e->day;
+        $users = $this->session->userdata('username');
+        $org = $this->session->userdata('orgid');
+        $approved = 'false';
+        $total = $e->total;
+        $file = ' ';
+        /* payment */
+        $amount = $e->paid;
+        $balance = $e->balance;
+        $method = $e->method;
+        $no = $e->no;
+
+        if ($users == "") {
+            echo "please select the client";
+            return;
+        }
+         if ($total <= 0) {
+            echo "invalid sum value";
+            return;
+        }
+        if ($org == "") {
+            echo "wrong entry";
+            return;
+        }
+        if ($values == "") {
+            echo "please post information";
+            return;
+        }
+
+        /* items */
         $items = (array) $e->items;
         $ts = 0;
+        //$n = count($items);
         foreach ($items as $t) {
-            if (ts % 1 == 0) {
-                //store first item
+
+            // echo $t. "\n";
+            if ($ts == 0) {
+                $name = $t;
             }
-            if (ts % 2 == 0) {
-                //store second item
+            if ($ts == 1) {
+                $description = $t;
             }
-            if (ts % 3 == 0) {
-                //store third item
+            if ($ts == 2) {
+                $rate = $t;
             }
-            if (ts % 4 == 0) {
-                //store fourth item
+            if ($ts == 3) {
+                $qty = $t;
             }
-            if (ts % 5 == 0) {
-                //store fifth item
-                //save items
+            if ($ts == 4) {
+                $price = $t;
+                $ts = 0;
+                $itemID = $this->GUID();
+                $itema = array('id' => $itemID, 'name' => $name, 'transactionID' => $transactionID, 'description' => $description, 'rate' => $rate, 'qty' => $qty, 'price' => $price, 'org' => $org);
+                $this->Md->save($itema, 'item');
+
+                $content = json_encode($itema);
+                $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+                if ($query) {
+                    foreach ($query as $res) {
+                        $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'item', 'content' => $content, 'action' => 'create', 'oid' => $itemID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                        $this->Md->save($syc, 'sync_data');
+                    }
+                }
+            } else {
+
+                $ts++;
             }
-            $ts++;
         }
-        echo $e->day;
+        $paymentID = $this->GUID();
+        $payment = array('id' => $paymentID, 'transactionID' => $transactionID, 'amount' => $amount, 'balance' => $balance, 'created' => $created, 'method' => $method, 'no' => $no, 'users' => $users, 'approved' => $approved, 'org' => $org);
+        $this->Md->save($payment, 'payments');
+        $content = json_encode($payment);
+        $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+        if ($query) {
+            foreach ($query as $res) {
+                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'payments', 'content' => $content, 'action' => 'create', 'oid' => $paymentID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $this->Md->save($syc, 'sync_data');
+            }
+        }
+
+        $trans = array('id' => $transactionID, 'org' => $org, 'client' => $client, 'types' => $types, 'created' => $created, 'users' => $users, 'approved' => $approved, 'total' => $total, 'file' => $file);
+        $this->Md->save($trans, 'transactions');
+
+        $content = json_encode($trans);
+        $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+        if ($query) {
+            foreach ($query as $res) {
+                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'transactions', 'content' => $content, 'action' => 'create', 'oid' => $transactionID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $this->Md->save($syc, 'sync_data');
+            }
+        }
     }
 
     public function view() {

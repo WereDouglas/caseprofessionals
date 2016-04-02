@@ -43,8 +43,8 @@ class User extends CI_Controller {
         else
             echo '' . $get_result->contact . '<br>';
         echo '' . $get_result->email . '<br>';
-        echo '' . $get_result->address . '<br>';
-        echo '<input name="userid" name="userid" id="userid" type="text" value="'. $get_result->id.'">';
+        echo '' . $get_result->address . '<br>';      
+        echo'<span class="span-data" name="userid" id="userid" >'.$get_result->id .'</span>';
     }
 
     public function add_user() {
