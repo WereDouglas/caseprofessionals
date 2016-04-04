@@ -1,3 +1,15 @@
+iframe {
+    display: block;
+    width: 100%;
+    scrolling:auto;
+    height: 100%;
+    
+}
+img {
+    vertical-align: middle;
+     width: 100px;
+  height: auto;
+}
 .image-preview-container { 
   width: 120px;
   height: 120px;
@@ -68,14 +80,14 @@
 	-webkit-border-bottom-left-radius:0px;
 	border-bottom-left-radius:0px;
 }.jobs tr:hover td{
-	background-color:#3C8DBC;
+	background-color:#FDF7E8;
 		
 
 }
 .jobs td{
 	vertical-align:middle;
 	
-	background-color:#3C8DBC;
+	background-color:#FDF7E8;
 
 	border:1px solid #ffffff;
 	border-width:0px 1px 1px 0px;
@@ -93,9 +105,9 @@
 	border-width:0px 0px 0px 0px;
 }
 .jobs tr:first-child td{
-		background:-o-linear-gradient(bottom, #3C8DBC 5%, #3C8DBC 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3C8DBC), color-stop(1, #3C8DBC) );
-	background:-moz-linear-gradient( center top, #3C8DBC 5%, #3C8DBC 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#3C8DBC", endColorstr="#3C8DBC");	background: -o-linear-gradient(top,#3C8DBC,3C8DBC);
+		background:-o-linear-gradient(bottom, #FDF7E8 5%, #FDF7E8 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #FDF7E8), color-stop(1, #FDF7E8) );
+	background:-moz-linear-gradient( center top, #FDF7E8 5%, #FDF7E8 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#FDF7E8", endColorstr="#FDF7E8");	background: -o-linear-gradient(top,#FDF7E8,3C8DBC);
 
 	background-color:#0057af;
 	border:0px solid #ffffff;
@@ -206,11 +218,7 @@ select {
     background-color: #fff;
     border: 1px solid #ccc;
 }
-iframe {
-    display: block;
-    width: 100%;
-    
-}
+
 .bootbox {
     overflow: hidden;
     display: block;
