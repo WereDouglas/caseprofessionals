@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-include_once __DIR__ . '/BaseController.php';
+include_once __DIR__ . '/../core/BaseController.php';
 class TimeBilling extends BaseController
 {
     public function __construct()
