@@ -17,8 +17,9 @@
 </style>
 <div class="page-content">
     <div class="page-header position-relative">
-        <h3> Schedules </h3>
-
+        <h3><?php echo $name ?>  Schedules </h3>     
+        <h3><small>TYPE: <?php echo $types ?></small>  <small>FILE NO:<?php echo $no ?></small></h3>
+    
     </div><!--/.page-header-->
     <div class="row-fluid">
         <div class="span12">
@@ -73,6 +74,10 @@
                                         <label>
                                             <input name="trig" type="checkbox" />
                                             <span class="lbl"> Notify parties ?</span>
+                                        </label>
+                                         <label>
+                                             <input name="fileid" type="hidden" value="<?php echo $fileid;?>" />
+                                            
                                         </label>
 
                                         <div class="row-fluid">
@@ -253,10 +258,10 @@ if (is_array($sch)) {
         $mydate = $loop->dated;
         $prior = $loop->priority;
         $days = $loop->days;
-         
-         $informations ='START:'. $loop->starts.' ';
-        $informations .= $loop->detail.' ';
-        
+
+        $informations = 'START:' . $loop->starts . ' ';
+        $informations .= $loop->detail . ' ';
+
         $d = (int) date("d", strtotime($mydate));
         $m = (int) date("m", strtotime($mydate))-1;
         $y = (int) date("Y", strtotime($mydate));
@@ -275,19 +280,19 @@ if (is_array($sch)) {
 
         if (is_array($att)) {
             foreach ($att as $val) {
-                if ($val->scheduleID == $loop->id) {                  
+                if ($val->scheduleID == $loop->id) {
 
                     if (is_array($users)) {
                         foreach ($users as $user) {
                             if ($user->id == $val->userID) {
                                 $information .= 'Att:';
-                                $information .= $user->name.' ';
+                                $information .= $user->name . ' ';
                             }
                         }
                     }
-                    }
-                    }
-                    }
+                }
+            }
+        }
         ?>
                         {
                             title: '<?php echo $informations; ?>',

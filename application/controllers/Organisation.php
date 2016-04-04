@@ -17,6 +17,15 @@ class Organisation extends CI_Controller {
         $this->load->view('login');
     }
 
+    public function api() {
+        $orgname = urldecode($this->uri->segment(3));
+        $verification = urldecode($this->uri->segment(4));
+        $query = $this->Md->query("SELECT * FROM organisation WHERE  name ='" . $orgname . "' AND `keys` = '" .$verification . "'");
+        if ($query) {
+            echo json_encode($query);
+        }
+    }
+
     public function GUID() {
         if (function_exists('com_create_guid') === true) {
             return trim(com_create_guid(), '{}');
@@ -152,10 +161,9 @@ class Organisation extends CI_Controller {
 
             $users = array('id' => $userid, 'image' => $userfile, 'email' => $email, 'name' => $username, 'org' => $orgid, 'addresss' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
             $file_id = $this->Md->save($users, 'users');
-            
+
             // $client = array('org' => $orgid,'name' => 'web', 'active' => 'T', 'created' =>  date('Y-m-d H:i:s'));
             //$file_id = $this->Md->save($client, 'client');
-            
             ///syncs
             $content = array('id' => $userid, 'image' => $userfile, 'email' => $email, 'name' => $username, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
             $content = json_encode($content);
@@ -168,10 +176,10 @@ class Organisation extends CI_Controller {
                 }
             }
             /*             * */
-            $org = array('id' => $orgid, 'image' => $orgfile, 'name' => $name, 'ends' => $ends, 'starts' => $starts, 'sync' => $sync, 'active' => $active, 'oid' => $oid, 'action' =>  $address , 'keys' => $license, 'version' => $version, 'code' => $code);
+            $org = array('id' => $orgid, 'image' => $orgfile, 'name' => $name, 'ends' => $ends, 'starts' => $starts, 'sync' => $sync, 'active' => $active, 'oid' => $oid, 'action' => $address, 'keys' => $license, 'version' => $version, 'code' => $code);
             $file_id = $this->Md->save($org, 'organisation');
 
-           
+
 
             $this->session->set_flashdata('msg', '<div class="alert alert-success">
                                    <strong>information submitted</strong>									

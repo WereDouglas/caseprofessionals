@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Reciept extends CI_Controller {
+class Voucher extends CI_Controller {
 
     function __construct() {
 
@@ -30,35 +30,7 @@ class Reciept extends CI_Controller {
             $data['files'] = array();
         }
 
-
-        $this->load->view('reciept-page', $data);
-    }
-
-    public function file() {
-
-        $this->load->helper(array('form', 'url'));
-        $fileID = $this->uri->segment(3);
-        $fileName = $this->uri->segment(4);
-        $clientID = $this->uri->segment(5);
-        $query = $this->Md->query("SELECT * FROM users where org = '" . $this->session->userdata('orgid') . "' ");
-
-        if ($query) {
-            $data['users'] = $query;
-        } else {
-            $data['users'] = array();
-        }
-        $query = $this->Md->query("SELECT * FROM files where org = '" . $this->session->userdata('orgid') . "' ");
-
-        if ($query) {
-            $data['files'] = $query;
-        } else {
-            $data['files'] = array();
-        }
-        $data['fileID'] = $fileID;
-        $data['fileName'] = $fileName;
-        $data['clientID'] = $clientID;
-
-        $this->load->view('file-receipt', $data);
+        $this->load->view('voucher-page', $data);
     }
 
     public function balance() {
@@ -217,16 +189,13 @@ class Reciept extends CI_Controller {
 
 
         $client = $e->userid;
-        $types = 'credit';
+        $types = 'debit';
         $created = $e->day;
         $users = $this->session->userdata('username');
         $org = $this->session->userdata('orgid');
         $approved = 'false';
         $total = $e->total;
         $file = ' ';
-        if ($e->fileid != "") {
-            $file = $e->fileid ;
-        }
         /* payment */
         $amount = $e->paid;
         $balance = $e->balance;

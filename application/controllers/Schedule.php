@@ -81,7 +81,8 @@ class Schedule extends CI_Controller {
         $day = $this->input->post('day');
         $days = $this->input->post('days');
 
-
+        $fileid = $this->input->post('fileid'); 
+        
         $notify = $this->input->post('trig');
         $notify = 'F';
         if ($notify != "") {
@@ -98,7 +99,7 @@ class Schedule extends CI_Controller {
 
             $scheduleID = $this->GUID();
 
-            $sch = array('id' => $scheduleID, 'dated' => $day, 'priority' => $priority, 'days' => $days, 'detail' => $details, 'org' => $this->session->userdata('orgid'), 'starts' => $start, 'ends' => $end, 'triggers' => $notify, 'types' => 'client', 'created' => date('Y-m-d'), 'meet' => $start);
+            $sch = array('id' => $scheduleID, 'dated' => $day, 'priority' => $priority, 'days' => $days, 'detail' => $details, 'org' => $this->session->userdata('orgid'), 'starts' => $start, 'ends' => $end, 'triggers' => $notify, 'types' => 'client', 'created' => date('Y-m-d'), 'meet' => $start,'file'=>$fileid);
             $id = $this->Md->save($sch, 'schedule');
             foreach ($attend as $t) {
                 $schs = array('org' => $this->session->userdata('orgid'),'userID' => $t, 'scheduleID' => $scheduleID);

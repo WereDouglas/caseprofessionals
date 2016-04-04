@@ -137,11 +137,11 @@
                                             <input type="text" value="<?php echo $created; ?>" class="editbox" id="created_input_<?php echo $id; ?>"
                                         </td>  
                                          <td class="center">
-                                            <a class="btn-info btn-small icon-user" href="<?php echo base_url() . "index.php/user/view/" . $id; ?>"></a>
+                                            <a class="btn-small icon-user" href="<?php echo base_url() . "index.php/user/view/" . $id; ?>"></a>
                                         </td>
 
                                         <td class="center">
-                                            <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/user/delete/" . $id; ?>"></a>
+                                            <a class="btn-small icon-remove" href="<?php echo base_url() . "index.php/user/delete/" . $id; ?>"></a>
                                         </td>
                                     </tr>
                                     <?php

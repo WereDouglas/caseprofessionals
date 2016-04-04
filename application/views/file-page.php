@@ -102,7 +102,7 @@
                     <table class="jobs table table-striped table-bordered bootstrap-datatable datatable" id="datatable">
                         <thead>
                             <tr> 
-                                 <th>#</th>
+                                <th>#</th>
                                 <th>No.</th>
                                 <th>NAME</th>
                                 <th>SUBJECT</th>
@@ -117,7 +117,7 @@
                         <tbody>
 
                             <?php
-                            $count=0;
+                            $count = 0;
                             if (is_array($files) && count($files)) {
                                 foreach ($files as $loop) {
                                     $count++;
@@ -142,7 +142,7 @@
                                             <span id="names_<?php echo $id; ?>" class="text"><?php echo $names; ?></span>
                                             <input type="text" value="<?php echo $names; ?>" class="editbox" id="names_input_<?php echo $id; ?>"
                                         </td>
-                                         <td class="edit_td">
+                                        <td class="edit_td">
                                             <span id="subject_<?php echo $id; ?>" class="text"><?php echo $subject; ?></span>
                                             <input type="text" value="<?php echo $subject; ?>" class="editbox" id="subject_input_<?php echo $id; ?>"
                                         </td>
@@ -171,11 +171,11 @@
                                             <?php echo $created; ?>
                                         </td>  
                                         <td class="center">
-                                            <a class="btn-info btn-small icon-user" href="<?php echo base_url() . "index.php/file/view/" . $id; ?>"></a>
+                                              <a class="btn-small icon-user" href="<?php echo base_url() . "index.php/file/view/" . $id; ?>"></a> |<a class=" btn-small icon-calendar" href="<?php echo base_url() . "index.php/file/schedule/" . $id; ?>"></a>
                                         </td>
 
                                         <td class="center">
-                                            <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/file/delete/" . $id; ?>"></a>
+                                            <a class="btn-flat btn-small icon-archive" href="<?php echo base_url() . "index.php/reciept/file/" .$id."/".$names."/".$client; ?>">receipt</a> |<a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/file/delete/" . $id; ?>"></a>
                                         </td>
                                     </tr>
                                     <?php
@@ -205,7 +205,7 @@
             var ID = $(this).attr('id');
             $("#names" + ID).hide();
             $("#names_input_" + ID).show();
-             $("#subject" + ID).hide();
+            $("#subject" + ID).hide();
             $("#subject_input_" + ID).show();
 
             $("#types" + ID).hide();
@@ -226,7 +226,7 @@
 
 
 
-            var dataString = 'id=' + ID + '&names=' + name + '&details=' + details + '&types=' + types+ '&subject=' + subject;
+            var dataString = 'id=' + ID + '&names=' + name + '&details=' + details + '&types=' + types + '&subject=' + subject;
             $("#names_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />'); // Loading image
             $("#details_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />'); // Loading image
             $("#types_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />');

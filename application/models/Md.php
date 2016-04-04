@@ -21,7 +21,14 @@ class Md extends CI_Model {
 		$this -> db -> query($sql, array($id));
 		return $this -> db -> affected_rows();
                 
-	}       
+	}    
+         function cascade($id,$table,$field) {             
+            
+		$sql = "DELETE FROM $table WHERE ".$field." =? ";
+		$this -> db -> query($sql, array($id));
+		return $this -> db -> affected_rows();
+                
+	}    
 	
 	function get($field,$value,$table) {
 		$this -> db -> select('*');

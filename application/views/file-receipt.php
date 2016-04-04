@@ -60,13 +60,22 @@
         <span> <img  height="50px" width="100px" class="" src="<?= base_url(); ?>uploads/<?php echo $this->session->userdata('orgimage'); ?>" alt="logo" />
         </span>
     </header>
-    <article>
-        <h1>Recipient</h1>
-        <address contenteditable>              
-            <input class="chron" name="user" id="user" type="text" value="" placeholder="select client.....">
-            <small> <span id="loading"  name ="loading"><img src="<?= base_url(); ?>images/loading.gif" alt="loading......" /></span></small>
+    <article> 
+        <h3>
+        <?php
+        foreach ($users as $user) {
+            if ($user->id == $clientID) {
+                echo $user->name;
+            }
+        }
+        ?>
+        </h3>
 
-        </address>
+        <?php
+        echo'<span class="span-data" name="client" id="client" >' . urldecode($fileName) . '</span>';
+        echo'<span class="span-data" name="fileid" type="hidden" id="fileid" style="visibility:hidden" >' . $fileID . '</span>';
+        echo'<span class="span-data" name="userid" id="userid"  style="visibility:hidden">' . $clientID . '</span>';
+        ?> 
         <table class="meta">
             <tr>
                 <th><span contenteditable>RCT/CHQ #</span></th>

@@ -8,7 +8,7 @@
         <a href="#">
             <img  height="50px" width="100px" class="" src="<?= base_url(); ?>uploads/<?php echo $this->session->userdata('orgimage'); ?>" alt="logo" />
         </a>
-         <li>
+        <li>
             <a href="<?php echo base_url() . "index.php/schedule/all"; ?>" target="frame">
                 <i class="icon-calendar-empty"></i>
                 <span class="menu-text">All Schedules </span>
@@ -21,20 +21,32 @@
             </a>
 
         </li>
-
         <li>
-            <a href="tables.html">
+            <a href="<?php echo base_url() . "index.php/reciept/payment"; ?>" target="frame">
+                <i class="icon-file"></i>
+                <span class="menu-text"> Invoices</span>                
+            </a>
+
+        </li>
+        <li>
+            <a href="<?php echo base_url() . "index.php/voucher"; ?>" target="frame">
                 <i class="icon-book"></i>
                 <span class="menu-text"> Voucher</span>
             </a>
-        </li>           
+        </li>  
+         <li>
+            <a href="<?php echo base_url() . "index.php/report/"; ?>" target="frame">
+                <i class="icon-graph"></i>
+                <span class="menu-text"> Graphical </span>
+            </a>
+        </li>
 
         <li>
             <a href="<?php echo base_url() . "index.php/user/users"; ?>" target="frame">
                 <i class="icon-user"></i>
 
                 <span class="menu-text">
-                   Manage users
+                    Manage users
                     <span class="badge badge-transparent tooltip-error" title="2&nbsp;Important&nbsp;Events">
 
                     </span>

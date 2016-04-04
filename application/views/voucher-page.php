@@ -50,7 +50,7 @@
     $no = $this->session->userdata('code') . "/" . date('y') . "/" . date('m') . (int) date('d') . (int) date('H') . (int) date('i') . (int) date('s');
     ?>
     <header>
-        <h1>RECEIPT</h1>
+        <h1>PAYMENT VOUCHER</h1>
 
         <address contenteditable>
             <p><?php echo $this->session->userdata('name'); ?></p>
@@ -63,10 +63,11 @@
     <article>
         <h1>Recipient</h1>
         <address contenteditable>              
-            <input class="chron" name="user" id="user" type="text" value="" placeholder="select client.....">
+            <input class="chron" name="user" id="user" type="text" value="" placeholder="select provider.....">
             <small> <span id="loading"  name ="loading"><img src="<?= base_url(); ?>images/loading.gif" alt="loading......" /></span></small>
 
         </address>
+
         <table class="meta">
             <tr>
                 <th><span contenteditable>RCT/CHQ #</span></th>
@@ -133,7 +134,7 @@
     <div class="span6">
 
         <br>
-
+        
         <button id="jpush" class="btn-primary btn btn-small">
             Submit
             <i class="icon-ok icon-on-right"></i>
@@ -180,10 +181,10 @@ if (is_array($users) && count($users)) {
                                 //
                                 console.log(JSON.stringify(values));
                                 var post_this = JSON.stringify(values)
-                                $.post("<?php echo base_url() ?>index.php/reciept/save", {
+                                $.post("<?php echo base_url() ?>index.php/voucher/save", {
                                     name: post_this
                                 }, function (response) {
-                                    alert("" + response);
+                                    alert("info" + response);
                                     var myspan = document.getElementById('no');
 
                                     if (myspan.innerText) {
@@ -240,7 +241,7 @@ if (is_array($users) && count($users)) {
                                 name: selectedVal
 
                             }, function (response) {
-                                alert("User Added");
+                                alert("Info" + response);
                             });
 
                             //window.location = selectedVal;

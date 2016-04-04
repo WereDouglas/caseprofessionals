@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User extends CI_Controller {
+class  Report  extends CI_Controller {
 
     function __construct() {
 
@@ -14,12 +14,20 @@ class User extends CI_Controller {
     }
 
     public function index() {
+        
+         $query = $this->Md->query("SELECT * FROM sync_data ");
+        //  var_dump($query);
+        if ($query) {
+            $data['logs'] = $query;
+        } else {
+            $data['logs'] = array();
+        }
+        $this->load->view('view-graph', $data);
 
-        $this->load->view('client-page');
+     
     }
 
     public function client() {
-
         $query = $this->Md->query("SELECT * FROM users where types = 'client'");
         //  var_dump($query);
         if ($query) {
@@ -27,103 +35,7 @@ class User extends CI_Controller {
         } else {
             $data['users'] = array();
         }
-
-
         $this->load->view('client-page', $data);
-    }
-
-    public function exists() {
-        $this->load->helper(array('form', 'url'));
-        $user = trim($this->input->post('user'));
-        //returns($value,$field,$table)
-        $get_result = $this->Md->returns($user, 'name', 'users');
-        //href= "index.php/patient/add_chronic/'.$chronic.'"
-        if (!$get_result)
-            echo '<span style="color:#f00"> This client <strong style="color:#555555" >' . $user . '</strong> does not exist in our database.' . '<a href= "' . $user . '" value="' . $user . '" id="myLink" style="background #555555;color:#0749BA;" onclick="NavigateToSite()">Click here to add </a></span>';
-        else
-        echo '' . $get_result->contact . '<br>';
-        echo '' . $get_result->email . '<br>';
-        echo '' . $get_result->address . '<br>';
-        echo'<span class="span-data" name="userid" id="userid" >' . $get_result->id . '</span>';
-    }
-
-    public function add_user() {
-
-        $user = $this->input->post('name');
-        $get_result = $this->Md->returns($user, 'name', 'users');
-        if (!$get_result) {
-            if ($user != "") {
-                $this->load->helper(array('form', 'url'));
-                //user information
-                $userid = $this->GUID();
-                $email = ' ';
-                $name = $user;
-                $password = $this->session->userdata('code');
-                $email = " ";
-                $contact = " ";
-                $address = " ";
-                $level = 1;
-                $type = 'client';
-                $orgid = $this->session->userdata('orgid');
-
-
-                $submitted = date('Y-m-d');
-                $userfile = $data['file_name'];
-
-                $users = array('id' => $userid, 'image' => '', 'email' => '', 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => ' ', 'oid' => '', 'contact' => '', 'password' => '', 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
-                $this->Md->save($users, 'users');
-                $content = json_encode($users);
-
-                $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
-                if ($query) {
-                    foreach ($query as $res) {
-                        $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'content' => $content, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
-                        $file_id = $this->Md->save($syc, 'sync_data');
-                    }
-                }
-            }
-        } else {
-              echo '<span style="color:#f00"> This client <strong style="color:#555555" >' . $user . '</strong> exists in our database.' . '<a href= "' . $user . '" value="' . $user . '" id="myLink" style="background #555555;color:#0749BA;" onclick="NavigateToSite()">Click here to add </a></span>';
-   
-        }
-    }
-
-    public function view() {
-
-        $this->load->helper(array('form', 'url'));
-        $userid = $this->uri->segment(3);
-        $query = $this->Md->query("SELECT * FROM contact where users = '" . $userid . "'");
-        $data['userid'] = $userid;
-
-        if ($query) {
-            $data['contacts'] = $query;
-        } else {
-            $data['contacts'] = array();
-        }
-        $query = $this->Md->query("SELECT * FROM users where id = '" . $userid . "'");
-        if ($query) {
-            foreach ($query as $res) {
-                $data['name'] = $res->name;
-                $data['address'] = $res->address;
-                $data['image'] = $res->image;
-                $data['email'] = $res->email;
-            }
-        }
-
-
-
-        $this->load->view('client-view', $data);
-    }
-
-    public function users() {
-        $query = $this->Md->query("SELECT * FROM users where types <>'client'");
-        //  var_dump($query);
-        if ($query) {
-            $data['users'] = $query;
-        } else {
-            $data['users'] = array();
-        }
-        $this->load->view('user-page', $data);
     }
 
     public function GUID() {
@@ -150,7 +62,7 @@ class User extends CI_Controller {
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
-                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'content' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $syc = array('object' => 'users', 'content' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                 $file_id = $this->Md->save($syc, 'sync_data');
             }
         }
@@ -159,30 +71,23 @@ class User extends CI_Controller {
     public function delete() {
         $this->load->helper(array('form', 'url'));
         $id = $this->uri->segment(3);
-        $this->Md->remove($id, 'users', 'image');
-        $query = $this->Md->delete($id, 'users');
-        if ($this->db->affected_rows() > 0) {
-
-            $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
-            if ($query) {
-                foreach ($query as $res) {
-                    $syc = array('object' => 'users', 'content' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
-                    $file_id = $this->Md->save($syc, 'sync_data');
-                }
-            }
+       
+        $query = $this->Md->delete($id, 'sync_data');        
+        if ($this->db->affected_rows() > 0) {          
+            
             $this->session->set_flashdata('msg', '<div class="alert alert-error">
                                                    
                                                 <strong>
                                                 Information deleted	</strong>									
 						</div>');
-            redirect('user/client', 'refresh');
+            redirect('log/', 'refresh');
         } else {
             $this->session->set_flashdata('msg', '<div class="alert alert-error">
                                                    
                                                 <strong>
                                              Action Failed	</strong>									
 						</div>');
-            redirect('user/client', 'refresh');
+            redirect('log/', 'refresh');
         }
     }
 
@@ -209,6 +114,7 @@ class User extends CI_Controller {
         $orgid = $this->session->userdata('orgid');
 
         if ($name != "") {
+
             $password = $password;
             $key = $email;
             $password = $this->encrypt->encode($password, $key);
@@ -245,13 +151,11 @@ class User extends CI_Controller {
             $users = array('id' => $userid, 'image' => $userfile, 'email' => $email, 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
             $file_id = $this->Md->save($users, 'users');
             $content = array('id' => $userid, 'image' => $userfile, 'email' => $email, 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
-
             $content = json_encode($content);
-
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
             if ($query) {
                 foreach ($query as $res) {
-                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'content' => $content, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $syc = array('object' => 'users', 'content' => $content, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                     $file_id = $this->Md->save($syc, 'sync_data');
                 }
             }
