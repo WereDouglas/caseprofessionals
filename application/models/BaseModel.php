@@ -13,11 +13,12 @@ class BaseModel extends CI_Model
     private $_errors = [];
     private $_validation = [];
 
-    public function __construct($tableName=''){
+    public function __construct($tableName='', $id = null){
         parent::__construct();
         $this->tableName = $tableName;
         $this->_isNewRecord = true;
         $this->load->database();
+        $this->setFromId($id);
     }
 
     public function getAttributeName($attribute)
@@ -121,14 +122,36 @@ class BaseModel extends CI_Model
         return false;
     }
 
-    public function getAttributes()
+    public function getAttributes($omit = [])
     {
         $attributes = [];
-        foreach(get_object_vars($this) as $attribute => $value)
-            if(!in_array($attribute, ['tableName', '_isNewRecord', '_errors', '_validation', ]))
+        $excludedElements = array_merge($omit, ['tableName', '_isNewRecord', '_errors', '_validation', ]);
+        foreach(get_object_vars($this) as $attribute => $value) {
+            if(!in_array($attribute, $excludedElements))
                 $attributes[$attribute] = $value;
+        }
 
         return $attributes;
+    }
+
+    private function setFromId($id)
+    {
+        if($id != null){
+            $model = $this->getOne(['id'=>$id]);
+            if(!empty($model)){
+                foreach($model as $attribute => $value)
+                    $this->{$attribute} = $value;
+                $this->_isNewRecord = false;
+            }
+        }
+    }
+
+    public function update(){
+        if($this->validate('update'))
+            return $this->db->update($this->tableName,
+                $this->getAttributes(['id']), ['id'=>$this->{'id'}]);
+
+        return false;
     }
 
 }

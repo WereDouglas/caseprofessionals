@@ -20,7 +20,7 @@ class TimeBilling extends BaseController
         $this->loadView('index', []);
     }
 
-    public function rates($operation = 'index'){
+    public function rates($operation = 'index', $id = null){
         switch($operation){
             case 'index':
                 $this->loadView('rates', [
@@ -30,6 +30,13 @@ class TimeBilling extends BaseController
             case 'create':
                 $rate = new TimeRate();
                 if($rate->loadSubmitted() && $rate->save())
+                    $this->toRoute('TimeBilling/rates');
+
+                $this->loadView('time_rate_form', ['model'=>$rate]);
+                break;
+            case 'edit':
+                $rate = new TimeRate($id);
+                if($rate->loadSubmitted() && $rate->update())
                     $this->toRoute('TimeBilling/rates');
 
                 $this->loadView('time_rate_form', ['model'=>$rate]);
