@@ -57,16 +57,18 @@
             <div class="infobox-content"></div>
         </div>
     </div>
-    <div class="infobox infobox-blue2 infobox-small infobox-dark">
-        <div class="infobox-icon">
-            <i class="icon-time"></i>
-        </div>
+    <a href="<?php echo base_url() . "index.php/TimeBilling/index"; ?>" target="frame">
+        <div class="infobox infobox-blue2 infobox-small infobox-dark">
+            <div class="infobox-icon">
+                <i class="icon-time"></i>
+            </div>
 
-        <div class="infobox-data">
-            <div class="infobox-content">Time </div>
-            <div class="infobox-content"></div>
+            <div class="infobox-data">
+                <div class="infobox-content">Time </div>
+                <div class="infobox-content"></div>
+            </div>
         </div>
-    </div>
+    </a>
      <a href="<?php echo base_url() . "index.php/user/client"; ?>" target="frame">
         <div class="infobox infobox-brown infobox-small infobox-dark">
             <div class="infobox-icon">
