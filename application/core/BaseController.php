@@ -69,4 +69,11 @@ class BaseController extends CI_Controller
         include_once __DIR__ . '/../helpers/LayoutHelper.php';
         return LayoutHelper::generateTitle($viewName, $this);
     }
+
+    protected function toRoute($route){
+        if(!isset($this->url_helper))
+            $this->load->helper('url');
+
+        redirect(base_url('index.php/'.$route));
+    }
 }

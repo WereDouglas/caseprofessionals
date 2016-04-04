@@ -10,6 +10,8 @@ class BaseModel extends CI_Model
 {
     private $tableName;
     private $_isNewRecord;
+    private $_errors = [];
+    private $_validation = [];
 
     public function __construct($tableName=''){
         parent::__construct();
@@ -66,4 +68,67 @@ class BaseModel extends CI_Model
     public function isNewRecord(){
         return $this->_isNewRecord;
     }
+
+    public function loadSubmitted(){
+        $model = get_class($this);
+
+        if(isset($_POST["$model"])){
+            $attributes = $_POST["$model"];
+            foreach($attributes as $name => $value)
+                $this->{$name} = $value;
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function setValidationRules($scenario){}
+
+    protected function setRuleOnAttributes($rule, $attributes){
+        $this->_validation[$rule] = $attributes;
+    }
+
+    public function validate($scenario)
+    {
+        $passed = true;
+        $this->setValidationRules($scenario);
+
+        if(isset($this->_validation['required'])){
+            foreach($this->_validation['required'] as $field){
+                if(!isset($this->{$field}) || $this->{$field} == null){
+                    $this->addError($field, "The field <strong>$field</strong> is required");
+                    $passed = false;
+                }
+            }
+        }
+
+        return $passed;
+    }
+
+    public function getErrors()
+    {
+        return $this->_errors;
+    }
+
+    public function addError($field, $message){
+        $this->_errors[$field] = $message;
+    }
+
+    public function save(){
+        if($this->validate('create'))
+            return $this->db->insert($this->tableName, $this->getAttributes());
+
+        return false;
+    }
+
+    public function getAttributes()
+    {
+        $attributes = [];
+        foreach(get_object_vars($this) as $attribute => $value)
+            if(!in_array($attribute, ['tableName', '_isNewRecord', '_errors', '_validation', ]))
+                $attributes[$attribute] = $value;
+
+        return $attributes;
+    }
+
 }

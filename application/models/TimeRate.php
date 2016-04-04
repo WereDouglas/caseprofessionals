@@ -11,4 +11,12 @@ class TimeRate extends BaseModel
     {
         parent::__construct('time_rate');
     }
+
+    public function setValidationRules($scenario){
+        switch($scenario) {
+            case 'create':
+                $this->setRuleOnAttributes('required', ['type', 'period', 'rate']);
+                break;
+        }
+    }
 }
