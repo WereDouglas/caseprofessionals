@@ -36,7 +36,7 @@
         </li>  
          <li>
             <a href="<?php echo base_url() . "index.php/report/"; ?>" target="frame">
-                <i class="icon-graph"></i>
+                <i class="icon-globe"></i>
                 <span class="menu-text"> Graphical </span>
             </a>
         </li>

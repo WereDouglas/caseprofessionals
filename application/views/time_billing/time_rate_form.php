@@ -4,15 +4,16 @@
  * @var $action string
 */
 $formAttributes = [];
+$errors = $model->getErrors();
 if(isset($action)) $formAttributes['action'] = $action;
 include_once APPPATH .'helpers'.DIRECTORY_SEPARATOR.'Widget.php'?>
 
     <div class="col-md-offset-1">
         <p><?=validation_errors()?></p>
-        <?php if(!empty($model->getErrors())):?>
+        <?php if(!empty($errors)):?>
             <strong>Please fix the following errors</strong>
             <ul>
-                <?php foreach($model->getErrors() as $error) echo "<li>$error</li>"?>
+                <?php foreach($errors as $error) echo "<li>$error</li>"?>
             </ul>
         <?php endif ?>
     </div>
