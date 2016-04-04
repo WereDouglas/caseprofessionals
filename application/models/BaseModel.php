@@ -154,4 +154,8 @@ class BaseModel extends CI_Model
         return false;
     }
 
+    public function delete(){
+        return $this->db->delete($this->tableName, ['id'=>$this->{'id'}]);
+    }
+
 }

@@ -41,6 +41,10 @@ class TimeBilling extends BaseController
 
                 $this->loadView('time_rate_form', ['model'=>$rate]);
                 break;
+            case 'delete':
+                (new TimeRate($id))->delete();
+                $this->toRoute('TimeBilling/rates');
+                break;
         }
     }
 }

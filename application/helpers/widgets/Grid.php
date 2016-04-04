@@ -71,7 +71,8 @@ class Grid extends BaseWidget
                         $id = $entry['id'];
                         $actions = [
                             'edit' => "<a href='$baseUrl/edit/$id'><i class='glyphicon glyphicon-edit'></i></a>",
-                            'delete' => "<a href='$baseUrl/delete/$id'><i class='glyphicon glyphicon-trash'></i></a>",
+                            'delete' => "<a href='$baseUrl/delete/$id' onclick='confirm(\"Are you sure You want to delete this record\")'>
+                                            <i class='glyphicon glyphicon-trash'></i></a>",
                         ];
                         $action_config = isset($columns[$i]['value']) ? $columns[$i]['value'] : null;
                         $actions = self::resolveActions($actions, $action_config);
