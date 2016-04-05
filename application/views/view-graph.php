@@ -2,7 +2,7 @@
 <link href="<?php echo base_url(); ?>dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
 <link href="<?php echo base_url(); ?>bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <section class="content-header">
-    <h1>  Consolidated graphical reports   </h1> 
+    <h3>  Consolidated Graphical Reports   </h3> 
     <hr>
     <div class="row" >
         <div class="col-xs-4">

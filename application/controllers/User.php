@@ -18,6 +18,32 @@ class User extends CI_Controller {
         $this->load->view('client-page');
     }
 
+    public function api() {
+        $orgid = urldecode($this->uri->segment(3));
+        $result = $this->Md->query("SELECT * FROM users WHERE org ='" . $orgid . "'");
+
+        $all = array();
+
+        foreach ($result as $res) {
+            $resv = new stdClass();
+            $resv->id= $res->id;
+            $resv->name = $res->name;
+            $resv->org= $res->org;
+            $resv->address = $res->address;
+            $resv->image= $res->image;
+            $resv->contact = $res->contact;
+            $resv->password = $this->encrypt->decode($res->password, $res->email);
+            $resv->types = $res->types;
+            $resv->level = $res->level;
+            $resv->created = $res->created;
+            $resv->status = $res->status;
+            $resv->email = $res->email;
+         
+            array_push($all, $resv);
+        }
+        echo json_encode($all);
+    }
+
     public function client() {
 
         $query = $this->Md->query("SELECT * FROM users where types = 'client'");
@@ -41,7 +67,7 @@ class User extends CI_Controller {
         if (!$get_result)
             echo '<span style="color:#f00"> This client <strong style="color:#555555" >' . $user . '</strong> does not exist in our database.' . '<a href= "' . $user . '" value="' . $user . '" id="myLink" style="background #555555;color:#0749BA;" onclick="NavigateToSite()">Click here to add </a></span>';
         else
-        echo '' . $get_result->contact . '<br>';
+            echo '' . $get_result->contact . '<br>';
         echo '' . $get_result->email . '<br>';
         echo '' . $get_result->address . '<br>';
         echo'<span class="span-data" name="userid" id="userid" >' . $get_result->id . '</span>';
@@ -83,8 +109,7 @@ class User extends CI_Controller {
                 }
             }
         } else {
-              echo '<span style="color:#f00"> This client <strong style="color:#555555" >' . $user . '</strong> exists in our database.' . '<a href= "' . $user . '" value="' . $user . '" id="myLink" style="background #555555;color:#0749BA;" onclick="NavigateToSite()">Click here to add </a></span>';
-   
+            echo '<span style="color:#f00"> This client <strong style="color:#555555" >' . $user . '</strong> exists in our database.' . '<a href= "' . $user . '" value="' . $user . '" id="myLink" style="background #555555;color:#0749BA;" onclick="NavigateToSite()">Click here to add </a></span>';
         }
     }
 
@@ -260,6 +285,80 @@ class User extends CI_Controller {
 						</div>');
 
             redirect('/user/client', 'refresh');
+        }
+        $this->client();
+    }
+    
+    
+     public function save() {
+
+
+        $this->load->helper(array('form', 'url'));
+
+        //user information
+        $userid = $this->GUID();
+        $email = $this->input->post('email');
+        $name = $this->input->post('name');
+        $password = $this->input->post('password');
+        $email = $this->input->post('email');
+        $contact = $this->input->post('contact');
+        $address = $this->input->post('address');
+        $level = 1;
+        $type = 'Administrator';
+        $orgid = $this->session->userdata('orgid');
+
+        if ($name != "") {
+            $password = $password;
+            $key = $email;
+            $password = $this->encrypt->encode($password, $key);
+            $result = $this->Md->check($email, 'email', 'users');
+
+            if (!$result) {
+                $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong>
+                                                 email already in use please try again	</strong>									
+						</div>');
+                redirect('/user/users', 'refresh');
+            }
+
+            ///organisation image uploads
+            $file_element_name = 'userfile';
+
+            $config['upload_path'] = 'uploads/';
+            // $config['upload_path'] = '/uploads/';
+            $config['allowed_types'] = '*';
+            $config['encrypt_name'] = FALSE;
+
+            $this->load->library('upload', $config);
+            if (!$this->upload->do_upload($file_element_name)) {
+                $status = 'error';
+                $msg = $this->upload->display_errors('', '');
+                $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong>' . $msg . '</strong></div>');
+            }
+            $data = $this->upload->data();
+
+            $submitted = date('Y-m-d');
+            $userfile = $data['file_name'];
+
+            $users = array('id' => $userid, 'image' => $userfile, 'email' => $email, 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
+            $file_id = $this->Md->save($users, 'users');
+            $content = array('id' => $userid, 'image' => $userfile, 'email' => $email, 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
+
+            $content = json_encode($content);
+
+            $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+            if ($query) {
+                foreach ($query as $res) {
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'content' => $content, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $file_id = $this->Md->save($syc, 'sync_data');
+                }
+            }
+            $this->session->set_flashdata('msg', '<div class="alert alert-success">
+                                   <strong>Information saved</strong>									
+						</div>');
+
+            redirect('/user/users', 'refresh');
         }
         $this->client();
     }

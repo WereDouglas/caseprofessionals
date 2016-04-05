@@ -28,9 +28,9 @@
         <div class="accordion-body collapse" id="collapseTwo">
             <div class="accordion-inner">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Add New Client</h3>
+                    <h3 class="box-title">Add New User</h3>
                 </div><!-- /.box-header -->
-                <form  enctype="multipart/form-data"  action='<?= base_url(); ?>index.php/user/add_client'  method="post">
+                <form  enctype="multipart/form-data"  action='<?= base_url(); ?>index.php/user/save'  method="post">
                     <div class="span12">
                         <div class=" span6">
                             <div class="form-group">
@@ -45,6 +45,12 @@
 
                                 <input type="text" class="form-control" name="contact"  placeholder="contact" />
 
+                            </div>
+                            <div class="form-group">
+
+                                Password:<input type="password" id="password"  name="password" /></span>
+                                Confirm Password:<input type="password"  id="password2" name="password2" /></span>
+                                
                             </div>
 
                             <div class="form-group">        
@@ -91,7 +97,7 @@
                                 <th>NAME</th>
                                 <th>CONTACT</th>
                                 <th>EMAIL</th>
-                                                                       
+
                                 <th>CREATED:</th>
                                 <th>ACTION</th>
                             </tr>
@@ -110,7 +116,7 @@
                                     ?>  
                                     <tr id="<?php echo $id; ?>" class="edit_tr">
                                         <td> 
-                                            <img  height="50px" width="100px" class="" src="<?= base_url(); ?>uploads/<?php echo $loop->image; ?>" alt="logo" />
+                                            <img  height="50px" width="50px"  src="<?= base_url(); ?>uploads/<?php echo $loop->image; ?>" alt="logo" />
 
                                         </td>
                                         <td class="edit_td">
@@ -123,7 +129,7 @@
                                             <input type="text" value="<?php echo $contact; ?>" class="editbox" id="contact_input_<?php echo $id; ?>"
                                         </td>
                                         <td >
-                                           <?php echo $email; ?>
+                                            <?php echo $email; ?>
                                         </td>                                        
 
                                         <td class="edit_td">

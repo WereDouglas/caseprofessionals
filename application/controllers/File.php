@@ -33,6 +33,17 @@ class File extends CI_Controller {
         $this->load->view('file-page', $data);
     }
 
+    public function api() {
+
+        $orgid = urldecode($this->uri->segment(3));
+        $result = $this->Md->query("SELECT * FROM files WHERE org ='" . $orgid . "'");
+
+        if ($result) {
+
+            echo json_encode($result);  
+        }
+    }
+
     public function view() {
 
         $this->load->helper(array('form', 'url'));
@@ -115,14 +126,14 @@ class File extends CI_Controller {
             }
         }
 
-         $query = $this->Md->query("SELECT * FROM schedule where org = '" . $this->session->userdata('orgid') . "' AND file='".$fileid."' ");
+        $query = $this->Md->query("SELECT * FROM schedule where org = '" . $this->session->userdata('orgid') . "' AND file='" . $fileid . "' ");
         //  var_dump($query);
         if ($query) {
             $data['sch'] = $query;
         } else {
             $data['sch'] = array();
         }
-         $query = $this->Md->query("SELECT * FROM attend where org = '" . $this->session->userdata('orgid') . "'");
+        $query = $this->Md->query("SELECT * FROM attend where org = '" . $this->session->userdata('orgid') . "'");
         //  var_dump($query);
         if ($query) {
             $data['att'] = $query;

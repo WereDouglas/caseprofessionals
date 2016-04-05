@@ -18,11 +18,25 @@ class Organisation extends CI_Controller {
     }
 
     public function api() {
+
         $orgname = urldecode($this->uri->segment(3));
         $verification = urldecode($this->uri->segment(4));
-        $query = $this->Md->query("SELECT * FROM organisation WHERE  name ='" . $orgname . "' AND `keys` = '" .$verification . "'");
-        if ($query) {
-            echo json_encode($query);
+        if ($orgname != "" || $verification != "") {
+            $query = $this->Md->query("SELECT * FROM organisation WHERE  name ='" . $orgname . "' AND `keys` = '" . $verification . "'");
+            if ($query) {
+                foreach ($query as $res) {
+                    $clientname = $res->code . "-DESKTOP" . date('y') . "-" . date('m') . (int) date('d') . (int) date('H') . (int) date('i') . (int) date('s');
+                    $orgid = $res->id;
+                }             
+                $client = array('org' => $orgid, 'active' => 'T', 'name' => $clientname, 'created' => date('Y-m-d H:i:s'));
+                $this->Md->save($client, 'client');
+                $temp = json_encode($query);  //$json={"var1":"value1","var2":"value2"}   
+                $temp = substr($temp, 0, -2);
+                $temp.=',"oid":"' . $clientname . '"}]';
+                echo $temp;
+            }
+        } else {
+            echo "";
         }
     }
 
@@ -159,7 +173,7 @@ class Organisation extends CI_Controller {
             $orgfile = $data['file_name'];
             $userfile = $data['file_name'];
 
-            $users = array('id' => $userid, 'image' => $userfile, 'email' => $email, 'name' => $username, 'org' => $orgid, 'addresss' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
+            $users = array('id' => $userid, 'image' => '', 'email' => $email, 'name' => $username, 'org' => $orgid, 'addresss' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
             $file_id = $this->Md->save($users, 'users');
 
             // $client = array('org' => $orgid,'name' => 'web', 'active' => 'T', 'created' =>  date('Y-m-d H:i:s'));
