@@ -180,7 +180,7 @@ class File extends CI_Controller {
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
-                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'content' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'contents' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                 $this->Md->save($syc, 'sync_data');
             }
         }
@@ -195,7 +195,7 @@ class File extends CI_Controller {
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
             if ($query) {
                 foreach ($query as $res) {
-                    $syc = array('object' => 'files', 'content' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $syc = array('object' => 'files', 'contents' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                     $this->Md->save($syc, 'sync_data');
                 }
             }
@@ -260,7 +260,7 @@ class File extends CI_Controller {
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
             if ($query) {
                 foreach ($query as $res) {
-                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'content' => $content, 'action' => 'create', 'oid' => $fileid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'contents' => $content, 'action' => 'create', 'oid' => $fileid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                     $file_id = $this->Md->save($syc, 'sync_data');
                 }
             }

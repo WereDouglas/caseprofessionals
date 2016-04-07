@@ -11,9 +11,16 @@ class Schedule extends CI_Controller {
         $this->load->model('Md');
         $this->load->library('session');
         $this->load->library('encrypt');
+        
     }
 
     public function index() {
+        
+        if ($this->session->userdata('username') == "") {
+            $this->session->sess_destroy();
+            redirect('welcome', 'refresh');
+        }
+
         $query = $this->Md->query("SELECT * FROM users where org = '" . $this->session->userdata('orgid') . "' ");
         //  var_dump($query);
         if ($query) {
@@ -29,7 +36,7 @@ class Schedule extends CI_Controller {
         } else {
             $data['sch'] = array();
         }
-         $query = $this->Md->query("SELECT * FROM attend where org = '" . $this->session->userdata('orgid') . "'");
+        $query = $this->Md->query("SELECT * FROM attend where org = '" . $this->session->userdata('orgid') . "'");
         //  var_dump($query);
         if ($query) {
             $data['att'] = $query;
@@ -39,7 +46,35 @@ class Schedule extends CI_Controller {
 
         $this->load->view('calendar-page', $data);
     }
-    public function  all() {
+
+    public function api() {
+
+        $orgid = urldecode($this->uri->segment(3));
+        $result = $this->Md->query("SELECT * FROM schedule WHERE org ='" . $orgid . "'");
+
+        if ($result) {
+
+            echo json_encode($result);
+        }
+    }
+
+    public function attend() {
+
+        $orgid = urldecode($this->uri->segment(3));
+        $result = $this->Md->query("SELECT * FROM attend WHERE org ='" . $orgid . "'");
+
+        if ($result) {
+
+            echo json_encode($result);
+        }
+    }
+
+    public function all() {
+        
+        if ($this->session->userdata('username') == "") {
+            $this->session->sess_destroy();
+            redirect('welcome', 'refresh');
+        }
         $query = $this->Md->query("SELECT * FROM users where org = '" . $this->session->userdata('orgid') . "' ");
         //  var_dump($query);
         if ($query) {
@@ -55,7 +90,7 @@ class Schedule extends CI_Controller {
         } else {
             $data['sch'] = array();
         }
-         $query = $this->Md->query("SELECT * FROM attend where org = '" . $this->session->userdata('orgid') . "'");
+        $query = $this->Md->query("SELECT * FROM attend where org = '" . $this->session->userdata('orgid') . "'");
         //  var_dump($query);
         if ($query) {
             $data['att'] = $query;
@@ -81,8 +116,8 @@ class Schedule extends CI_Controller {
         $day = $this->input->post('day');
         $days = $this->input->post('days');
 
-        $fileid = $this->input->post('fileid'); 
-        
+        $fileid = $this->input->post('fileid');
+
         $notify = $this->input->post('trig');
         $notify = 'F';
         if ($notify != "") {
@@ -99,12 +134,24 @@ class Schedule extends CI_Controller {
 
             $scheduleID = $this->GUID();
 
-            $sch = array('id' => $scheduleID, 'dated' => $day, 'priority' => $priority, 'days' => $days, 'detail' => $details, 'org' => $this->session->userdata('orgid'), 'starts' => $start, 'ends' => $end, 'triggers' => $notify, 'types' => 'client', 'created' => date('Y-m-d'), 'meet' => $start,'file'=>$fileid);
+            $sch = array('id' => $scheduleID, 'dated' => $day, 'priority' => $priority, 'days' => $days, 'detail' => $details, 'org' => $this->session->userdata('orgid'), 'starts' => $start, 'ends' => $end, 'triggers' => $notify, 'types' => 'client', 'created' => date('Y-m-d'), 'meet' => $start, 'file' => $fileid);
             $id = $this->Md->save($sch, 'schedule');
+
+            $content = json_encode($sch);
+            $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+            if ($query) {
+                foreach ($query as $res) {
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'schedule', 'contents' => $content, 'action' => 'create', 'oid' => $scheduleID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $file_id = $this->Md->save($syc, 'sync_data');
+                }
+            }
+
             foreach ($attend as $t) {
-                $schs = array('org' => $this->session->userdata('orgid'),'userID' => $t, 'scheduleID' => $scheduleID);
+                $schs = array('org' => $this->session->userdata('orgid'), 'userID' => $t, 'scheduleID' => $scheduleID);
                 $this->Md->save($schs, 'attend');
             }
+
+
             $this->session->set_flashdata('msg', '<div class="alert">                                                   
                                                 <strong>
                                                  schedule added</strong>									

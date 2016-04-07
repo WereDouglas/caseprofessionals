@@ -36,7 +36,7 @@
         </li>  
          <li>
             <a href="<?php echo base_url() . "index.php/report/"; ?>" target="frame">
-                <i class="icon-globe"></i>
+                <i class="icon-bar-chart"></i>
                 <span class="menu-text"> Graphical </span>
             </a>
         </li>
@@ -52,10 +52,16 @@
                     </span>
             </a>
         </li>
+           <li>
+            <a href="<?php echo base_url() . "index.php/client/"; ?>" target="frame">
+                <i class="icon-globe"></i>
+                <span class="menu-text"> Data Clients </span>
+            </a>
+        </li>
         <li>
             <a href="<?php echo base_url() . "index.php/log/"; ?>" target="frame">
                 <i class="icon-cloud"></i>
-                <span class="menu-text"> Synchronisation logs </span>
+                <span class="menu-text"> Synchronisation Logs </span>
             </a>
         </li>
 

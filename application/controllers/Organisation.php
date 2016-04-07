@@ -11,6 +11,7 @@ class Organisation extends CI_Controller {
         $this->load->model('Md');
         $this->load->library('session');
         $this->load->library('encrypt');
+         
     }
 
     public function index() {
@@ -185,7 +186,7 @@ class Organisation extends CI_Controller {
             $query = $this->Md->query("SELECT * FROM client where org = '" . $orgid . "'");
             if ($query) {
                 foreach ($query as $res) {
-                    $syc = array('object' => 'users', 'content' => $content, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $syc = array('object' => 'users', 'contents' => $content, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                     $file_id = $this->Md->save($syc, 'sync_data');
                 }
             }

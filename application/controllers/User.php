@@ -7,6 +7,8 @@ class User extends CI_Controller {
     function __construct() {
 
         parent::__construct();
+        
+        
         error_reporting(E_PARSE);
         $this->load->model('Md');
         $this->load->library('session');
@@ -14,6 +16,10 @@ class User extends CI_Controller {
     }
 
     public function index() {
+        if ($this->session->userdata('username') == "") {
+                      $this->session->sess_destroy();
+                redirect('welcome', 'refresh');
+        }
 
         $this->load->view('client-page');
     }
@@ -45,6 +51,10 @@ class User extends CI_Controller {
     }
 
     public function client() {
+        if ($this->session->userdata('username') == "") {
+                      $this->session->sess_destroy();
+                redirect('welcome', 'refresh');
+        }
 
         $query = $this->Md->query("SELECT * FROM users where types = 'client'");
         //  var_dump($query);
@@ -103,7 +113,7 @@ class User extends CI_Controller {
                 $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
                 if ($query) {
                     foreach ($query as $res) {
-                        $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'content' => $content, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                        $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'contents' => $content, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                         $file_id = $this->Md->save($syc, 'sync_data');
                     }
                 }
@@ -175,7 +185,7 @@ class User extends CI_Controller {
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
-                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'content' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'contents' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                 $file_id = $this->Md->save($syc, 'sync_data');
             }
         }
@@ -191,8 +201,8 @@ class User extends CI_Controller {
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
             if ($query) {
                 foreach ($query as $res) {
-                    $syc = array('object' => 'users', 'content' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
-                    $file_id = $this->Md->save($syc, 'sync_data');
+                    $syc = array('object' => 'users', 'contents' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $this->Md->save($syc, 'sync_data');
                 }
             }
             $this->session->set_flashdata('msg', '<div class="alert alert-error">
@@ -276,7 +286,7 @@ class User extends CI_Controller {
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
             if ($query) {
                 foreach ($query as $res) {
-                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'content' => $content, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'contents' => $content, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                     $file_id = $this->Md->save($syc, 'sync_data');
                 }
             }
@@ -344,13 +354,15 @@ class User extends CI_Controller {
             $users = array('id' => $userid, 'image' => $userfile, 'email' => $email, 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
             $file_id = $this->Md->save($users, 'users');
             $content = array('id' => $userid, 'image' => $userfile, 'email' => $email, 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
-
-            $content = json_encode($content);
+ 
+            $usered = array('id' => $userid, 'image' => $userfile, 'email' => $email, 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $this->input->post('password'), 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
+          
+            $contents = json_encode($usered);
 
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
             if ($query) {
                 foreach ($query as $res) {
-                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'content' => $content, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'contents' => $contents, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                     $file_id = $this->Md->save($syc, 'sync_data');
                 }
             }

@@ -111,8 +111,17 @@
                                     ?>  
                                     <tr id="<?php echo $id; ?>" class="edit_tr">
                                         <td> 
-                                            <img  height="50px" width="100px" class="" src="<?= base_url(); ?>uploads/<?php echo $loop->image; ?>" alt="logo" />
-
+                                           <?php
+                                            if ($loop->image != "") {
+                                                ?>
+                                                <img  height="50px" width="50px"  src="<?= base_url(); ?>uploads/<?php echo $loop->image; ?>" alt="logo" />
+                                                <?php
+                                            } else {
+                                                ?>
+                                                <img  height="50px" width="50px"  src="<?= base_url(); ?>images/cp_logo.png" alt="logo" />
+                                                <?php
+                                            }
+                                            ?>
                                         </td>
                                         <td class="edit_td">
                                             <span id="name_<?php echo $id; ?>" class="text"><?php echo $name; ?></span>

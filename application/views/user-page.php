@@ -50,7 +50,7 @@
 
                                 Password:<input type="password" id="password"  name="password" /></span>
                                 Confirm Password:<input type="password"  id="password2" name="password2" /></span>
-                                
+
                             </div>
 
                             <div class="form-group">        
@@ -116,8 +116,17 @@
                                     ?>  
                                     <tr id="<?php echo $id; ?>" class="edit_tr">
                                         <td> 
-                                            <img  height="50px" width="50px"  src="<?= base_url(); ?>uploads/<?php echo $loop->image; ?>" alt="logo" />
-
+                                            <?php
+                                            if ($loop->image != "") {
+                                                ?>
+                                                <img  height="50px" width="50px"  src="<?= base_url(); ?>uploads/<?php echo $loop->image; ?>" alt="logo" />
+                                                <?php
+                                            } else {
+                                                ?>
+                                                <img  height="50px" width="50px"  src="<?= base_url(); ?>images/user_place.png" alt="logo" />
+                                                <?php
+                                            }
+                                            ?>
                                         </td>
                                         <td class="edit_td">
                                             <span id="name_<?php echo $id; ?>" class="text"><?php echo $name; ?></span>
@@ -129,7 +138,7 @@
                                             <input type="text" value="<?php echo $contact; ?>" class="editbox" id="contact_input_<?php echo $id; ?>"
                                         </td>
                                         <td >
-                                            <?php echo $email; ?>
+        <?php echo $email; ?>
                                         </td>                                        
 
                                         <td class="edit_td">
@@ -141,10 +150,10 @@
                                             <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/user/delete/" . $id; ?>"></a>
                                         </td>
                                     </tr>
-                                    <?php
-                                }
-                            }
-                            ?>
+        <?php
+    }
+}
+?>
                         </tbody>
                     </table>            
 

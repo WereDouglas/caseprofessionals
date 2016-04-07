@@ -253,7 +253,7 @@ class Voucher extends CI_Controller {
                 $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
                 if ($query) {
                     foreach ($query as $res) {
-                        $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'item', 'content' => $content, 'action' => 'create', 'oid' => $itemID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                        $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'item', 'contents' => $content, 'action' => 'create', 'oid' => $itemID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                         $this->Md->save($syc, 'sync_data');
                     }
                 }
@@ -269,7 +269,7 @@ class Voucher extends CI_Controller {
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
-                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'payments', 'content' => $content, 'action' => 'create', 'oid' => $paymentID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'payments', 'contents' => $content, 'action' => 'create', 'oid' => $paymentID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                 $this->Md->save($syc, 'sync_data');
             }
         }
@@ -281,7 +281,7 @@ class Voucher extends CI_Controller {
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
-                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'transactions', 'content' => $content, 'action' => 'create', 'oid' => $transactionID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'transactions', 'contents' => $content, 'action' => 'create', 'oid' => $transactionID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                 $this->Md->save($syc, 'sync_data');
             }
         }
@@ -334,7 +334,7 @@ class Voucher extends CI_Controller {
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
-                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'payments', 'content' => $content, 'action' => 'create', 'oid' => $paymentID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'payments', 'contents' => $content, 'action' => 'create', 'oid' => $paymentID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                 $this->Md->save($syc, 'sync_data');
             }
         }
@@ -380,7 +380,7 @@ class Voucher extends CI_Controller {
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
-                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'content' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'contents' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                 $this->Md->save($syc, 'sync_data');
             }
         }
@@ -397,7 +397,7 @@ class Voucher extends CI_Controller {
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
             if ($query) {
                 foreach ($query as $res) {
-                    $syc = array('object' => 'transactions', 'content' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $syc = array('object' => 'transactions', 'contents' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                     $this->Md->save($syc, 'sync_data');
                 }
             }
@@ -462,7 +462,7 @@ class Voucher extends CI_Controller {
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
             if ($query) {
                 foreach ($query as $res) {
-                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'content' => $content, 'action' => 'create', 'oid' => $fileid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'contents' => $content, 'action' => 'create', 'oid' => $fileid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                     $file_id = $this->Md->save($syc, 'sync_data');
                 }
             }

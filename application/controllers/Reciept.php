@@ -34,7 +34,44 @@ class Reciept extends CI_Controller {
         $this->load->view('reciept-page', $data);
     }
 
+    public function transaction() {
+
+        $orgid = urldecode($this->uri->segment(3));
+        $result = $this->Md->query("SELECT * FROM transactions WHERE org ='" . $orgid . "'");
+
+        if ($result) {
+
+            echo json_encode($result);
+        }
+    }
+
+    public function pay() {
+
+        $orgid = urldecode($this->uri->segment(3));
+        $result = $this->Md->query("SELECT * FROM payments WHERE org ='" . $orgid . "'");
+
+        if ($result) {
+            echo json_encode($result);
+        }
+    }
+
+    public function item() {
+
+        $orgid = urldecode($this->uri->segment(3));
+        $result = $this->Md->query("SELECT * FROM item WHERE org ='" . $orgid . "'");
+
+        if ($result) {
+
+            echo json_encode($result);
+        }
+    }
+
     public function file() {
+
+        if ($this->session->userdata('username') == "") {
+            $this->session->sess_destroy();
+            redirect('welcome', 'refresh');
+        }
 
         $this->load->helper(array('form', 'url'));
         $fileID = $this->uri->segment(3);
@@ -62,6 +99,10 @@ class Reciept extends CI_Controller {
     }
 
     public function balance() {
+        if ($this->session->userdata('username') == "") {
+            $this->session->sess_destroy();
+            redirect('welcome', 'refresh');
+        }
 
         $this->load->helper(array('form', 'url'));
         $transactionID = $this->uri->segment(3);
@@ -97,6 +138,11 @@ class Reciept extends CI_Controller {
     }
 
     public function view() {
+        
+         if ($this->session->userdata('username') == "") {
+                      $this->session->sess_destroy();
+                redirect('welcome', 'refresh');
+        }
 
         $this->load->helper(array('form', 'url'));
         $transactionID = $this->uri->segment(4);
@@ -214,8 +260,6 @@ class Reciept extends CI_Controller {
         $transactionID = $this->GUID();
         $values = $this->input->post('name');
         $e = json_decode($values);
-
-
         $client = $e->userid;
         $types = 'credit';
         $created = $e->day;
@@ -225,7 +269,7 @@ class Reciept extends CI_Controller {
         $total = $e->total;
         $file = ' ';
         if ($e->fileid != "") {
-            $file = $e->fileid ;
+            $file = $e->fileid;
         }
         /* payment */
         $amount = $e->paid;
@@ -284,7 +328,7 @@ class Reciept extends CI_Controller {
                 $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
                 if ($query) {
                     foreach ($query as $res) {
-                        $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'item', 'content' => $content, 'action' => 'create', 'oid' => $itemID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                        $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'item', 'contents' => $content, 'action' => 'create', 'oid' => $itemID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                         $this->Md->save($syc, 'sync_data');
                     }
                 }
@@ -300,7 +344,7 @@ class Reciept extends CI_Controller {
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
-                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'payments', 'content' => $content, 'action' => 'create', 'oid' => $paymentID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'payments', 'contents' => $content, 'action' => 'create', 'oid' => $paymentID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                 $this->Md->save($syc, 'sync_data');
             }
         }
@@ -312,7 +356,7 @@ class Reciept extends CI_Controller {
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
-                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'transactions', 'content' => $content, 'action' => 'create', 'oid' => $transactionID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'transactions', 'contents' => $content, 'action' => 'create', 'oid' => $transactionID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                 $this->Md->save($syc, 'sync_data');
             }
         }
@@ -365,7 +409,7 @@ class Reciept extends CI_Controller {
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
-                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'payments', 'content' => $content, 'action' => 'create', 'oid' => $paymentID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'payments', 'contents' => $content, 'action' => 'create', 'oid' => $paymentID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                 $this->Md->save($syc, 'sync_data');
             }
         }
@@ -411,7 +455,7 @@ class Reciept extends CI_Controller {
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
-                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'content' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'contents' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                 $this->Md->save($syc, 'sync_data');
             }
         }
@@ -428,7 +472,7 @@ class Reciept extends CI_Controller {
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
             if ($query) {
                 foreach ($query as $res) {
-                    $syc = array('object' => 'transactions', 'content' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $syc = array('object' => 'transactions', 'contents' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                     $this->Md->save($syc, 'sync_data');
                 }
             }
@@ -493,7 +537,7 @@ class Reciept extends CI_Controller {
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
             if ($query) {
                 foreach ($query as $res) {
-                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'content' => $content, 'action' => 'create', 'oid' => $fileid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'contents' => $content, 'action' => 'create', 'oid' => $fileid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                     $file_id = $this->Md->save($syc, 'sync_data');
                 }
             }
