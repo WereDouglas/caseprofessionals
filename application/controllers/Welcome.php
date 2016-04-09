@@ -63,7 +63,7 @@ class Welcome extends CI_Controller {
                     $ends = $res->ends;
                     $code = $res->code;
                     $license = $res->license;
-                    $address = $res->action;
+                    $address = $res->address;
                 }
                 $this->session->set_userdata('name', $name);
                 $this->session->set_userdata('orgimage', $orgimage);

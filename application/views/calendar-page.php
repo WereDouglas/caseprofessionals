@@ -248,15 +248,20 @@ window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+
             },
             events: [
 <?php
+
+function clean($string) {
+   $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+
+   return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+}
 if (is_array($sch)) {
     foreach ($sch as $loop) {
         $mydate = $loop->dated;
         $prior = $loop->priority;
         $days = $loop->days;
          
-         $informations ='START:'. $loop->starts.' ';
-        $informations .= $loop->detail.' ';
-        
+         $informations ='START:'. $loop->starts.':'.clean($loop->detail);
+                
         $d = (int) date("d", strtotime($mydate));
         $m = (int) date("m", strtotime($mydate))-1;
         $y = (int) date("Y", strtotime($mydate));

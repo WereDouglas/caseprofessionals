@@ -45,10 +45,10 @@ class Client extends CI_Controller {
         $this->load->helper(array('form', 'url'));              
         $id = urldecode($this->uri->segment(3));        
         $name = urldecode($this->uri->segment(4));
-        
+        $query = $this->Md->cascade($name,'sync_data','client');
          $query = $this->Md->delete($id, 'client');
         //cascade($id,$table,$field)
-        $query = $this->Md->cascade($name,'sync_data','client');
+        
        if ($this->db->affected_rows() > 0) {
            
          $this->session->set_flashdata('msg', '<div class="alert alert-error">

@@ -53,8 +53,8 @@
         <h1>RECEIPT</h1>
 
         <address contenteditable>
-            <p><?php echo $this->session->userdata('name'); ?></p>
-            <p><?php echo $this->session->userdata('address'); ?></p>
+           <b> <h2><?php echo $this->session->userdata('name'); ?></h2></b>
+            <p style=" word-wrap:  break-word"><?php echo $this->session->userdata('address'); ?></p>
 
         </address>
         <span> <img  height="50px" width="100px" class="" src="<?= base_url(); ?>uploads/<?php echo $this->session->userdata('orgimage'); ?>" alt="logo" />

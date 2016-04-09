@@ -110,7 +110,6 @@ class Organisation extends CI_Controller {
 
         if ($first != "" && $last != "") {
 
-
             $password = $password;
             $key = $email;
             $password = $this->encrypt->encode($password, $key);

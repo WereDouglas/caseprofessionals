@@ -64,7 +64,7 @@ class Sync extends CI_Controller {
                     }
                 }
             }            
-            $this->Md->save($contents, $object);            
+           $this->Md->save($contents, $object);            
         }
         if ($action == "update") {
             

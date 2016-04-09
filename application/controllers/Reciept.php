@@ -29,8 +29,6 @@ class Reciept extends CI_Controller {
         } else {
             $data['files'] = array();
         }
-
-
         $this->load->view('reciept-page', $data);
     }
 
@@ -323,7 +321,6 @@ class Reciept extends CI_Controller {
                 $itemID = $this->GUID();
                 $itema = array('id' => $itemID, 'name' => $name, 'transactionID' => $transactionID, 'description' => $description, 'rate' => $rate, 'qty' => $qty, 'price' => $price, 'org' => $org);
                 $this->Md->save($itema, 'item');
-
                 $content = json_encode($itema);
                 $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
                 if ($query) {
@@ -401,7 +398,6 @@ class Reciept extends CI_Controller {
             echo "please post information";
             return;
         }
-
         $paymentID = $this->GUID();
         $payment = array('id' => $paymentID, 'transactionID' => $transactionID, 'amount' => $amount, 'balance' => $balance, 'created' => $created, 'method' => $method, 'no' => $no, 'users' => $users, 'approved' => $approved, 'org' => $org);
         $this->Md->save($payment, 'payments');
