@@ -223,9 +223,6 @@
             var types = $("#types_input_" + ID).val();
             var subject = $("#subject_input_" + ID).val();
 
-
-
-
             var dataString = 'id=' + ID + '&names=' + name + '&details=' + details + '&types=' + types + '&subject=' + subject;
             $("#names_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />'); // Loading image
             $("#details_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />'); // Loading image

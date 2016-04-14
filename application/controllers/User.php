@@ -6,9 +6,7 @@ class User extends CI_Controller {
 
     function __construct() {
 
-        parent::__construct();
-        
-        
+        parent::__construct();       
         error_reporting(E_PARSE);
         $this->load->model('Md');
         $this->load->library('session');
@@ -20,7 +18,6 @@ class User extends CI_Controller {
                       $this->session->sess_destroy();
                 redirect('welcome', 'refresh');
         }
-
         $this->load->view('client-page');
     }
 
@@ -80,7 +77,7 @@ class User extends CI_Controller {
             echo '' . $get_result->contact . '<br>';
         echo '' . $get_result->email . '<br>';
         echo '' . $get_result->address . '<br>';
-        echo'<span class="span-data" name="userid" id="userid" >' . $get_result->id . '</span>';
+        echo'<span class="span-data" name="userid" id="userid" style="visibility:hidden" >' . $get_result->id . '</span>';
     }
 
     public function add_user() {
@@ -175,20 +172,42 @@ class User extends CI_Controller {
         $id = $this->input->post('id');
         $name = $this->input->post('name');
         $contact = $this->input->post('contact');
-        $email = $this->input->post('email');
-        $address = $this->input->post('details');
+        //$email = $this->input->post('email');
+        $address = $this->input->post('address');
 
-        $user = array('name' => $name, 'address' => $address, 'contact' => $contact, 'email' => $email, 'created' => date('Y-m-d H:i:s'));
-        $this->Md->update($id, $user, 'users');
-
+        $user = array('id'=>$id,'name' => $name, 'address' => $address, 'contact' => $contact, 'created' => date('Y-m-d H:i:s'));
+       
         $content = json_encode($user);
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
                 $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'contents' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
-                $file_id = $this->Md->save($syc, 'sync_data');
+                $this->Md->save($syc, 'sync_data');
             }
         }
+        $this->Md->update($id, $user, 'users');
+
+        
+    }
+    public function updateclient() {
+
+        $this->load->helper(array('form', 'url'));
+        $id = $this->input->post('id');
+        $name = $this->input->post('name');
+        $contact = $this->input->post('contact');
+        $email = $this->input->post('email');
+        $address = $this->input->post('details');
+        $user = array('id'=>$id,'name' => $name, 'address' => $address,'email' => $email, 'contact' => $contact, 'created' => date('Y-m-d H:i:s'));
+       
+        $content = json_encode($user);
+        $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+        if ($query) {
+            foreach ($query as $res) {
+                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'client', 'contents' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                $this->Md->save($syc, 'sync_data');
+            }
+        }
+        $this->Md->update($id, $user, 'users');       
     }
 
     public function delete() {

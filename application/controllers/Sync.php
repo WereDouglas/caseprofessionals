@@ -45,7 +45,6 @@ class Sync extends CI_Controller {
 
     public function up() {
 
-
         $object = $this->input->post('object');
         $contents = (array)json_decode($this->input->post('contents'));
         $action = $this->input->post('action');
@@ -77,6 +76,7 @@ class Sync extends CI_Controller {
                     }
                 }
             }
+              $this->Md->update($contents, $object);      
             
         }
         if ($action == "delete") {

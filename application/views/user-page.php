@@ -96,8 +96,8 @@
                                 <th>#</th>
                                 <th>NAME</th>
                                 <th>CONTACT</th>
+                                <th>ADDRESS</th>
                                 <th>EMAIL</th>
-
                                 <th>CREATED:</th>
                                 <th>ACTION</th>
                             </tr>
@@ -108,7 +108,7 @@
                             if (is_array($users) && count($users)) {
                                 foreach ($users as $loop) {
                                     $name = $loop->name;
-                                    $details = $loop->address;
+                                    $address = $loop->address;
                                     $email = $loop->email;
                                     $id = $loop->id;
                                     $contact = $loop->contact;
@@ -136,9 +136,14 @@
                                         <td class="edit_td">
                                             <span id="contact_<?php echo $id; ?>" class="text"><?php echo $contact; ?></span>
                                             <input type="text" value="<?php echo $contact; ?>" class="editbox" id="contact_input_<?php echo $id; ?>"
+                                       
+                                        </td>
+                                        <td class="edit_td">
+                                            <span id="address_<?php echo $id; ?>" class="text"><?php echo $address; ?></span>
+                                            <input type="text" value="<?php echo $address; ?>" class="editbox" id="address_input_<?php echo $id; ?>"
                                         </td>
                                         <td >
-        <?php echo $email; ?>
+                                            <?php echo $email; ?>
                                         </td>                                        
 
                                         <td class="edit_td">
@@ -150,10 +155,10 @@
                                             <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/user/delete/" . $id; ?>"></a>
                                         </td>
                                     </tr>
-        <?php
-    }
-}
-?>
+                                    <?php
+                                }
+                            }
+                            ?>
                         </tbody>
                     </table>            
 
@@ -186,8 +191,8 @@
             $("#email" + ID).hide();
             $("#email_input_" + ID).show();
 
-            $("#details" + ID).hide();
-            $("#details_input_" + ID).show();
+            $("#address" + ID).hide();
+            $("#address_input_" + ID).show();
 
 
         }).change(function ()
@@ -197,14 +202,16 @@
             var details = $("#details_input_" + ID).val();
             var contact = $("#contact_input_" + ID).val();
             var email = $("#email_input_" + ID).val();
+            var address = $("#address_input_" + ID).val();
 
 
 
-            var dataString = 'id=' + ID + '&name=' + name + '&details=' + details + '&contact=' + contact + '&email=' + email;
+            var dataString = 'id=' + ID + '&name=' + name + '&address=' + address + '&details=' + details + '&contact=' + contact + '&email=' + email;
             $("#name_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />'); // Loading image
             $("#details_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />'); // Loading image
             $("#email_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />');
             $("#contact_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />');
+            $("#address_" + ID).html('<img src="<?= base_url(); ?>images/loading.gif"  />');
             if (name.length > 0)
             {
                 $.ajax({
@@ -218,6 +225,7 @@
                         $("#details_" + ID).html(details);
                         $("#contact_" + ID).html(contact);
                         $("#email_" + ID).html(email);
+                        $("#address_" + ID).html(address);
 
 
                     }

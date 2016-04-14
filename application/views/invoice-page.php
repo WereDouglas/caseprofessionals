@@ -99,7 +99,7 @@ if (is_array($trans) && count($trans)) {
                             }
                         }
                         ?>
-                        <input  class="span-data" name="transactionID" id="transactionID" type="text" value="<?php echo $loop->id; ?>" >
+                        <input  class="span-data" name="transactionID" id="transactionID" type="hidden" value="<?php echo $loop->id; ?>" >
                     </address>
 
                     <table class="meta">

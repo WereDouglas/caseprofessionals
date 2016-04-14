@@ -210,7 +210,7 @@
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url() . "index.php/user/update/"; ?>",
+                    url: "<?php echo base_url() . "index.php/user/updateclient/"; ?>",
                     data: dataString,
                     cache: false,
                     success: function (html)

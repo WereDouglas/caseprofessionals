@@ -168,21 +168,22 @@ class File extends CI_Controller {
 
         $this->load->helper(array('form', 'url'));
         $id = $this->input->post('id');
-        $name = $this->input->post('name');
+        $name = $this->input->post('names');
         $types = $this->input->post('types');
         $details = $this->input->post('details');
         $subject = $this->input->post('subject');
 
         $file = array('name' => $name, 'types' => $types, 'details' => $details, 'subject' => $subject, 'created' => date('Y-m-d H:i:s'));
         $this->Md->update($id, $file, 'files');
-
-        $content = json_encode($file);
+       $files = array('id'=>$id,'name' => $name, 'types' => $types, 'details' => $details, 'subject' => $subject, 'created' => date('Y-m-d H:i:s'));
+       
+        $content = json_encode($files);
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
                 $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'contents' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                 $this->Md->save($syc, 'sync_data');
-            }
+           }
         }
     }
 
@@ -234,7 +235,7 @@ class File extends CI_Controller {
                 $app = "G";
                 break;
         }
-        $no = $this->session->userdata('code') . "/" . $app . "/" . date('y') . "/" . date('m') . (int) date('d') . (int) date('H') . (int) date('i') . (int) date('s');
+        $no = $this->session->userdata('code') . "/" . $app . "/" . date('y') . "/" . date('m') . (int) date('d') . (int) date('H') . (int) date('i') . (int) date('ss');
 
         $orgid = $this->session->userdata('orgid');
 

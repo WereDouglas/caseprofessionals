@@ -11,7 +11,7 @@ foreach ($pay as $p) {
     $sum += floatval(preg_replace('/[^\d.]/', '', $p->amount));
 }
 // $sum = number_format(floatval(preg_replace('/[^\d.]/', '', $sum)));
-$balance =  floatval(preg_replace('/[^\d.]/', '', $total)) - $sum;
+$balance = floatval(preg_replace('/[^\d.]/', '', $total)) - $sum;
 ?>
 
 <style>
@@ -73,12 +73,12 @@ if (is_array($trans) && count($trans)) {
                 $no = $this->session->userdata('code') . "/" . date('y') . "/" . date('m') . (int) date('d') . (int) date('H') . (int) date('i') . (int) date('s');
                 ?>
                 <header>
-                  <?php if ($loop->types == 'credit') { ?>
-                    <h1>RECEIPT</h1>
-                <?php } ?>
-                <?php if ($loop->types == 'debit') { ?>
-                    <h1>PAYMENT VOUCHER</h1>
-                <?php } ?>
+                    <?php if ($loop->types == 'credit') { ?>
+                        <h1>RECEIPT</h1>
+                    <?php } ?>
+                    <?php if ($loop->types == 'debit') { ?>
+                        <h1>PAYMENT VOUCHER</h1>
+                    <?php } ?>
                     <address contenteditable>
                         <p><?php echo $this->session->userdata('name'); ?></p>
                         <p><?php echo $this->session->userdata('address'); ?></p>
@@ -97,7 +97,7 @@ if (is_array($trans) && count($trans)) {
                             }
                         }
                         ?>
-                        <input  class="span-data" name="transactionID" id="transactionID" type="text" value="<?php echo $loop->id; ?>" >
+                        <input  class="span-data" name="transactionID" id="transactionID" type="hidden" value="<?php echo $loop->id; ?>" >
                     </address>
 
                     <table class="meta">
@@ -299,11 +299,11 @@ if (is_array($users) && count($users)) {
 
 
     $("input[id*='amount']").on('keyup', function () {
-        var bal = parseFloat( $('input[name="balances"]').val());
-        var paid =parseFloat( $('input[name="amount"]').val());
+        var bal = parseFloat($('input[name="balances"]').val());
+        var paid = parseFloat($('input[name="amount"]').val());
         var newbal = bal - paid;
-          console.log(bal);
-            console.log(paid);
+        console.log(bal);
+        console.log(paid);
         console.log(newbal);
         document.getElementById("balance").value = newbal;
 

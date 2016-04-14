@@ -55,15 +55,22 @@ class Contact extends CI_Controller {
             if (!$result_org) {
                 $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
                                                 <strong>
-                                                 organisation name already registered</strong>									
+                                                 contact is already registered</strong>									
 						</div>');
                
             }
             else{
-                
+                    
                  $contact = array('id' => $id, 'users' => $users, 'trig' => $trig, 'val' => $val, 'type' => $type, 'created' => date('Y-m-d'));
-               $id = $this->Md->save($contact, 'contact');
-                
+                 $this->Md->save($contact, 'contact');
+                 $content = json_encode($contact);
+                $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+                if ($query) {
+                    foreach ($query as $res) {
+                        $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'contact', 'contents' => $content, 'action' => 'create', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                        $this->Md->save($syc, 'sync_data');
+                    }
+                }
             }
             
            
