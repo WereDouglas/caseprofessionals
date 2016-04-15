@@ -17,13 +17,13 @@
                 <li>
                     <a data-toggle="tab" href="#profile">
                         Contacts
-                        <span class="badge badge-important">4</span>
+                       
                     </a>
                 </li>
                 <li>
                     <a data-toggle="tab" href="#transactions">
                         Financials
-                        <span class="badge badge-important">4</span>
+                        <span class="badge badge-important"><?php echo count($trans); ?></span>
                     </a>
                 </li>
 
@@ -32,7 +32,11 @@
 
             <div class="tab-content">
                 <div id="home" class="tab-pane in active">
-                    <p>Raw denim you probably haven't heard of them jean shorts Austin.</p>
+                   <h3><?php echo $name ?></h3>
+                    <h3><small>ADDRESS:</small><?php echo $address ?></h3>
+                    <h3><small>CREATED ON:</small><?php echo $created ?></h3>
+                    <h3><small>CONTACT:</small><?php echo $contact ?></h3>
+                    <h3><small>E-MAIL:</small><?php echo $email ?></h3>
                 </div>
 
                 <div id="profile" class="tab-pane">
@@ -121,13 +125,106 @@
                 </table>      
             </div>
 
-            <div id="dropdown1" class="tab-pane">
-                <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade.</p>
+            <div id="transactions" class="tab-pane">
+                 <table class="jobs table table-striped table-bordered bootstrap-datatable datatable" id="datatable">
+                        <thead>
+                            <tr> 
+                                <th>DATE</th>
+                                <th>TOTAL</th>
+                                <th>BAL</th>
+                                <th>CLIENT</th>
+                                <th>TYPE</th>
+                                <th>CREATED BY</th>
+                                <th>APPROVED</th>
+                                <th>ITEMS</th>
+                                <th>PAYMENTS</th>
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>   
+                        <tbody>
+
+                            <?php
+                            if (is_array($trans) && count($trans)) {
+                                foreach ($trans as $loop) {
+                                    ?>  
+                                    <tr >
+                                        <td> 
+                                            <?php echo $loop->created; ?>
+                                        </td>
+                                        <td> 
+                                            <?php echo $loop->total; ?>
+                                        </td>
+                                        <td> 
+
+                                            <?php
+                                            $sum = 0;
+                                            foreach ($pay as $p) {
+                                                if ($p->transactionID == $loop->id) {
+                                                    $sum += floatval(preg_replace('/[^\d.]/', '', $p->amount));
+                                                }
+                                            }
+                                            echo number_format(floatval(preg_replace('/[^\d.]/', '', $loop->total)) - $sum);
+                                            ?>
+                                        </td>
+                                        <td> 
+                                            <?php
+                                            foreach ($users as $user) {
+                                                if ($user->id == $loop->client) {
+                                                    echo $user->name;
+                                                }
+                                            }
+                                            ?>
+                                        </td>
+                                        <td> 
+                                            <?php echo $loop->types; ?>
+                                        </td>
+                                        <td> 
+                                            <?php echo $loop->users; ?>
+                                        </td>
+                                        <td> 
+                                            <?php echo $loop->approved; ?>
+                                        </td>
+                                        <td> 
+                                            <?php
+                                            $str = "";
+                                            $ct = 1;
+
+                                            foreach ($items as $item) {
+                                                if ($item->transactionID == $loop->id) {
+                                                    $str .= $ct++ . ' ' . $item->name . ' ' . $item->price . '<br>';
+                                                }
+                                            }
+                                            echo $str;
+                                            ?>
+                                        </td>
+                                        <td> 
+                                            <?php
+                                            $str = "";
+                                            $ct = 1;
+                                            foreach ($pay as $p) {
+                                                if ($p->transactionID == $loop->id) {
+                                                    $str .= $ct++ . ' <a href="' . base_url() . "index.php/reciept/view/" . $p->id . "/" . $p->transactionID . '">' . $p->no . '</a> ' . '<br>';
+                                                }
+                                            }
+                                            echo $str;
+                                            ?>
+
+                                        </td>
+
+
+                                        <td class="center">
+                                            <a class="btn-flat btn-small icon-archive" href="<?php echo base_url() . "index.php/reciept/balance/" . $loop->id; ?>">receipt</a> | <a class="btn-flat btn-small icon-barcode" href="<?php echo base_url() . "index.php/reciept/invoice/" . $loop->id; ?>">view</a> | <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/reciept/delete/" . $loop->id; ?>"></a>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </tbody>
+                    </table>        
             </div>
 
-            <div id="dropdown2" class="tab-pane">
-                <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin.</p>
-            </div>
+         
         </div>
     </div>
 </div><!--/span-->

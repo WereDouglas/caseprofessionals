@@ -39,7 +39,7 @@
 
             <div class="clearfix">              
 
-                <button type="submit" class="width-35 pull-right btn btn-small btn-primary">
+                <button type="submit" class="btn btn-small btn-primary">
                    
                     Update
                 </button>

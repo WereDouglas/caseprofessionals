@@ -193,7 +193,7 @@
 
 
                                         <td class="center">
-                                            <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/log/delete/" . $loop->id; ?>"></a>
+                                            <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/schedule/delete/" . $loop->id; ?>"></a>
                                         </td>
                                     </tr>
                                     <?php

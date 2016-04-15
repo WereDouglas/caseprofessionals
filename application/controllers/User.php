@@ -260,8 +260,59 @@ class User extends CI_Controller {
     }
 
     public function user() {
+          $this->load->helper(array('form', 'url'));
+        $userid = $this->uri->segment(3);
+        $query = $this->Md->query("SELECT * FROM users where id = '" . $userid . "'");
+        if ($query) {
+            foreach ($query as $res) {
+                $data['name'] = $res->name;
+                $data['address'] = $res->address;
+                $data['image'] = $res->image;
+                $data['contact'] = $res->contact;
+                $data['created'] = $res->created;
+                $data['email'] = $res->email;
+            }
+        }   
+          $query = $this->Md->query("SELECT * FROM item where org = '" . $this->session->userdata('orgid') . "' ");
+        //  var_dump($query);
+        if ($query) {
+            $data['items'] = $query;
+        } else {
+            $data['items'] = array();
+        }
+       
+        $query = $this->Md->query("SELECT * FROM transactions where org = '" . $this->session->userdata('orgid') . "' AND client = '" . $userid . "' ");
+        //  var_dump($query);
+        if ($query) {
+            $data['trans'] = $query;
+        } else {
+            $data['trans'] = array();
+        }
+        //  echo 'we are coming from the controller';
+        $query = $this->Md->query("SELECT * FROM payments where org = '" . $this->session->userdata('orgid') . "'");
+        //  var_dump($query);
+        if ($query) {
+            $data['pay'] = $query;
+        } else {
+            $data['pay'] = array();
+        }
+        $query = $this->Md->query("SELECT * FROM schedule where org = '" . $this->session->userdata('orgid') . "' AND file= '" . $fileid . "' ");
+        //  var_dump($query);
+        if ($query) {
+            $data['sch'] = $query;
+        } else {
+            $data['sch'] = array();
+        }
+        $query = $this->Md->query("SELECT * FROM attend where org = '" . $this->session->userdata('orgid') . "'");
+        //  var_dump($query);
+        if ($query) {
+            $data['att'] = $query;
+        } else {
+            $data['att'] = array();
+        }
+        $data['fileid'] = $fileid;
 
-        $this->load->view('client-page');
+        $this->load->view('client-page', $data);
     }
 
     public function add_client() {
