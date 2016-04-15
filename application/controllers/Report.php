@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class  Report  extends CI_Controller {
+class Report extends CI_Controller {
 
     function __construct() {
 
@@ -14,17 +14,57 @@ class  Report  extends CI_Controller {
     }
 
     public function index() {
-        
-         $query = $this->Md->query("SELECT * FROM sync_data ");
+
+        $query = $this->Md->query("SELECT * FROM sync_data where org = '".$this->session->userdata('orgid')."'");
         //  var_dump($query);
         if ($query) {
             $data['logs'] = $query;
         } else {
             $data['logs'] = array();
         }
+        $query = $this->Md->query("SELECT * FROM transactions WHERE types='credit' AND org = '" . $this->session->userdata('orgid') . "' ");
+        //  var_dump($query);
+        if ($query) {
+            $data['credits'] = $query;
+        } else {
+            $data['credits'] = array();
+        }
+         $query = $this->Md->query("SELECT * FROM transactions WHERE types='debit' AND org = '" . $this->session->userdata('orgid') . "' ");
+        //  var_dump($query);
+        if ($query) {
+            $data['debits'] = $query;
+        } else {
+            $data['debits'] = array();
+        }
+        $query = $this->Md->query("SELECT * FROM payments where org = '" . $this->session->userdata('orgid') . "'");
+        //  var_dump($query);
+        if ($query) {
+            $data['payments'] = $query;
+        } else {
+            $data['payments'] = array();
+        }
+        $query = $this->Md->query("SELECT * FROM users WHERE types='client' AND org = '" . $this->session->userdata('orgid') . "'");
+        //  var_dump($query);
+        if ($query) {
+            $data['clients'] = $query;
+        } else {
+            $data['clients'] = array();
+        }
+        $query = $this->Md->query("SELECT * FROM schedule where org = '" . $this->session->userdata('orgid') . "'");
+        //  var_dump($query);
+        if ($query) {
+            $data['schedules'] = $query;
+        } else {
+            $data['schedules'] = array();
+        }
+         $query = $this->Md->query("SELECT * FROM files where org = '" . $this->session->userdata('orgid') . "'");
+        //  var_dump($query);
+        if ($query) {
+            $data['files'] = $query;
+        } else {
+            $data['files'] = array();
+        }
         $this->load->view('view-graph', $data);
-
-     
     }
 
     public function client() {
@@ -71,10 +111,10 @@ class  Report  extends CI_Controller {
     public function delete() {
         $this->load->helper(array('form', 'url'));
         $id = $this->uri->segment(3);
-       
-        $query = $this->Md->delete($id, 'sync_data');        
-        if ($this->db->affected_rows() > 0) {          
-            
+
+        $query = $this->Md->delete($id, 'sync_data');
+        if ($this->db->affected_rows() > 0) {
+
             $this->session->set_flashdata('msg', '<div class="alert alert-error">
                                                    
                                                 <strong>

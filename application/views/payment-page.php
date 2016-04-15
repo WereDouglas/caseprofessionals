@@ -15,6 +15,7 @@
             <table class="jobs table table-striped table-bordered bootstrap-datatable datatable" id="datatable">
                 <thead>
                     <tr> 
+                        <th>VERIFY?</th>
                         <th>DATE</th>
                         <th>TOTAL</th>
                         <th>BAL</th>
@@ -33,7 +34,43 @@
                     if (is_array($trans) && count($trans)) {
                         foreach ($trans as $loop) {
                             ?>  
-                            <tr >
+                            <tr>
+                                
+                                                    <td >
+
+                                                        <?php
+                                                        if ($loop->approved == "false") {
+                                                            ?>
+                                                            <div class="btn-group" data-toggle="buttons" data-toggle-default-class="btn-default">
+                                                                <label class="btn btn-small btn-default" data-toggle-class="btn-success" value="<?= $loop->id; ?>">
+                                                                    <input type="radio" name="status" id="<?= $loop->approved; ?>" value="<?= $loop->id; ?>" />
+                                                                    true
+                                                                </label>
+                                                                <label class="btn btn-small btn-danger active" data-toggle-class="btn-danger" value="<?= $loop->id; ?>">
+                                                                    <input type="radio" name="status" id="<?= $loop->approved; ?>" value="<?= $loop->id; ?>" checked />
+                                                                    false
+                                                                </label>
+                                                            </div> 
+                                                        <?php } ?>
+
+                                                        <?php
+                                                        if ($loop->approved == "true") {
+                                                            ?>
+                                                            <div class="btn-group" data-toggle="buttons" data-toggle-default-class="btn-default">
+                                                                <label class="btn btn-small btn-success active" data-toggle-class="btn-success">
+                                                                    <input type="radio" name="status" id="<?= $loop->approved; ?>" value="<?= $loop->id; ?>" checked />
+                                                                    true
+                                                                </label>
+                                                                <label class="btn btn-small btn-default " data-toggle-class="btn-danger">
+                                                                    <input type="radio" name="status" id="<?= $loop->approved; ?>" value="<?= $loop->id; ?>"  />
+                                                                    false
+                                                                </label>
+                                                            </div> 
+                                                        <?php } ?>
+
+                                                    </td>
+
+                                           
                                 <td> 
                                     <?php echo $loop->created; ?>
                                 </td>
@@ -118,3 +155,44 @@
     <?php require_once(APPPATH . 'views/js-page.php'); ?>
 
 
+
+<script>
+
+
+    $('.btn-group[data-toggle=buttons]').each(function (i, e) {
+        var default_class = $(e).data('toggle-default-class') || 'btn-default';
+
+        $(e).find('label')
+                .click(function (event) {
+                    $(e).find('label')
+                            .each(function (i, e) {
+                                if (!(e == event.target)) {
+                                    $(e).removeClass($(e).data('toggle-class'))
+                                            .addClass(default_class);
+
+                                    $(e).find('input').removeAttr('checked');
+                                    console.log($(e).find("input").attr("id"));
+
+
+                                    $.post("<?php echo base_url() ?>index.php/reciept/activate", {
+                                        id: $(e).find("input").val(),
+                                        actives: $(e).find("input").attr("id")
+
+                                    }, function (response) {
+                                        location.reload();
+                                    });
+                                    // alert("active");
+
+                                } else {
+                                    $(e).removeClass(default_class)
+                                            .addClass($(e).data('toggle-class'));
+
+                                    $(e).find('input')
+                                            .attr('checked', 1);
+
+                                }
+                            });
+                });
+    });
+
+</script>

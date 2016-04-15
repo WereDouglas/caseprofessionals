@@ -9,7 +9,7 @@
 
             <div class="infobox-data">
                 <div class="infobox-content">Schedules</div>
-                <div class="infobox-content">Number</div>
+                 <div class="infobox-content"><?php echo count($schedules)?></div>
             </div>
         </div>
     </a>
@@ -21,11 +21,11 @@
 
         <div class="infobox-data">
             <div class="infobox-content">Files</div>
-            <div class="infobox-content">No.</div>
+            <div class="infobox-content"><?php echo count($files)?></div>
         </div>
     </div>
 </a>
-
+ <a href="<?php echo base_url() . "index.php/reciept/payment"; ?>" target="frame">
     <div class="infobox infobox-orange infobox-small infobox-dark">
         <div class="infobox-icon">
             <i class="icon-list"></i>
@@ -36,7 +36,7 @@
             <div class="infobox-content"></div>
         </div>
     </div>
-
+</a>
     <div class="infobox infobox-blue3 infobox-small infobox-dark">
         <div class="infobox-icon">
             <i class="icon-phone"></i>
@@ -75,10 +75,9 @@
             <div class="infobox-icon">
                 <i class="icon-group"></i>
             </div>
-
             <div class="infobox-data">
                 <div class="infobox-content">Clients</div>
-                <div class="infobox-content"></div>
+                <div class="infobox-content"><?php echo count($clients)?></div>
             </div>
         </div>
     </a>

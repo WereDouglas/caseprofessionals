@@ -14,27 +14,27 @@
                 <span class="menu-text">All Schedules </span>
             </a>
         </li>
-        <li>
+            
+        <?php
+        if ($this->session->userdata('level') == 1|| $this->session->userdata('level') == 2 ) {
+            ?>
+         <li>
             <a href="<?php echo base_url() . "index.php/reciept/"; ?>" target="frame">
                 <i class="icon-file"></i>
                 <span class="menu-text"> Receipt</span>                
             </a>
 
-        </li>
-        <li>
-            <a href="<?php echo base_url() . "index.php/reciept/payment"; ?>" target="frame">
-                <i class="icon-file"></i>
-                <span class="menu-text"> Invoices</span>                
-            </a>
-
-        </li>
-        <li>
+        </li> 
+          <li>
             <a href="<?php echo base_url() . "index.php/voucher"; ?>" target="frame">
-                <i class="icon-book"></i>
+                <i class="icon-foursquare"></i>
                 <span class="menu-text"> Voucher</span>
             </a>
-        </li>  
-         <li>
+        </li> 
+       
+        <?php } ?>
+      
+        <li>
             <a href="<?php echo base_url() . "index.php/report/"; ?>" target="frame">
                 <i class="icon-bar-chart"></i>
                 <span class="menu-text"> Graphical </span>
@@ -52,7 +52,7 @@
                     </span>
             </a>
         </li>
-           <li>
+        <li>
             <a href="<?php echo base_url() . "index.php/client/"; ?>" target="frame">
                 <i class="icon-globe"></i>
                 <span class="menu-text"> Data Clients </span>
@@ -66,14 +66,14 @@
         </li>
 
         <li>
-            <a href="gallery.html">
+              <a href="<?php echo base_url() . "index.php/welcome/info"; ?>" target="frame">
                 <i class="icon-cogs"></i>
-                <span class="menu-text"> Registration </span>
+                <span class="menu-text"> Registration information</span>
             </a>
         </li>
 
         <li>
-            <a href="#" class="dropdown-toggle">
+           <a href="<?php echo base_url() . "index.php/welcome/help"; ?>" target="frame">
                 <i class="icon-warning-sign"></i>
                 <span class="menu-text"> Help </span>
 

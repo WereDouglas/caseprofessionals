@@ -7,23 +7,26 @@
         <h3>Users</h3>
         <?php echo $this->session->flashdata('msg'); ?>
     </div>
-    <div class="align-right">
+    <?php
+    if ($this->session->userdata('level') == 1) {
+        ?>
+        <div class="align-right">
 
-        <a href="#collapseTwo" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">
+            <a href="#collapseTwo" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">
 
-            <button class="  btn-sm">
-                <i class="icon-save bigger-125"></i>
-                Add
-            </button></a>
-        <a href="#collapseThree" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">
+                <button class="  btn-sm">
+                    <i class="icon-save bigger-125"></i>
+                    Add
+                </button></a>
+            <a href="#collapseThree" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">
 
-            <button class=" btn-sm">
-                <i class="icon-list bigger-110"></i>
-                List
-            </button>
-        </a>
-    </div>
-
+                <button class=" btn-sm">
+                    <i class="icon-list bigger-110"></i>
+                    List
+                </button>
+            </a>
+        </div>
+    <?php } ?>
     <div class="accordion-group">
         <div class="accordion-body collapse" id="collapseTwo">
             <div class="accordion-inner">
@@ -39,6 +42,30 @@
                             </div>
                             <div class="form-group">
                                 <input class="form-control" type="email"  name="email"  placeholder="email" />
+
+                            </div>
+                            <div class="form-group">
+                                <label> Title/Role </label>
+                                <select  data-placeholder="Choose a title" name="types" id="types">
+                                    <option value="Partner" />Partner
+                                    <option value="Associate" />Associates
+                                    <option value="Contract lawyer" />Contract lawyer
+                                    <option value="Of counsel" />Of counsel
+                                    <option value="Law clerks" />Law clerks
+                                    <option value="Paralegals" />Paralegals
+                                    <option value="Administrative " />Administrative 
+                                </select>
+
+                            </div>
+                            <div class="form-group">
+                                <label> Access level</label>
+                                <select  data-placeholder="Choose level of authority" name="level" id="level">
+                                    <option value="1" />level-1(Full access/approvals)
+                                    <option value="2" />level-2(input access)
+                                    <option value="3" />level-3(views only)
+                                    <option value="4" />level-4(member)
+                                    <option value="5" />level-5(member)
+                                </select>
 
                             </div>
                             <div class="form-group">
@@ -136,7 +163,7 @@
                                         <td class="edit_td">
                                             <span id="contact_<?php echo $id; ?>" class="text"><?php echo $contact; ?></span>
                                             <input type="text" value="<?php echo $contact; ?>" class="editbox" id="contact_input_<?php echo $id; ?>"
-                                       
+
                                         </td>
                                         <td class="edit_td">
                                             <span id="address_<?php echo $id; ?>" class="text"><?php echo $address; ?></span>

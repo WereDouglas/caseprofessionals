@@ -43,6 +43,35 @@ class Reciept extends CI_Controller {
         }
     }
 
+    public function activate() {
+        $this->load->helper(array('form', 'url'));
+        $id = trim($this->input->post('id'));
+        $actives = trim($this->input->post('actives'));
+        if ($actives == "true") {
+            $active = "false";
+        }
+        if ($actives == "false") {
+            $active = "true";
+        }
+        if ($this->session->userdata('level') == 1) {
+
+            $approve = array('approved' => $active);
+            $this->Md->update($id, $approve, 'transactions');
+            $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+            if ($query) {
+                foreach ($query as $res) {
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'transactions', 'contents' => $id, 'action' => 'approve', 'oid' => $active, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $this->Md->save($syc, 'sync_data');
+                }
+            }
+        } else {
+            $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong>
+                                                 You cannot carry out this action ' . '	</strong>									
+						</div>');
+        }
+    }
+
     public function pay() {
 
         $orgid = urldecode($this->uri->segment(3));
@@ -136,10 +165,10 @@ class Reciept extends CI_Controller {
     }
 
     public function view() {
-        
-         if ($this->session->userdata('username') == "") {
-                      $this->session->sess_destroy();
-                redirect('welcome', 'refresh');
+
+        if ($this->session->userdata('username') == "") {
+            $this->session->sess_destroy();
+            redirect('welcome', 'refresh');
         }
 
         $this->load->helper(array('form', 'url'));
@@ -456,35 +485,43 @@ class Reciept extends CI_Controller {
             }
         }
     }
-
     public function delete() {
-        $this->load->helper(array('form', 'url'));
-        $id = $this->uri->segment(3);
-        $query = $this->Md->delete($id, 'transactions');
-        //cascade($id,$table,$field)
-        $query = $this->Md->cascade($id, 'payments', 'transactionID');
-        $query = $this->Md->cascade($id, 'item', 'transactionID');
-        if ($this->db->affected_rows() > 0) {
-            $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
-            if ($query) {
-                foreach ($query as $res) {
-                    $syc = array('object' => 'transactions', 'contents' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
-                    $this->Md->save($syc, 'sync_data');
+
+        if ($this->session->userdata('level') == 1) {
+            $this->load->helper(array('form', 'url'));
+            $id = $this->uri->segment(3);
+            $query = $this->Md->delete($id, 'transactions');
+            //cascade($id,$table,$field)
+            $query = $this->Md->cascade($id, 'payments', 'transactionID');
+            $query = $this->Md->cascade($id, 'item', 'transactionID');
+            if ($this->db->affected_rows() > 0) {
+                $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+                if ($query) {
+                    foreach ($query as $res) {
+                        $syc = array('object' => 'transactions', 'contents' => $id, 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                        $this->Md->save($syc, 'sync_data');
+                    }
                 }
-            }
-            $this->session->set_flashdata('msg', '<div class="alert alert-error">
+                $this->session->set_flashdata('msg', '<div class="alert alert-error">
                                                    
                                                 <strong>
                                                 Information deleted	</strong>									
 						</div>');
-            redirect('reciept/payment', 'refresh');
-        } else {
-            $this->session->set_flashdata('msg', '<div class="alert alert-error">
+                redirect('reciept/payment', 'refresh');
+            } else {
+                $this->session->set_flashdata('msg', '<div class="alert alert-error">
                                                    
                                                 <strong>
                                              Action Failed	</strong>									
 						</div>');
-            redirect('reciept/payment', 'refresh');
+                redirect('reciept/payment', 'refresh');
+            }
+        } else {
+            $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong>
+                                                 You cannot carry out this action '.'	</strong>									
+						</div>');
+             redirect('reciept/payment', 'refresh');
         }
     }
 

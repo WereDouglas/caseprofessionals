@@ -14,12 +14,53 @@ class Welcome extends CI_Controller {
     }
 
     public function index() {
+
+
+
         $this->load->view('login');
     }
 
     public function home() {
         if ($this->session->userdata('username') != "") {
-            $this->load->view('home');
+
+            $query = $this->Md->query("SELECT * FROM sync_data where org = '" . $this->session->userdata('orgid') . "' ");
+            //  var_dump($query);
+            if ($query) {
+                $data['logs'] = $query;
+            } else {
+                $data['logs'] = array();
+            }
+
+            $query = $this->Md->query("SELECT * FROM users WHERE types='client' AND org = '" . $this->session->userdata('orgid') . "'");
+            //  var_dump($query);
+            if ($query) {
+                $data['clients'] = $query;
+            } else {
+                $data['clients'] = array();
+            }
+            $query = $this->Md->query("SELECT * FROM schedule where org = '" . $this->session->userdata('orgid') . "' and dated ='".  date('Y-m-d')."'");
+            //  var_dump($query);
+            if ($query) {
+                $data['schedules'] = $query;
+            } else {
+                $data['schedules'] = array();
+            }
+            $query = $this->Md->query("SELECT * FROM schedule where org = '" . $this->session->userdata('orgid') . "' and dated ='".  date('d-m-Y')."'");
+            //  var_dump($query);
+            if ($query) {
+                $data['schedules'] = $query;
+            } else {
+                $data['schedules'] = array();
+            }            
+            $query = $this->Md->query("SELECT * FROM files where org = '" . $this->session->userdata('orgid') . "'");
+            //  var_dump($query);
+            if ($query) {
+                $data['files'] = $query;
+            } else {
+                $data['files'] = array();
+            }
+
+            $this->load->view('home', $data);
         } else {
 
             $this->session->sess_destroy();
@@ -62,7 +103,7 @@ class Welcome extends CI_Controller {
                     $starts = $res->starts;
                     $ends = $res->ends;
                     $code = $res->code;
-                    $license = $res->license;
+                    $license = $res->keys;
                     $address = $res->address;
                 }
                 $this->session->set_userdata('name', $name);
@@ -177,6 +218,16 @@ class Welcome extends CI_Controller {
                 redirect('/management/student', 'refresh');
             }
         }
+    }
+
+    public function info() {
+
+        $this->load->view('info-page', $data);
+    }
+
+    public function help() {
+
+        $this->load->view('help-page', $data);
     }
 
     public function management() {

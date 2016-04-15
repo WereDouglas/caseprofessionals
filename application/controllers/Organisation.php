@@ -11,11 +11,45 @@ class Organisation extends CI_Controller {
         $this->load->model('Md');
         $this->load->library('session');
         $this->load->library('encrypt');
-         
     }
 
     public function index() {
         $this->load->view('login');
+    }
+
+    public function update() {
+
+        if ($this->session->userdata('level') == 1) {
+
+            $this->load->helper(array('form', 'url'));
+            $id = $this->input->post('id');
+            $name = $this->input->post('name');
+            $address = $this->input->post('address');
+            $code = $this->input->post('code');
+
+            $org = array('id' => $id, 'name' => $name, 'address' => $address,'code'=>$code);
+
+            $content = json_encode($org);
+            $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+            if ($query) {
+                foreach ($query as $res) {
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'org', 'contents' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $this->Md->save($syc, 'sync_data');
+                }
+            }
+            $this->Md->update($id, $org, 'organisation');
+            $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong>
+                                                 You may need to re-login for these changes to be carried out' . '	</strong>									
+						</div>');
+            redirect('welcome/info', 'refresh');
+        } else {
+            $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong>
+                                                 You cannot carry out this action ' . '	</strong>									
+						</div>');
+            redirect('welcome/info', 'refresh');
+        }
     }
 
     public function api() {
@@ -28,7 +62,7 @@ class Organisation extends CI_Controller {
                 foreach ($query as $res) {
                     $clientname = $res->code . "-DESKTOP" . date('y') . "-" . date('m') . (int) date('d') . (int) date('H') . (int) date('i') . (int) date('s');
                     $orgid = $res->id;
-                }             
+                }
                 $client = array('org' => $orgid, 'active' => 'T', 'name' => $clientname, 'created' => date('Y-m-d H:i:s'));
                 $this->Md->save($client, 'client');
                 $temp = json_encode($query);  //$json={"var1":"value1","var2":"value2"}   

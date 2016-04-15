@@ -21,7 +21,7 @@
                     <li class="grey">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <i class="icon-tasks"></i>
-                            <span class="badge badge-grey">4</span>
+                            <span class="badge badge-grey"><?php echo count($logs)?></span>
                         </a>
 
                     </li>
@@ -29,20 +29,20 @@
                     <li class="purple">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <i class="icon-bell-alt icon-animated-bell"></i>
-                            <span class="badge badge-important">8</span>
+                            <span class="badge badge-important"><?php echo count($schedules)?></span>
                         </a>
 
 
                     </li>
 
-                    <li class="green">
+<!--                    <li class="green">
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <i class="icon-envelope icon-animated-vertical"></i>
                             <span class="badge badge-success">5</span>
                         </a>
 
 
-                    </li>
+                    </li>-->
 
                    
                     

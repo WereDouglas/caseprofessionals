@@ -22,9 +22,7 @@ class  Log  extends CI_Controller {
         } else {
             $data['logs'] = array();
         }
-        $this->load->view('log-page', $data);
-
-     
+        $this->load->view('log-page', $data);     
     }
 
     public function client() {
@@ -69,6 +67,7 @@ class  Log  extends CI_Controller {
     }
 
     public function delete() {
+         if ($this->session->userdata('level') == 1) {
         $this->load->helper(array('form', 'url'));
         $id = $this->uri->segment(3);
        
@@ -86,6 +85,13 @@ class  Log  extends CI_Controller {
                                                    
                                                 <strong>
                                              Action Failed	</strong>									
+						</div>');
+            redirect('log/', 'refresh');
+        }
+         } else {
+            $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong>
+                                                 You cannot carry out this action '.'	</strong>									
 						</div>');
             redirect('log/', 'refresh');
         }

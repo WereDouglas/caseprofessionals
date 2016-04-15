@@ -6,7 +6,7 @@ class User extends CI_Controller {
 
     function __construct() {
 
-        parent::__construct();       
+        parent::__construct();
         error_reporting(E_PARSE);
         $this->load->model('Md');
         $this->load->library('session');
@@ -15,8 +15,8 @@ class User extends CI_Controller {
 
     public function index() {
         if ($this->session->userdata('username') == "") {
-                      $this->session->sess_destroy();
-                redirect('welcome', 'refresh');
+            $this->session->sess_destroy();
+            redirect('welcome', 'refresh');
         }
         $this->load->view('client-page');
     }
@@ -29,11 +29,11 @@ class User extends CI_Controller {
 
         foreach ($result as $res) {
             $resv = new stdClass();
-            $resv->id= $res->id;
+            $resv->id = $res->id;
             $resv->name = $res->name;
-            $resv->org= $res->org;
+            $resv->org = $res->org;
             $resv->address = $res->address;
-            $resv->image= $res->image;
+            $resv->image = $res->image;
             $resv->contact = $res->contact;
             $resv->password = $this->encrypt->decode($res->password, $res->email);
             $resv->types = $res->types;
@@ -41,7 +41,7 @@ class User extends CI_Controller {
             $resv->created = $res->created;
             $resv->status = $res->status;
             $resv->email = $res->email;
-         
+
             array_push($all, $resv);
         }
         echo json_encode($all);
@@ -49,8 +49,8 @@ class User extends CI_Controller {
 
     public function client() {
         if ($this->session->userdata('username') == "") {
-                      $this->session->sess_destroy();
-                redirect('welcome', 'refresh');
+            $this->session->sess_destroy();
+            redirect('welcome', 'refresh');
         }
 
         $query = $this->Md->query("SELECT * FROM users where types = 'client'");
@@ -141,9 +141,6 @@ class User extends CI_Controller {
                 $data['email'] = $res->email;
             }
         }
-
-
-
         $this->load->view('client-view', $data);
     }
 
@@ -167,76 +164,98 @@ class User extends CI_Controller {
     }
 
     public function update() {
+        if ($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2) {
+            $this->load->helper(array('form', 'url'));
+            $id = $this->input->post('id');
+            $name = $this->input->post('name');
+            $contact = $this->input->post('contact');
+            //$email = $this->input->post('email');
+            $address = $this->input->post('address');
 
-        $this->load->helper(array('form', 'url'));
-        $id = $this->input->post('id');
-        $name = $this->input->post('name');
-        $contact = $this->input->post('contact');
-        //$email = $this->input->post('email');
-        $address = $this->input->post('address');
+            $user = array('id' => $id, 'name' => $name, 'address' => $address, 'contact' => $contact, 'created' => date('Y-m-d H:i:s'));
 
-        $user = array('id'=>$id,'name' => $name, 'address' => $address, 'contact' => $contact, 'created' => date('Y-m-d H:i:s'));
-       
-        $content = json_encode($user);
-        $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
-        if ($query) {
-            foreach ($query as $res) {
-                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'contents' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
-                $this->Md->save($syc, 'sync_data');
-            }
-        }
-        $this->Md->update($id, $user, 'users');
-
-        
-    }
-    public function updateclient() {
-
-        $this->load->helper(array('form', 'url'));
-        $id = $this->input->post('id');
-        $name = $this->input->post('name');
-        $contact = $this->input->post('contact');
-        $email = $this->input->post('email');
-        $address = $this->input->post('details');
-        $user = array('id'=>$id,'name' => $name, 'address' => $address,'email' => $email, 'contact' => $contact, 'created' => date('Y-m-d H:i:s'));
-       
-        $content = json_encode($user);
-        $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
-        if ($query) {
-            foreach ($query as $res) {
-                $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'client', 'contents' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
-                $this->Md->save($syc, 'sync_data');
-            }
-        }
-        $this->Md->update($id, $user, 'users');       
-    }
-
-    public function delete() {
-        $this->load->helper(array('form', 'url'));
-        $id = $this->uri->segment(3);
-        $this->Md->remove($id, 'users', 'image');
-        $query = $this->Md->delete($id, 'users');
-        if ($this->db->affected_rows() > 0) {
-
+            $content = json_encode($user);
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
             if ($query) {
                 foreach ($query as $res) {
-                    $syc = array('object' => 'users', 'contents' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'contents' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                     $this->Md->save($syc, 'sync_data');
                 }
             }
-            $this->session->set_flashdata('msg', '<div class="alert alert-error">
-                                                   
+            $this->Md->update($id, $user, 'users');
+        } else {
+            $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong>
+                                                 You cannot carry out this action ' . '	</strong>									
+						</div>');
+            redirect('/user', 'refresh');
+        }
+    }
+
+    public function updateclient() {
+        if ($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2) {
+            $this->load->helper(array('form', 'url'));
+            $id = $this->input->post('id');
+            $name = $this->input->post('name');
+            $contact = $this->input->post('contact');
+            $email = $this->input->post('email');
+            $address = $this->input->post('details');
+            $user = array('id' => $id, 'name' => $name, 'address' => $address, 'email' => $email, 'contact' => $contact, 'created' => date('Y-m-d H:i:s'));
+
+            $content = json_encode($user);
+            $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+            if ($query) {
+                foreach ($query as $res) {
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'client', 'contents' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $this->Md->save($syc, 'sync_data');
+                }
+            }
+            $this->Md->update($id, $user, 'users');
+        } else {
+            $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong>
+                                                 You cannot carry out this action ' . '	</strong>									
+						</div>');
+            redirect('/user', 'refresh');
+        }
+    }
+
+    public function delete() {
+
+        if ($this->session->userdata('level') == 1) {
+            $this->load->helper(array('form', 'url'));
+            $id = $this->uri->segment(3);
+            $this->Md->remove($id, 'users', 'image');
+            $query = $this->Md->cascade($id, 'contact', 'users');
+            $query = $this->Md->delete($id, 'users');
+            if ($this->db->affected_rows() > 0) {
+
+                $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+                if ($query) {
+                    foreach ($query as $res) {
+                        $syc = array('object' => 'users', 'contents' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                        $this->Md->save($syc, 'sync_data');
+                    }
+                }
+                $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
                                                 <strong>
                                                 Information deleted	</strong>									
 						</div>');
-            redirect('user/client', 'refresh');
-        } else {
-            $this->session->set_flashdata('msg', '<div class="alert alert-error">
+                redirect('user/client', 'refresh');
+            } else {
+                $this->session->set_flashdata('msg', '<div class="alert alert-error">
                                                    
                                                 <strong>
                                              Action Failed	</strong>									
 						</div>');
-            redirect('user/client', 'refresh');
+                redirect('user/client', 'refresh');
+            }
+        } else {
+            $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong>
+                                                 You cannot carry out this action ' . '	</strong>									
+						</div>');
+            redirect('/user', 'refresh');
         }
     }
 
@@ -317,10 +336,8 @@ class User extends CI_Controller {
         }
         $this->client();
     }
-    
-    
-     public function save() {
 
+    public function save() {
 
         $this->load->helper(array('form', 'url'));
 
@@ -332,8 +349,8 @@ class User extends CI_Controller {
         $email = $this->input->post('email');
         $contact = $this->input->post('contact');
         $address = $this->input->post('address');
-        $level = 1;
-        $type = 'Administrator';
+        $level = $this->input->post('level');
+        $type = $this->input->post('types');
         $orgid = $this->session->userdata('orgid');
 
         if ($name != "") {
@@ -373,9 +390,9 @@ class User extends CI_Controller {
             $users = array('id' => $userid, 'image' => $userfile, 'email' => $email, 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
             $file_id = $this->Md->save($users, 'users');
             $content = array('id' => $userid, 'image' => $userfile, 'email' => $email, 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
- 
+
             $usered = array('id' => $userid, 'image' => $userfile, 'email' => $email, 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $this->input->post('password'), 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
-          
+
             $contents = json_encode($usered);
 
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");

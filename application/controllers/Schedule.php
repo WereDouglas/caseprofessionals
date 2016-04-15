@@ -11,11 +11,10 @@ class Schedule extends CI_Controller {
         $this->load->model('Md');
         $this->load->library('session');
         $this->load->library('encrypt');
-        
     }
 
     public function index() {
-        
+
         if ($this->session->userdata('username') == "") {
             $this->session->sess_destroy();
             redirect('welcome', 'refresh');
@@ -70,7 +69,7 @@ class Schedule extends CI_Controller {
     }
 
     public function all() {
-        
+
         if ($this->session->userdata('username') == "") {
             $this->session->sess_destroy();
             redirect('welcome', 'refresh');
@@ -168,23 +167,40 @@ class Schedule extends CI_Controller {
     }
 
     public function delete() {
-        $this->load->helper(array('form', 'url'));
-        $id = $this->uri->segment(3);
 
-        $query = $this->Md->delete($id, 'contact');
-        if ($this->db->affected_rows() > 0) {
-
-            $this->session->set_flashdata('msg', '<div class="alert alert-error">
+        if ($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2) {
+            $this->load->helper(array('form', 'url'));
+            $id = $this->uri->segment(3);
+            $query = $this->Md->delete($id, 'schedule');
+             $query = $this->Md->cascade($id, 'attend', 'scheduleID');
+            if ($this->db->affected_rows() > 0) {
+                $this->session->set_flashdata('msg', '<div class="alert alert-error">
                                                    
                                                 <strong>
                                                 Information deleted	</strong>									
 						</div>');
-        } else {
-            $this->session->set_flashdata('msg', '<div class="alert alert-error">
+                 $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+                if ($query) {
+                    foreach ($query as $res) {
+                        $syc = array('object' => 'schedule', 'contents' => $id, 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                        $this->Md->save($syc, 'sync_data');
+                    }
+                }
+                redirect('schedule/', 'refresh');
+                
+            } else {
+                $this->session->set_flashdata('msg', '<div class="alert alert-error">
                                                    
                                                 <strong>
                                              Action Failed	</strong>									
 						</div>');
+            }
+        } else {
+            $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong>
+                                                 You cannot carry out this action ' . '	</strong>									
+						</div>');
+            redirect('schedule/', 'refresh');
         }
     }
 
