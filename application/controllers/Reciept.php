@@ -54,7 +54,7 @@ class Reciept extends CI_Controller {
             $active = "true";
         }
         if ($this->session->userdata('level') == 1) {
-
+            
             $approve = array('approved' => $active);
             $this->Md->update($id, $approve, 'transactions');
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");

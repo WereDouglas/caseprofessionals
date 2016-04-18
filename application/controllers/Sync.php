@@ -65,7 +65,7 @@ class Sync extends CI_Controller {
             }            
            $this->Md->save($contents, $object);            
         }
-        if ($action == "update") {
+        if ($action == "update" || $action == "edit") {
             
             $query = $this->Md->query("SELECT * FROM client where org = '" . $orgID . "'");
             if ($query) {
@@ -76,8 +76,8 @@ class Sync extends CI_Controller {
                     }
                 }
             }
-              $this->Md->update($contents, $object);      
-            
+              $this->Md->update($oid,$contents ,$object); 
+             //   $this->Md->update($id, $user, 'users');            
         }
         if ($action == "delete") {
             
@@ -90,7 +90,7 @@ class Sync extends CI_Controller {
                     }
                 }
             }
-            
+              $this->Md->delete($oid, $object);
         }
     }
 
