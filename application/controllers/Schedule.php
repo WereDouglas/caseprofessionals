@@ -147,10 +147,17 @@ class Schedule extends CI_Controller {
 
             foreach ($attend as $t) {
                 $schs = array('org' => $this->session->userdata('orgid'), 'userID' => $t, 'scheduleID' => $scheduleID);
-                $this->Md->save($schs, 'attend');
+              $id=  $this->Md->save($schs, 'attend');
+                
+                $contents = json_encode($schs);
+                $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+                if ($query) {
+                    foreach ($query as $res) {
+                        $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'attend', 'contents' => $contents, 'action' => 'create', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                      $this->Md->save($syc, 'sync_data');
+                    }
+                }
             }
-
-
             $this->session->set_flashdata('msg', '<div class="alert">                                                   
                                                 <strong>
                                                  schedule added</strong>									
@@ -172,14 +179,14 @@ class Schedule extends CI_Controller {
             $this->load->helper(array('form', 'url'));
             $id = $this->uri->segment(3);
             $query = $this->Md->delete($id, 'schedule');
-             $query = $this->Md->cascade($id, 'attend', 'scheduleID');
+            $query = $this->Md->cascade($id, 'attend', 'scheduleID');
             if ($this->db->affected_rows() > 0) {
                 $this->session->set_flashdata('msg', '<div class="alert alert-error">
                                                    
                                                 <strong>
-                                                Information deleted	</strong>									
+                                                Information Informationed	</strong>									
 						</div>');
-                 $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+                $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
                 if ($query) {
                     foreach ($query as $res) {
                         $syc = array('object' => 'schedule', 'contents' => $id, 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
@@ -187,7 +194,6 @@ class Schedule extends CI_Controller {
                     }
                 }
                 redirect('schedule/', 'refresh');
-                
             } else {
                 $this->session->set_flashdata('msg', '<div class="alert alert-error">
                                                    

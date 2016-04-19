@@ -44,15 +44,28 @@ class Sync extends CI_Controller {
     }
 
     public function up() {
-
+        $this->load->helper(array('form', 'url'));
         $object = $this->input->post('object');
-        $contents = (array)json_decode($this->input->post('contents'));
+        $contents = (array) json_decode($this->input->post('contents'));
         $action = $this->input->post('action');
         $oid = $this->input->post('oid');
         $created = $this->input->post('created');
         $orgID = $this->input->post('orgID');
         $senderApplication = $this->input->post('sender');
         if ($action == "create") {
+            $query = $this->Md->query("SELECT * FROM client where org = '" . $orgID . "'");
+            if ($query) {
+                foreach ($query as $res) {
+                    if ($res->name != $senderApplication) {
+                        $syc = array('org' => $orgID, 'object' => $object, 'contents' => $contents, 'action' => $action, 'oid' => $oid, 'created' => $created, 'checksum' => $this->GUID(), 'client' => $res->name);
+                        $this->Md->save($syc, 'sync_data');
+                    }
+                }
+            }
+            $this->Md->save($contents, $object);
+            echo "true";
+        }
+        if ($action == "update" || $action == "edit") {
 
             $query = $this->Md->query("SELECT * FROM client where org = '" . $orgID . "'");
             if ($query) {
@@ -62,25 +75,13 @@ class Sync extends CI_Controller {
                         $this->Md->save($syc, 'sync_data');
                     }
                 }
-            }            
-           $this->Md->save($contents, $object);            
-        }
-        if ($action == "update" || $action == "edit") {
-            
-            $query = $this->Md->query("SELECT * FROM client where org = '" . $orgID . "'");
-            if ($query) {
-                foreach ($query as $res) {
-                    if ($res->name != $senderApplication) {
-                        $syc = array('org' => $orgID, 'object' => $object, 'contents' => $contents, 'action' => $action, 'oid' => $oid, 'created' => $created, 'checksum' => $this->GUID(), 'client' => $res->name);
-                        $this->Md->save($syc, 'sync_data');
-                    }
-                }
             }
-              $this->Md->update($oid,$contents ,$object); 
-             //   $this->Md->update($id, $user, 'users');            
+            $this->Md->update($oid, $contents, $object);
+            echo "true";
+            //   $this->Md->update($id, $user, 'users');            
         }
         if ($action == "delete") {
-            
+           $contents = "";
             $query = $this->Md->query("SELECT * FROM client where org = '" . $orgID . "'");
             if ($query) {
                 foreach ($query as $res) {
@@ -90,7 +91,13 @@ class Sync extends CI_Controller {
                     }
                 }
             }
-              $this->Md->delete($oid, $object);
+            $this->Md->delete($oid, $object);
+
+            if ($this->db->affected_rows() > 0) {
+                echo "true";
+            } else {
+                echo "false";
+            }
         }
     }
 
