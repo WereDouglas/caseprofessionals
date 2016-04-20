@@ -6,7 +6,7 @@
 
         <meta name="description" content="overview &amp; stats" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+        <meta http-equiv="refresh" content="60*30">
         <!--basic styles-->
 
         <link href="<?= base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" />

@@ -53,6 +53,39 @@ class Sync extends CI_Controller {
         $orgID = $this->input->post('orgID');
         $senderApplication = $this->input->post('sender');
         if ($action == "create") {
+            if ($object == "users") {
+                $user = array();
+                foreach ($contents as $key => $value) {
+                    array_push($user, $value);
+                }
+                $userid = $user[0];
+                $email = $user[8];
+                $image = $user[5];
+                $name = $user[1];
+                $password = $user[4];
+                $contact = $user[9];
+                $address = $user[2];
+                $level = $user[11];
+                $type = $user[10];
+                $orgid = $orgID;
+                $key = $user[8];
+                $passwordf = $this->encrypt->encode($password, $key);
+
+                $users = array('id' => $userid, 'image' => $image, 'email' => $email, 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $passwordf, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
+                $contents = json_encode($users);
+                $this->Md->save($users, 'users');
+                $query = $this->Md->query("SELECT * FROM client where org = '" . $orgID . "'");
+                if ($query) {
+                    foreach ($query as $res) {
+                        if ($res->name != $senderApplication) {
+                            $syc = array('org' => $orgID, 'object' => $object, 'contents' => $contents, 'action' => $action, 'oid' => $oid, 'created' => $created, 'checksum' => $this->GUID(), 'client' => $res->name);
+                            $this->Md->save($syc, 'sync_data');
+                        }
+                    }
+                }
+                echo "true";
+                return;
+            }
             $query = $this->Md->query("SELECT * FROM client where org = '" . $orgID . "'");
             if ($query) {
                 foreach ($query as $res) {
@@ -66,6 +99,54 @@ class Sync extends CI_Controller {
             echo "true";
         }
         if ($action == "update" || $action == "edit") {
+
+            if ($object == "password") {
+                $user = array();
+                foreach ($contents as $key => $value) {
+                    array_push($user, $value);
+                }
+                $userid = $user[0];
+                $email = $user[3];
+                $password = $user[2];
+                $key = $user[3];
+                $passwordf = $this->encrypt->encode($password, $key);
+                $users = array('id' => $userid, 'email' => $email, 'org' => $orgid, 'password' => $passwordf,);
+                $this->Md->update($userid, $users, 'users');
+                $contents = json_encode($users);
+                $query = $this->Md->query("SELECT * FROM client where org = '" . $orgID . "'");
+                if ($query) {
+                    foreach ($query as $res) {
+                        if ($res->name != $senderApplication) {
+                            $syc = array('org' => $orgID, 'object' => $object, 'contents' => $contents, 'action' => 'update', 'oid' => $oid, 'created' => $created, 'checksum' => $this->GUID(), 'client' => $res->name);
+                            $this->Md->save($syc, 'sync_data');
+                        }
+                    }
+                }
+                echo "true";
+                return;
+            }
+            if ($object == "image") {
+                $user = array();
+                foreach ($contents as $key => $value) {
+                    array_push($user, $value);
+                }
+                $userid = $user[0];
+                $image = $user[2];
+                $users = array('id' => $userid, 'image' => $image);
+                $this->Md->update($userid, $users, 'users');
+                $contents = json_encode($users);
+                $query = $this->Md->query("SELECT * FROM client where org = '" . $orgID . "'");
+                if ($query) {
+                    foreach ($query as $res) {
+                        if ($res->name != $senderApplication) {
+                            $syc = array('org' => $orgID, 'object' => $object, 'contents' => $contents, 'action' => 'update', 'oid' => $oid, 'created' => $created, 'checksum' => $this->GUID(), 'client' => $res->name);
+                            $this->Md->save($syc, 'sync_data');
+                        }
+                    }
+                }
+                echo "true";
+                return;
+            }
 
             $query = $this->Md->query("SELECT * FROM client where org = '" . $orgID . "'");
             if ($query) {
@@ -81,7 +162,7 @@ class Sync extends CI_Controller {
             //   $this->Md->update($id, $user, 'users');            
         }
         if ($action == "delete") {
-           $contents = "";
+            $contents = "";
             $query = $this->Md->query("SELECT * FROM client where org = '" . $orgID . "'");
             if ($query) {
                 foreach ($query as $res) {
@@ -90,6 +171,12 @@ class Sync extends CI_Controller {
                         $this->Md->save($syc, 'sync_data');
                     }
                 }
+            }
+            if ($object == "attend") {
+
+                $this->Md->delete($oid, $object);
+
+                return;
             }
             $this->Md->delete($oid, $object);
 
@@ -228,6 +315,22 @@ class Sync extends CI_Controller {
         if ($this->db->affected_rows() > 0) {
             echo "Pending records deleted";
         }
+    }
+
+    public function upload() {
+        // echo 'File '. $_FILES['file']['name'] .' uploaded successfully.' ;
+        $file_element_name = 'userfile';
+        $config['upload_path'] = 'uploads/';
+        // $config['upload_path'] = '/uploads/';
+        $config['allowed_types'] = '*';
+        $config['encrypt_name'] = FALSE;
+        $this->load->library('upload', $config);
+        if (!$this->upload->do_upload($file_element_name)) {
+            echo "file uploaded";
+        }
+        //   move_uploaded_file($_FILES["file"]["tmp_name"], $_FILES["file"]["name"]);
+
+        echo "done";
     }
 
 }

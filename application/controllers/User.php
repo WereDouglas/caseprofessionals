@@ -328,7 +328,7 @@ class User extends CI_Controller {
         $email = $this->input->post('email');
         $contact = $this->input->post('contact');
         $address = $this->input->post('address');
-        $level = 1;
+        $level = 4;
         $type = 'client';
         $orgid = $this->session->userdata('orgid');
 
