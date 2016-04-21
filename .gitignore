@@ -48,3 +48,4 @@ Temporary Items
 .idea
 /application/config/db_local.php
 
+application/config/database.php

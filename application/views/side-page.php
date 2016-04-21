@@ -14,26 +14,26 @@
                 <span class="menu-text">All Schedules </span>
             </a>
         </li>
-            
-        <?php
-        if ($this->session->userdata('level') == 1|| $this->session->userdata('level') == 2 ) {
-            ?>
-         <li>
-            <a href="<?php echo base_url() . "index.php/reciept/"; ?>" target="frame">
-                <i class="icon-file"></i>
-                <span class="menu-text"> Receipt</span>                
-            </a>
 
-        </li> 
-          <li>
-            <a href="<?php echo base_url() . "index.php/voucher"; ?>" target="frame">
-                <i class="icon-foursquare"></i>
-                <span class="menu-text"> Voucher</span>
-            </a>
-        </li> 
-       
+        <?php
+        if ($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2) {
+            ?>
+            <li>
+                <a href="<?php echo base_url() . "index.php/reciept/"; ?>" target="frame">
+                    <i class="icon-file"></i>
+                    <span class="menu-text"> Receipt</span>                
+                </a>
+
+            </li> 
+            <li>
+                <a href="<?php echo base_url() . "index.php/voucher"; ?>" target="frame">
+                    <i class="icon-foursquare"></i>
+                    <span class="menu-text"> Voucher</span>
+                </a>
+            </li> 
+
         <?php } ?>
-      
+
         <li>
             <a href="<?php echo base_url() . "index.php/report/"; ?>" target="frame">
                 <i class="icon-bar-chart"></i>
@@ -66,19 +66,22 @@
         </li>
 
         <li>
-              <a href="<?php echo base_url() . "index.php/welcome/info"; ?>" target="frame">
+            <a href="<?php echo base_url() . "index.php/welcome/info"; ?>" target="frame">
                 <i class="icon-cogs"></i>
                 <span class="menu-text"> Registration information</span>
             </a>
         </li>
 
         <li>
-           <a href="<?php echo base_url() . "index.php/welcome/help"; ?>" target="frame">
+            <a href="<?php echo base_url() . "index.php/welcome/help"; ?>" target="frame">
                 <i class="icon-warning-sign"></i>
                 <span class="menu-text"> Help </span>
 
             </a>          
-        </li>      
+        </li> 
+        <li> <a href="<?php echo base_url() . "file/Cp.msi"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Desktop</b> </a> </li>
+        <li> <a href="<?php echo base_url() . "file/Cp.apk"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Mobile</b> </a> </li>
+
     </ul><!--/.nav-list-->
 
     <div class="sidebar-collapse" id="sidebar-collapse">
