@@ -66,7 +66,7 @@ $query_builder = TRUE;
 /** start: hack for cross dev-machine database headaches **/
 $db_name = 'case';
 $db_username = 'root';
-$db_password = '';
+$db_password = 'password';
 
 if(file_exists(__DIR__ .'/db_local.php')){
     $db_local = include_once __DIR__ .'/db_local.php';
