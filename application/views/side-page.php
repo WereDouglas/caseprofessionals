@@ -79,8 +79,8 @@
 
             </a>          
         </li> 
-        <li> <a href="<?php echo base_url() . "file/Cp.msi"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Desktop</b> </a> </li>
-        <li> <a href="<?php echo base_url() . "file/Cp.apk"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Mobile</b> </a> </li>
+        <li> <a href="<?php echo base_url() . "files/Cp.msi"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Desktop</b> </a> </li>
+        <li> <a href="<?php echo base_url() . "files/Cp.apk"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Mobile</b> </a> </li>
 
     </ul><!--/.nav-list-->
 
