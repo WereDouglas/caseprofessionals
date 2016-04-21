@@ -75,7 +75,7 @@ if(file_exists(__DIR__ .'/db_local.php')){
     $db_password = $db_local['password'];
 }
 /** -------------------- end --------------------------- **/
-
+//serviceug.cloudapp.net
 
 $db['default'] = array(
     'dsn' => '',
@@ -98,3 +98,12 @@ $db['default'] = array(
     'failover' => array(),
     'save_queries' => TRUE
 );
+
+
+
+
+/****
+ *
+ * 
+ * 
+ */
