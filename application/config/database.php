@@ -79,7 +79,7 @@ if(file_exists(__DIR__ .'/db_local.php')){
 
 $db['default'] = array(
     'dsn' => '',
-    'hostname' => 'localhost',
+    'hostname' => 'serviceug.cloudapp.net',
     'username' => $db_username,
     'password' => $db_password,
     'database' => $db_name,
