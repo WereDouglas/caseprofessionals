@@ -2,29 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Organisation.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Welcome.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/controllers/File.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/views/header-section.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/views/voucher-page.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Reciept.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Schedule.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/views/view-graph.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/views/header.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/views/side-page.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Sync.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Contact.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/views/reciept-page.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/controllers/User.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/views/client-page.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/views/log-page.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/views/client-view.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/views/user-page.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Client.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Voucher.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/views/calendar-page.php</file>
-            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Log.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
