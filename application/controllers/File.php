@@ -97,6 +97,29 @@ class File extends CI_Controller {
         } else {
             $data['sch'] = array();
         }
+        $query = $this->Md->query("SELECT * FROM document where org = '" . $this->session->userdata('orgid') . "' AND cases = '" . $fileid . "' ");
+        //  var_dump($query);
+        if ($query) {
+            $data['docs'] = $query;
+        } else {
+            $data['docs'] = array();
+        }
+        $query = $this->Md->query("SELECT * FROM note where org = '" . $this->session->userdata('orgid') . "' AND fileID= '" . $fileid . "' ");
+        //  var_dump($query);
+        if ($query) {
+            $data['notes'] = $query;
+        } else {
+            $data['notes'] = array();
+        }
+          $query = $this->Md->query("SELECT * FROM bill where org = '" . $this->session->userdata('orgid') . "' AND fileID= '" . $fileid . "' ");
+        //  var_dump($query);
+        if ($query) {
+            $data['bills'] = $query;
+        } else {
+            $data['bills'] = array();
+        }
+        
+        
         $query = $this->Md->query("SELECT * FROM attend where org = '" . $this->session->userdata('orgid') . "'");
         //  var_dump($query);
         if ($query) {

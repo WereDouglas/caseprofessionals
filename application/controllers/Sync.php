@@ -46,7 +46,7 @@ class Sync extends CI_Controller {
     public function up() {
         $this->load->helper(array('form', 'url'));
         $object = $this->input->post('object');
-        $contents = (array) json_decode($this->input->post('contents'));
+        $contents = json_decode($this->input->post('contents'));
         $action = $this->input->post('action');
         $oid = $this->input->post('oid');
         $created = $this->input->post('created');
@@ -54,6 +54,7 @@ class Sync extends CI_Controller {
         $senderApplication = $this->input->post('sender');
         if ($action == "create") {
             if ($object == "users") {
+                $contents = (array) json_decode($this->input->post('contents'));
                 $user = array();
                 foreach ($contents as $key => $value) {
                     array_push($user, $value);

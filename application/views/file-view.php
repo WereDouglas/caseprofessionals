@@ -26,6 +26,24 @@
                         <span class="badge badge-important"><?php echo count($sch); ?></span>
                     </a>
                 </li>
+                   <li>
+                    <a data-toggle="tab" href="#doc">
+                      Documents
+                        <span class="badge badge-important"><?php echo count($docs); ?></span>
+                    </a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#notes">
+                    Notes
+                        <span class="badge badge-important"><?php echo count($notes); ?></span>
+                    </a>
+                </li>
+                  <li>
+                    <a data-toggle="tab" href="#bill">
+                   Bill Of Costs
+                        <span class="badge badge-important"><?php echo count($bills); ?></span>
+                    </a>
+                </li>
 
 
 
@@ -195,6 +213,113 @@
                                         <td class="center">
                                             <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/schedule/delete/" . $loop->id; ?>"></a>
                                         </td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </tbody>
+                    </table>            
+                </div>
+                  <div id="doc" class="tab-pane">
+                    <table class="jobs table table-striped table-bordered bootstrap-datatable datatable" id="datatable">
+                        <thead>
+                            <tr> 
+                                <th>NAME</th>                                
+                                <th>CREATED</th>                               
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>   
+                        <tbody>
+
+                            <?php
+                            if (is_array($docs) && count($docs)) {
+                                foreach ($docs as $loop) {
+                                    ?>  
+                                    <tr >
+                                        <td> 
+                                            <?php echo $loop->name; ?>
+                                        </td>
+                                        <td> 
+                                            <?php echo $loop->created ?>
+                                        </td>
+                                      
+                                        <td class="center">
+<!--                                            <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/schedule/delete/" . $loop->id; ?>"></a>
+                                        </td>-->
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </tbody>
+                    </table>            
+                </div>
+                    <div id="notes" class="tab-pane">
+                    <table class="jobs table table-striped table-bordered bootstrap-datatable datatable" id="datatable">
+                        <thead>
+                            <tr> 
+                                <th>CONTENT</th>                                
+                                <th>CREATED</th>                               
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>   
+                        <tbody>
+
+                            <?php
+                            if (is_array($notes) && count($notes)) {
+                                foreach ($notes as $loop) {
+                                    ?>  
+                                    <tr >
+                                        <td> 
+                                            <?php echo $loop->content; ?>
+                                        </td>
+                                        <td> 
+                                            <?php echo $loop->created ?>
+                                        </td>
+                                      
+                                        <td class="center">
+<!--                                            <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/schedule/delete/" . $loop->id; ?>"></a>
+                                        </td>-->
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </tbody>
+                    </table>            
+                </div>
+                
+                      <div id="bill" class="tab-pane">
+                    <table class="jobs table table-striped table-bordered bootstrap-datatable datatable" id="datatable">
+                        <thead>
+                            <tr> 
+                                <th>INSTRUCTION</th>                                
+                                <th>COST</th> 
+                                  <th>CREATED</th> 
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>   
+                        <tbody>
+
+                            <?php
+                            if (is_array($bills) && count($bills)) {
+                                foreach ($bills as $loop) {
+                                    ?>  
+                                    <tr >
+                                        <td> 
+                                            <?php echo $loop->instruction; ?>
+                                        </td>
+                                        <td> 
+                                            <?php echo $loop->cost; ?>
+                                        </td>
+                                        <td> 
+                                            <?php echo $loop->created ?>
+                                        </td>
+                                      
+                                        <td class="center">
+<!--                                            <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/schedule/delete/" . $loop->id; ?>"></a>
+                                        </td>-->
                                     </tr>
                                     <?php
                                 }

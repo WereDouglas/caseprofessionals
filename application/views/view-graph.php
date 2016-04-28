@@ -97,8 +97,8 @@
     <div class="row-fluid">
          <div id="container5"  style="min-width: 310px; height: 300px; margin: 0 auto"></div>
         <div id="container"  style="min-width: 310px; height: 300px; margin: 0 auto"></div>
-        <div id="container2" style="height: 300px"></div>
-        <div id="container3" style="height: 300px"></div>
+<!--        <div id="container2" style="height: 300px"></div>-->
+<!--        <div id="container3" style="height: 300px"></div>-->
 
     </div>
 

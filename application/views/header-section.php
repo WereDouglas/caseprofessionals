@@ -47,7 +47,7 @@
             <div class="infobox-content"></div>
         </div>
     </div>
-
+ <a href="<?php echo base_url() . "index.php/document/docs"; ?>" target="frame">
     <div class="infobox infobox-green infobox-small infobox-dark">
         <div class="infobox-icon">
             <i class="icon-file"></i>
@@ -58,6 +58,7 @@
             <div class="infobox-content"></div>
         </div>
     </div>
+ </a>
     <a href="<?php echo base_url() . "index.php/TimeBilling/index"; ?>" target="frame">
         <div class="infobox infobox-blue2 infobox-small infobox-dark">
             <div class="infobox-icon">
