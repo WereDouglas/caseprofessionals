@@ -79,7 +79,10 @@
 
             </a>          
         </li> 
-        <li> <a href="<?php echo base_url() . "files/Cp.rar"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Desktop</b> </a> </li>
+        <li> <a href="<?php echo base_url() . "files/Cp.rar"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Desktop(rar)</b> </a> </li>
+        <li> <a href="<?php echo base_url() . "files/Cp.zip"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Desktop (zip)</b> </a> </li>
+       
+        
         <li> <a href="<?php echo base_url() . "files/Cp.apk"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Mobile</b> </a> </li>
 
     </ul><!--/.nav-list-->
