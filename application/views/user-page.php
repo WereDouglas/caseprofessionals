@@ -41,7 +41,9 @@
 
                             </div>
                             <div class="form-group">
-                                <input class="form-control" type="email"  name="email"  placeholder="email" />
+                                <input class="form-control" type="email"  name="email"  id="email2" placeholder="email" />
+                                <span id="loading"  name ="loading"><img src="<?= base_url(); ?>images/loading.gif" alt="loading......" /></span>
+
 
                             </div>
                             <div class="form-group">
@@ -275,6 +277,29 @@
         {
             $(".editbox").hide();
             $(".text").show();
+        });
+
+        $('#loading').hide();
+        $("#email2").blur(function () {
+
+            var user = $(this).val();
+            if (user != null) {
+
+                $('#loading').show();
+                $.post("<?php echo base_url() ?>index.php/organisation/exists", {
+                    user: $(this).val()
+                }, function (response) {
+                   // alert(response);
+                    $('#loading').hide();
+                    setTimeout(finishAjax('loading', escape(response)), 400);
+                });
+            }
+            function finishAjax(id, response) {
+                $('#' + id).html(unescape(response));
+                $('#' + id).fadeIn();
+            }
+
+
         });
 
     });

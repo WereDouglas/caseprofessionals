@@ -7,7 +7,7 @@ class Organisation extends CI_Controller {
     function __construct() {
 
         parent::__construct();
-        // error_reporting(E_PARSE);
+        error_reporting(E_PARSE);
         $this->load->model('Md');
         $this->load->library('session');
         $this->load->library('encrypt');
@@ -27,7 +27,7 @@ class Organisation extends CI_Controller {
             $address = $this->input->post('address');
             $code = $this->input->post('code');
 
-            $org = array('id' => $id, 'name' => $name, 'address' => $address,'code'=>$code);
+            $org = array('id' => $id, 'name' => $name, 'address' => $address, 'code' => $code);
 
             $content = json_encode($org);
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
@@ -73,6 +73,25 @@ class Organisation extends CI_Controller {
         } else {
             echo "";
         }
+    }
+     public function exists() {
+        $this->load->helper(array('form', 'url'));
+       $email = trim($this->input->post('user'));
+       echo $email;
+      //$user = "weredouglass@gmail.com";
+        //returns($value,$field,$table)
+       $get_result = $this->Md->returns($email, 'email', 'users');
+        //href= "index.php/patient/add_chronic/'.$chronic.'"
+        if (!$get_result){
+            echo '<span style="color:#008000"> available not in use </span>';
+        }
+        else{
+            echo '<span style="color:#f00"> not available ! already in use </span> <br>';
+            echo '' . $get_result->contact . '<br>';
+            echo '' . $get_result->email . '<br>';
+            echo '' . $get_result->address . '<br>';
+        }
+       
     }
 
     public function GUID() {
@@ -137,7 +156,7 @@ class Organisation extends CI_Controller {
         $email = $this->input->post('email');
         $contact = $this->input->post('contact');
         $gender = "";
-        $level = 5;
+        $level = 1;
         $type = 'administrator';
 
 
@@ -207,8 +226,8 @@ class Organisation extends CI_Controller {
             $orgfile = $data['file_name'];
             $userfile = $data['file_name'];
 
-            $users = array('id' => $userid, 'image' => '', 'email' => $email, 'name' => $username, 'org' => $orgid, 'addresss' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
-            $file_id = $this->Md->save($users, 'users');
+            $users = array('id' => $userid, 'image' => '', 'email' => $email, 'name' => $username, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $password, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
+            $this->Md->save($users, 'users');
 
             // $client = array('org' => $orgid,'name' => 'web', 'active' => 'T', 'created' =>  date('Y-m-d H:i:s'));
             //$file_id = $this->Md->save($client, 'client');
@@ -224,7 +243,7 @@ class Organisation extends CI_Controller {
                 }
             }
             /*             * */
-            $org = array('id' => $orgid, 'image' => $orgfile, 'name' => $name, 'ends' => $ends, 'starts' => $starts, 'sync' => $sync, 'active' => $active, 'oid' => $oid, 'action' => $address, 'keys' => $license, 'version' => $version, 'code' => $code);
+            $org = array('id' => $orgid, 'image' => $orgfile, 'name' => $name, 'ends' => $ends, 'starts' => $starts, 'sync' => $sync, 'active' => $active, 'oid' => $oid, 'address' => $address, 'keys' => $license, 'version' => $version, 'code' => $code);
             $file_id = $this->Md->save($org, 'organisation');
 
 
@@ -239,6 +258,7 @@ class Organisation extends CI_Controller {
                 'email' => $email,
                 'orgimage' => $orgfile,
                 'orgid' => $orgid,
+                'address' => $address,
                 'userimage' => $userfile,
                 'starts' => $starts,
                 'ends' => $ends,

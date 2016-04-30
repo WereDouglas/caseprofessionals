@@ -15,7 +15,7 @@ class Client extends CI_Controller {
     }
 
     public function index() {
-        $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "' ");
+        $query = $this->Md->query("SELECT * FROM client where org = '".$this->session->userdata('orgid')."' ");
 
         if ($query) {
             $data['clients'] = $query;

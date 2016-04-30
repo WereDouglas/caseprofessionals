@@ -26,7 +26,7 @@ class Document extends CI_Controller {
 
     public function doc() {
 
-        $files = $this->Md->query("SELECT * FROM files");
+        $files = $this->Md->query("SELECT * FROM files WHERE org='".$this->session->userdata('orgid')."'");
         $total = array();
         foreach ($files as $file) {
             $departmentObject = new stdClass();

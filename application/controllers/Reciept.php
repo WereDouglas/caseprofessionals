@@ -34,12 +34,12 @@ class Reciept extends CI_Controller {
 
     public function transaction() {
 
-        $orgid = urldecode($this->uri->segment(3));
-        $result = $this->Md->query("SELECT * FROM transactions WHERE org ='" . $orgid . "'");
+        $orgids = urldecode($this->uri->segment(3));
+        $results = $this->Md->query("SELECT * FROM transactions WHERE org ='" . $orgids . "'");
 
-        if ($result) {
+        if ($results) {
 
-            echo json_encode($result);
+            echo json_encode($results);
         }
     }
 

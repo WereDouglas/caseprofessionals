@@ -53,7 +53,7 @@ class User extends CI_Controller {
             redirect('welcome', 'refresh');
         }
 
-        $query = $this->Md->query("SELECT * FROM users where types = 'client'");
+        $query = $this->Md->query("SELECT * FROM users where types = 'client' AND org='".$this->session->userdata('orgid')."'");
         //  var_dump($query);
         if ($query) {
             $data['users'] = $query;
@@ -132,7 +132,7 @@ class User extends CI_Controller {
         } else {
             $data['contacts'] = array();
         }
-        $query = $this->Md->query("SELECT * FROM users where id = '" . $userid . "'");
+        $query = $this->Md->query("SELECT * FROM users where id = '" . $userid . "' AND org='".$this->session->userdata('orgid')."'");
         if ($query) {
             foreach ($query as $res) {
                 $data['name'] = $res->name;
@@ -145,7 +145,7 @@ class User extends CI_Controller {
     }
 
     public function users() {
-        $query = $this->Md->query("SELECT * FROM users where types <>'client'");
+        $query = $this->Md->query("SELECT * FROM users where types <>'client' AND org='".$this->session->userdata('orgid')."'");
         //  var_dump($query);
         if ($query) {
             $data['users'] = $query;

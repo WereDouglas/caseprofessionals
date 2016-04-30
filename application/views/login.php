@@ -65,7 +65,7 @@
                                                 <h4 class="header blue lighter bigger">
                                                     <i class="icon-user green"></i>
                                                     Please Enter Your Information
-                                                     <?php echo $this->session->flashdata('msg'); ?>
+                                                    <?php echo $this->session->flashdata('msg'); ?>
                                                 </h4>
                                                 <div class="space-6"></div>
                                                 <form id="station-form" name="login-form" enctype="multipart/form-data"  action='<?= base_url(); ?>index.php/welcome/login'  method="post">
@@ -180,52 +180,54 @@
                                                         <label>
                                                             <span class="block input-icon input-icon-right">
                                                                 <input type="text" class="span12"  name="name" placeholder="Company name" />
-                                                                
+
                                                             </span>
                                                         </label>
-                                                         <label>
+                                                        <label>
                                                             <span class="block input-icon input-icon-right">
                                                                 <input type="text" class="span12"  name="code" placeholder="Company code" />
-                                                               
+
                                                             </span>
                                                         </label>
-                                                      
+
                                                         <label>
                                                             <span class="block input-icon input-icon-right">
                                                                 <textarea  class="span12" name="address" placeholder="Address information" ></textarea>
                                                                 <i class="icon-edit"></i>
                                                             </span>
                                                         </label>
-                                                         <div class="form-group">
+                                                        <div class="form-group">
 
-                                                                <label>Logo.</label>
+                                                            <label>Logo.</label>
 
-                                                                <div id="imagePreviews"></div>
-                                                                <input type="file" name="orgfile" id="orgfile" class="btn btn-info btn-small"/>
-                                                            </div>
+                                                            <div id="imagePreviews"></div>
+                                                            <input type="file" name="orgfile" id="orgfile" class="btn btn-info btn-small"/>
+                                                        </div>
                                                         <h4 class="header green lighter bigger">
                                                             <i class="icon-group blue"></i>
-                                                           User
+                                                            Primary User
                                                         </h4>
-                                                         <label>
+                                                        <label>
                                                             <span class="block input-icon input-icon-right">
                                                                 <input type="text" name="first" class="span12" placeholder="First name" />
                                                                 <i class="icon-user"></i>
                                                             </span>
                                                         </label>
-                                                         <label>
+                                                        <label>
                                                             <span class="block input-icon input-icon-right">
                                                                 <input type="text" name="last" class="span12" placeholder="Last name" />
                                                                 <i class="icon-user"></i>
                                                             </span>
                                                         </label>
-                                                         <label>
+                                                        <label>
                                                             <span class="block input-icon input-icon-right">
-                                                                <input type="email" name="email" class="span12" placeholder="email" />
+                                                                <input type="email" name="email" id="email2" class="span12" placeholder="email" />
                                                                 <i class="icon-envelope"></i>
                                                             </span>
+                                                            <span id="loading"  name ="loading"><img src="<?= base_url(); ?>images/loading.gif" alt="loading......" /></span>
+
                                                         </label>
-                                                         <label>
+                                                        <label>
                                                             <span class="block input-icon input-icon-right">
                                                                 <input type="text" name="contact" class="span12" placeholder="contact" />
                                                                 <i class="icon-phone"></i>
@@ -246,22 +248,14 @@
                                                                 <i class="icon-retweet"></i>
                                                             </span>
                                                         </label>
-                                                        <div class="panel-body">
-                                                            <div class="form-group">
 
-                                                                <label>User photo.</label>
-
-                                                                <div id="imagePreview"></div>
-                                                                <input type="file" name="userfile" id="userfile" class="btn btn-info btn-small"/>
-                                                            </div>
-                                                        </div>
 
                                                         <label>
                                                             <input type="checkbox" />
                                                             <span class="lbl">
                                                                 I accept the
                                                                 <a href="#">User Agreement</a>
-                                                                 <?php echo $this->session->flashdata('msg'); ?>
+                                                                <?php echo $this->session->flashdata('msg'); ?>
                                                             </span>
                                                         </label>
 
@@ -345,28 +339,38 @@ window.jQuery || document.write("<script src='<?= base_url(); ?>assets/js/jquery
                 $('#' + id).addClass('visible');
             }
         </script>
-
         <script type="text/javascript">
-            $(function () {
-                $("#userfile").on("change", function ()
-                {
-                    var files = !!this.files ? this.files : [];
-                    if (!files.length || !window.FileReader)
-                        return; // no file selected, or no FileReader support
+            $(document).ready(function () {
 
-                    if (/^image/.test(files[0].type)) { // only image file
-                        var reader = new FileReader(); // instance of the FileReader
-                        reader.readAsDataURL(files[0]); // read the local file
+                $('#loading').hide();
+                $("#email2").blur(function () {
 
-                        reader.onloadend = function () { // set image data as background of div
-                            $("#imagePreview").css("background-image", "url(" + this.result + ")");
-                        }
+                    var user = $(this).val();
+                    if (user != null) {
+
+                        $('#loading').show();
+                        $.post("<?php echo base_url() ?>index.php/organisation/exists", {
+                            user: $(this).val()
+                        }, function (response) {
+                            // alert(response);
+                            $('#loading').hide();
+                            setTimeout(finishAjax('loading', escape(response)), 400);
+                        });
                     }
+                    function finishAjax(id, response) {
+                        $('#' + id).html(unescape(response));
+                        $('#' + id).fadeIn();
+                    }
+
+
                 });
             });
+
+
         </script>
-        
-          <script type="text/javascript">
+
+
+        <script type="text/javascript">
             $(function () {
                 $("#orgfile").on("change", function ()
                 {
@@ -385,5 +389,7 @@ window.jQuery || document.write("<script src='<?= base_url(); ?>assets/js/jquery
                 });
             });
         </script>
+
+
     </body>
 </html>
