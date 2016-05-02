@@ -632,21 +632,25 @@ class Organisation extends CI_Controller {
     public function delete() {
 
 
+
+
+
+
         $this->load->helper(array('form', 'url'));
         $id = $this->uri->segment(3);
         $this->Md->remove($id, 'organisaton', 'image');
-         $query = $this->Md->cascade($id, 'org', 'attend');
-         $query = $this->Md->cascade($id, 'org', 'bill');
-        $query = $this->Md->cascade($id, 'org', 'client');
-        $query = $this->Md->cascade($id, 'org', 'document');
-        $query = $this->Md->cascade($id, 'org', 'files');
-        $query = $this->Md->cascade($id, 'org', 'item');
-        $query = $this->Md->cascade($id, 'org', 'note');
-        $query = $this->Md->cascade($id, 'org', 'schedule');
-        $query = $this->Md->cascade($id, 'org', 'sync_data');
-        $query = $this->Md->cascade($id, 'org', 'payments');
-        $query = $this->Md->cascade($id, 'org', 'transactions');
-        $query = $this->Md->cascade($id, 'org', 'users');
+        $this->Md->cascade($id, 'org', 'attend');
+        $this->Md->cascade($id, 'org', 'bill');
+        $this->Md->cascade($id, 'org', 'client');
+        $this->Md->cascade($id, 'org', 'document');
+        $this->Md->cascade($id, 'org', 'files');
+        $this->Md->cascade($id, 'org', 'item');
+        $this->Md->cascade($id, 'org', 'note');
+        $this->Md->cascade($id, 'org', 'schedule');
+        $this->Md->cascade($id, 'org', 'sync_data');
+        $this->Md->cascade($id, 'org', 'payments');
+        $this->Md->cascade($id, 'org', 'transactions');
+        $this->Md->cascade($id, 'org', 'users');
         $query = $this->Md->delete($id, 'organisation');
         if ($this->db->affected_rows() > 0) {
 

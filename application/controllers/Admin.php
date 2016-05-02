@@ -28,6 +28,21 @@ class Admin extends CI_Controller {
         
         $this->load->view('org-page',$data);
     }
+    public function users() {
+        
+        
+        $data['users'] = array();
+         $data['orgs'] = array();
+        $query = $this->Md->query("SELECT * FROM users");
+        if ($query)
+            $data['users'] = $query;
+        
+         $query = $this->Md->query("SELECT * FROM organisation");
+        if ($query)
+            $data['orgs'] = $query;
+        
+        $this->load->view('users-page',$data);
+    }
 
     public function update() {
 

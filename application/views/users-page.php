@@ -1,6 +1,6 @@
 
 <?php require_once(APPPATH . 'views/css-page.php'); ?>
- <a href="<?php echo base_url() . "index.php/admin"; ?>" >
+<a href="<?php echo base_url() . "index.php/admin"; ?>" >
         <div class="infobox infobox-orange infobox-small infobox-dark">
             <div class="infobox-icon">
                 <i class="icon-calendar"></i>
@@ -23,43 +23,43 @@
             <div class="infobox-content"><?php echo count($users)?></div>
         </div>
     </div>
-</a><div class="box-body">
+</a>
+      <div class="box-body">
 
-                    <table class="jobs table table-striped table-bordered bootstrap-datatable datatable" id="datatable">
+                     <table class="jobs table table-striped table-bordered bootstrap-datatable datatable" id="datatable">
                         <thead>
                             <tr> 
                                 <th>#</th>
                                 <th>NAME</th>
-                                <th>STARTS</th>
-                                <th>KEY</th>
-                                <th>CODE</th>                                           
-                                <th>EXPIRE:</th>
-                                <th>VIEW</th>
+                                <th>CONTACT</th>
+                                <th>ADDRESS</th>
+                                <th>EMAIL</th>
+                                <th>CREATED:</th>
                                 <th>ACTION</th>
                             </tr>
                         </thead>   
                         <tbody>
 
                             <?php
-                            if (is_array($orgs) && count($orgs)) {
-                                foreach ($orgs as $loop) {
+                            if (is_array($users) && count($users)) {
+                                foreach ($users as $loop) {
                                     $name = $loop->name;
-                                    $code = $loop->code;
-                                    $keys = $loop->keys;
+                                    $address = $loop->address;
+                                    $email = $loop->email;
                                     $id = $loop->id;
-                                    $starts = $loop->starts;
-                                    $ends = $loop->ends;
+                                    $contact = $loop->contact;
+                                    $created = $loop->created;
                                     ?>  
                                     <tr id="<?php echo $id; ?>" class="edit_tr">
                                         <td> 
-                                           <?php
+                                            <?php
                                             if ($loop->image != "") {
                                                 ?>
                                                 <img  height="50px" width="50px"  src="<?= base_url(); ?>uploads/<?php echo $loop->image; ?>" alt="logo" />
                                                 <?php
                                             } else {
                                                 ?>
-                                                <img  height="50px" width="50px"  src="<?= base_url(); ?>images/cp_logo.png" alt="logo" />
+                                                <img  height="50px" width="50px"  src="<?= base_url(); ?>images/user_place.png" alt="logo" />
                                                 <?php
                                             }
                                             ?>
@@ -70,28 +70,25 @@
                                         </td>
 
                                         <td class="edit_td">
-                                            <span id="starts_<?php echo $id; ?>" class="text"><?php echo $starts; ?></span>
-                                            <input type="text" value="<?php echo $starts; ?>" class="editbox" id="starts_input_<?php echo $id; ?>"
+                                            <span id="contact_<?php echo $id; ?>" class="text"><?php echo $contact; ?></span>
+                                            <input type="text" value="<?php echo $contact; ?>" class="editbox" id="contact_input_<?php echo $id; ?>"
+
                                         </td>
                                         <td class="edit_td">
-                                            <span id="keys_<?php echo $id; ?>" class="text"><?php echo $keys; ?></span>
-                                            <input type="text" value="<?php echo $keys; ?>" class="editbox" id="keys_input_<?php echo $id; ?>"
+                                            <span id="address_<?php echo $id; ?>" class="text"><?php echo $address; ?></span>
+                                            <input type="text" value="<?php echo $address; ?>" class="editbox" id="address_input_<?php echo $id; ?>"
                                         </td>
-                                        <td class="edit_td">
-                                            <span id="code_<?php echo $id; ?>" class="text"><?php echo $code; ?></span>
-                                            <input type="text" value="<?php echo $code; ?>" class="editbox" id="code_input_<?php echo $id; ?>"
-                                        </td>
+                                        <td >
+                                            <?php echo $email; ?>
+                                        </td>                                        
 
                                         <td class="edit_td">
-                                            <span id="ends_<?php echo $id; ?>" class="text"><?php echo $ends; ?></span>
-                                            <input type="text" value="<?php echo $ends; ?>" class="editbox" id="ends_input_<?php echo $id; ?>"
-                                        </td>  
-                                         <td class="center">
-                                            <a class="btn-small icon-user" href="<?php echo base_url() . "index.php/user/view/" . $id; ?>"></a>
-                                        </td>
+                                            <span id="created_<?php echo $id; ?>" class="text"><?php echo $created; ?></span>
+                                            <input type="text" value="<?php echo $created; ?>" class="editbox" id="created_input_<?php echo $id; ?>"
+                                        </td>   
 
                                         <td class="center">
-                                            <a class="btn-small icon-remove" href="<?php echo base_url() . "index.php/organisation/delete/" . $id; ?>"></a>
+                                            <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/user/delete/" . $id; ?>"></a>
                                         </td>
                                     </tr>
                                     <?php
@@ -99,7 +96,7 @@
                             }
                             ?>
                         </tbody>
-                    </table>            
+                    </table>        
 
                 </div>
 <?php require_once(APPPATH . 'views/js-page.php'); ?>
