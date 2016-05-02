@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Organisation extends CI_Controller {
+class Admin extends CI_Controller {
 
     function __construct() {
 
@@ -14,7 +14,19 @@ class Organisation extends CI_Controller {
     }
 
     public function index() {
-        $this->load->view('login');
+        
+        
+        $data['users'] = array();
+         $data['orgs'] = array();
+        $query = $this->Md->query("SELECT * FROM users");
+        if ($query)
+            $data['users'] = $query;
+        
+         $query = $this->Md->query("SELECT * FROM organisation");
+        if ($query)
+            $data['orgs'] = $query;
+        
+        $this->load->view('org-page',$data);
     }
 
     public function update() {
@@ -613,63 +625,6 @@ class Organisation extends CI_Controller {
 
     public function project() {
         $this->load->view('project');
-    }
-
-    public function updates() {
-
-        $this->load->helper(array('form', 'url'));
-
-        $id = $this->input->post('id');
-        $name = $this->input->post('name');
-        $code = $this->input->post('code');
-        $org = array('id' => $id, 'name' => $name, 'code' => $code);
-
-
-
-        $this->Md->update($id, $org, 'organisation');
-    }
-
-    public function delete() {
-
-
-        $this->load->helper(array('form', 'url'));
-        $id = $this->uri->segment(3);
-        $this->Md->remove($id, 'organisaton', 'image');
-         $query = $this->Md->cascade($id, 'org', 'attend');
-         $query = $this->Md->cascade($id, 'org', 'bill');
-        $query = $this->Md->cascade($id, 'org', 'client');
-        $query = $this->Md->cascade($id, 'org', 'document');
-        $query = $this->Md->cascade($id, 'org', 'files');
-        $query = $this->Md->cascade($id, 'org', 'item');
-        $query = $this->Md->cascade($id, 'org', 'note');
-        $query = $this->Md->cascade($id, 'org', 'schedule');
-        $query = $this->Md->cascade($id, 'org', 'sync_data');
-        $query = $this->Md->cascade($id, 'org', 'payments');
-        $query = $this->Md->cascade($id, 'org', 'transactions');
-        $query = $this->Md->cascade($id, 'org', 'users');
-        $query = $this->Md->delete($id, 'organisation');
-        if ($this->db->affected_rows() > 0) {
-
-            $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
-            if ($query) {
-                foreach ($query as $res) {
-                    $syc = array('object' => 'users', 'contents' => '', 'action' => 'delete', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
-                    $this->Md->save($syc, 'sync_data');
-                }
-            }
-            $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
-                                                <strong>
-                                                Information deleted	</strong>									
-						</div>');
-            redirect('user/client', 'refresh');
-        } else {
-            $this->session->set_flashdata('msg', '<div class="alert alert-error">
-                                                   
-                                                <strong>
-                                             Action Failed	</strong>									
-						</div>');
-            redirect('user/client', 'refresh');
-        }
     }
 
 }

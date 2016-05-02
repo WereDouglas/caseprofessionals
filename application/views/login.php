@@ -179,13 +179,15 @@
                                                     <fieldset>
                                                         <label>
                                                             <span class="block input-icon input-icon-right">
-                                                                <input type="text" class="span12"  name="name" placeholder="Company name" />
+                                                                <input type="text" class="span12"  name="name" id="cname" placeholder="Company name" />
+                                                                <span id="loading_name"  name ="loading_name"><img src="<?= base_url(); ?>images/loading.gif" alt="loading......" /></span>
 
                                                             </span>
                                                         </label>
                                                         <label>
                                                             <span class="block input-icon input-icon-right">
-                                                                <input type="text" class="span12"  name="code" placeholder="Company code" />
+                                                                <input type="text" class="span12"  name="code" id="code" placeholder="Company code" />
+                                                                <span id="loading_code"  name ="loading_code"><img src="<?= base_url(); ?>images/loading.gif" alt="loading......" /></span>
 
                                                             </span>
                                                         </label>
@@ -343,6 +345,8 @@ window.jQuery || document.write("<script src='<?= base_url(); ?>assets/js/jquery
             $(document).ready(function () {
 
                 $('#loading').hide();
+                $('#loading_name').hide();
+                $('#loading_code').hide();
                 $("#email2").blur(function () {
 
                     var user = $(this).val();
@@ -364,6 +368,50 @@ window.jQuery || document.write("<script src='<?= base_url(); ?>assets/js/jquery
 
 
                 });
+                
+                   $("#cname").blur(function () {
+
+                    var name = $(this).val();
+                    if (name != null) {
+
+                        $('#loading_name').show();
+                        $.post("<?php echo base_url() ?>index.php/organisation/name", {
+                            name: $(this).val()
+                        }, function (response) {
+                            // alert(response);
+                            $('#loading_name').hide();
+                            setTimeout(finishAjax('loading_name', escape(response)), 400);
+                        });
+                    }
+                    function finishAjax(id, response) {
+                        $('#' + id).html(unescape(response));
+                        $('#' + id).fadeIn();
+                    }
+
+
+                });
+                
+                   $("#code").blur(function () {
+
+                    var code = $(this).val();
+                    if (code != null) {
+
+                        $('#loading_code').show();
+                        $.post("<?php echo base_url() ?>index.php/organisation/code", {
+                            code: $(this).val()
+                        }, function (response) {
+                            // alert(response);
+                            $('#loading_code').hide();
+                            setTimeout(finishAjax('loading_code', escape(response)), 400);
+                        });
+                    }
+                    function finishAjax(id, response) {
+                        $('#' + id).html(unescape(response));
+                        $('#' + id).fadeIn();
+                    }
+                });
+                
+                
             });
 
 
