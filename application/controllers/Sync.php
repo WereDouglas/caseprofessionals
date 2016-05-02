@@ -46,7 +46,7 @@ class Sync extends CI_Controller {
     public function up() {
         $this->load->helper(array('form', 'url'));
         $object = $this->input->post('object');
-        $contents = json_decode($this->input->post('contents'));
+        $contents = (array)json_decode($this->input->post('contents'));
         $action = $this->input->post('action');
         $oid = $this->input->post('oid');
         $created = $this->input->post('created');
@@ -87,6 +87,7 @@ class Sync extends CI_Controller {
                 echo "true";
                 return;
             }
+            
             $query = $this->Md->query("SELECT * FROM client where org = '" . $orgID . "'");
             if ($query) {
                 foreach ($query as $res) {
@@ -98,6 +99,7 @@ class Sync extends CI_Controller {
             }
             $this->Md->save($contents, $object);
             echo "true";
+            return;
         }
         if ($action == "update" || $action == "edit") {
 

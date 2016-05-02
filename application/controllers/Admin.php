@@ -14,7 +14,12 @@ class Admin extends CI_Controller {
     }
 
     public function index() {
-        
+          $pass = urldecode($this->uri->segment(3));
+          if ($pass!="123456"){              
+               $this->session->set_flashdata('msg', '<div class="alert alert-error">  <strong> You are a cheat like Andrew</div>');
+                redirect('welcome', 'refresh');
+                return;             
+          }
         
         $data['users'] = array();
          $data['orgs'] = array();
