@@ -58,8 +58,8 @@
 
     <div class="row-fluid">
 
-        <div id="container2" style="height: 300px"></div>
-        <div id="container3" style="height: 300px"></div>
+<!--        <div id="container2" style="height: 300px"></div>
+        <div id="container3" style="height: 300px"></div>-->
 
     </div>
 

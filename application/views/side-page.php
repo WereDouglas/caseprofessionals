@@ -49,7 +49,18 @@
                     Manage users
                     <span class="badge badge-transparent tooltip-error" title="2&nbsp;Important&nbsp;Events">
 
-                    </span>
+                    </span> </span>
+            </a>
+        </li>
+        <li>
+            <a href="<?php echo base_url() . "index.php/procedure/"; ?>" target="frame">
+                <i class="icon-beaker"></i>
+
+                <span class="menu-text">
+                    Procedures
+                    <span class="badge badge-transparent tooltip-error" title="2&nbsp;Important&nbsp;Events">
+
+                    </span> </span>
             </a>
         </li>
         <li>
@@ -81,8 +92,8 @@
         </li> 
         <li> <a href="<?php echo base_url() . "files/Cp.rar"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Desktop(rar)</b> </a> </li>
         <li> <a href="<?php echo base_url() . "files/Cp.zip"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Desktop (zip)</b> </a> </li>
-       
-        
+
+
         <li> <a href="<?php echo base_url() . "files/Cp.apk"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Mobile</b> </a> </li>
 
     </ul><!--/.nav-list-->

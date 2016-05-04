@@ -29,8 +29,23 @@ class File extends CI_Controller {
         } else {
             $data['files'] = array();
         }
+        $data['procs'] = array();
+
+        $query = $this->Md->query("SELECT * FROM procedures where org = '" . $this->session->userdata('orgid') . "' OR org=''");
+        if ($query)
+            $data['procs'] = $query;
 
         $this->load->view('file-page', $data);
+    }
+
+    public function clients() {
+        $query = $this->Md->query("SELECT * FROM users  where org = '" . $this->session->userdata('orgid') . "' AND types='client' ORDER BY name DESC");
+        echo json_encode($query);
+    }
+
+    public function user() {
+        $query = $this->Md->query("SELECT * FROM users  where org = '" . $this->session->userdata('orgid') . "' AND types<>'client' ORDER BY name DESC");
+        echo json_encode($query);
     }
 
     public function api() {
@@ -40,7 +55,7 @@ class File extends CI_Controller {
 
         if ($result) {
 
-            echo json_encode($result);  
+            echo json_encode($result);
         }
     }
 
@@ -111,15 +126,15 @@ class File extends CI_Controller {
         } else {
             $data['notes'] = array();
         }
-          $query = $this->Md->query("SELECT * FROM bill where org = '" . $this->session->userdata('orgid') . "' AND fileID= '" . $fileid . "' ");
+        $query = $this->Md->query("SELECT * FROM bill where org = '" . $this->session->userdata('orgid') . "' AND fileID= '" . $fileid . "' ");
         //  var_dump($query);
         if ($query) {
             $data['bills'] = $query;
         } else {
             $data['bills'] = array();
         }
-        
-        
+
+
         $query = $this->Md->query("SELECT * FROM attend where org = '" . $this->session->userdata('orgid') . "'");
         //  var_dump($query);
         if ($query) {
@@ -198,15 +213,15 @@ class File extends CI_Controller {
 
         $file = array('name' => $name, 'types' => $types, 'details' => $details, 'subject' => $subject, 'created' => date('Y-m-d H:i:s'));
         $this->Md->update($id, $file, 'files');
-       $files = array('id'=>$id,'name' => $name, 'types' => $types, 'details' => $details, 'subject' => $subject, 'created' => date('Y-m-d H:i:s'));
-       
+        $files = array('id' => $id, 'name' => $name, 'types' => $types, 'details' => $details, 'subject' => $subject, 'created' => date('Y-m-d H:i:s'));
+
         $content = json_encode($files);
         $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
         if ($query) {
             foreach ($query as $res) {
                 $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'contents' => $content, 'action' => 'update', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
                 $this->Md->save($syc, 'sync_data');
-           }
+            }
         }
     }
 
@@ -245,10 +260,59 @@ class File extends CI_Controller {
         //user information
         $fileid = $this->GUID();
         $users = $this->input->post('client');
+        $co = $this->input->post('co');
+        $law = $this->input->post('law');
+        $citation = $this->input->post('citation');
         $details = $this->input->post('details');
         $names = $this->input->post('named');
         $types = $this->input->post('types');
         $subject = $this->input->post('subject');
+
+        $proc = $this->input->post('procs');
+        $procdate = $this->input->post('procdate');
+        $len = 0;
+        foreach ($proc as $t) {
+            $pc = explode('-', $t);
+            $names = $names;
+            $len = $len + $pc[0];
+            $dt = $pc[1] . " " . $names;
+            $day = date('Y-m-d', strtotime($procdate . ' + ' . $len . ' days'));
+            $days = "1";
+            $notify = 'T';
+            $start = "07:00";
+            $end = "09:00";
+            $details = $this->input->post('details');
+            $priority = "File";
+            
+            $fileid=$fileid;
+
+
+            $scheduleID = $this->GUID();
+
+            $sch = array('id' => $scheduleID, 'dated' => $day, 'priority' => $priority, 'days' => $days, 'detail' => $dt, 'org' => $this->session->userdata('orgid'), 'starts' => $start, 'ends' => $end, 'triggers' => $notify, 'types' => 'client', 'created' => date('Y-m-d'), 'meet' => $start, 'file' => $fileid);
+            $id = $this->Md->save($sch, 'schedule');
+
+            $content = json_encode($sch);
+            $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+            if ($query) {
+                foreach ($query as $res) {
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'schedule', 'contents' => $content, 'action' => 'create', 'oid' => $scheduleID, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $file_id = $this->Md->save($syc, 'sync_data');
+                }
+            }
+            $schs = array('org' => $this->session->userdata('orgid'), 'userID' => $co, 'scheduleID' => $scheduleID);
+            $id = $this->Md->save($schs, 'attend');
+
+            $contents = json_encode($schs);
+            $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+            if ($query) {
+                foreach ($query as $res) {
+                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'attend', 'contents' => $contents, 'action' => 'create', 'oid' => $id, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                    $this->Md->save($syc, 'sync_data');
+                }
+            }
+        }
+
         $app = "O";
         switch ($types) {
             case Litigation:
@@ -275,9 +339,9 @@ class File extends CI_Controller {
             }
 
 
-            $files = array('id' => $fileid, 'users' => $users, 'org' => $orgid, 'details' => $details, 'name' => $names, 'types' => $types, 'created' => date('Y-m-d H:i:s'), 'status' => 'T', 'no' => $no, 'subject' => $subject);
+            $files = array('id' => $fileid, 'users' => $users, 'org' => $orgid, 'details' => $details, 'name' => $names, 'types' => $types, 'created' => date('Y-m-d H:i:s'), 'status' => 'T', 'no' => $no, 'subject' => $subject, 'citation' => $citation, 'law' => $law, 'co' => $co);
             $this->Md->save($files, 'files');
-            $contents = array('id' => $fileid, 'users' => $users, 'org' => $orgid, 'details' => $details, 'name' => $names, 'types' => $types, 'created' => date('Y-m-d H:i:s'), 'status' => 'T', 'no' => $no, 'subject' => $subject);
+            $contents = array('id' => $fileid, 'users' => $users, 'org' => $orgid, 'details' => $details, 'name' => $names, 'types' => $types, 'created' => date('Y-m-d H:i:s'), 'status' => 'T', 'no' => $no, 'subject' => $subject, 'citation' => $citation, 'law' => $law, 'co' => $co);
 
             $content = json_encode($contents);
 

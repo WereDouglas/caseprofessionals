@@ -1,5 +1,24 @@
 
 <?php require_once(APPPATH . 'views/css-page.php'); ?>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/easyui.css">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/icon.css">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/demo.css">
+<link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/shieldui-all.min.css" />
+<link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/all.min.css" />
+<link rel="stylesheet" href="<?= base_url(); ?>assets/jquery-ui.css">
+
+<style type="text/css">  
+
+    .work {  
+        float:left;  
+        text-align: center;  
+        margin: 10px;  
+    }  
+    .worker-select {  
+        width: 100px;  
+        height: 80px;  
+    }  
+</style>  
 
 <div id="accordion2" class="accordion">  
 
@@ -41,21 +60,26 @@
                                 <input class="form-control" type="text"  name="subject"  placeholder="Subject" />
 
                             </div>
-                            <div class="row-fluid">
-                                <label for="form-field-select-4">Choose Client</label>
-                                <select  name="client"  data-placeholder="Choose client...">
-                                    <option value="" />
-                                    <?php
-                                    if (is_array($users) && count($users)) {
-                                        foreach ($users as $loop) {
-                                            ?>  
-                                            <option value="<?php echo $loop->id; ?>" /><?php echo $loop->name; ?>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
+                            <div class="form-group">
+                                <input class="form-control" type="text"  name="citation"  placeholder="Citation" />
+
                             </div>
+                            <div class="row-fluid">
+                                <label for="form-field-select-4">Law</label>
+                                <select  name="law"  data-placeholder="Choose Type...">
+                                    <option value="" />                                   
+                                    <option value="Civil" />Civil
+                                    <option value="Criminal" />Criminal
+                                    <option value="Litigation" />General
+
+                                </select>
+
+                            </div>
+                            Client<br>
+                            <input class="easyui-combobox" style="width:100px" id="client" name="client"  url="<?php echo base_url() . 'index.php/file/clients/'; ?>" valueField="id" textField="name">
+                            <br>
+                            C/O<br>
+                            <input class="easyui-combobox" style="width:100px" id="co" name="co"  url="<?php echo base_url() . 'index.php/file/user/'; ?>" valueField="id" textField="name">
                             <div class="row-fluid">
                                 <label for="form-field-select-4">Choose Type</label>
                                 <select  name="types"  data-placeholder="Choose Type...">
@@ -70,6 +94,26 @@
                                 <textarea  class="form-control" name="details" class="" placeholder="details" ></textarea>
                             </div>
                         </div>
+                        <div class="form-group">
+                        <label class="label-top">Start Date:</label>
+                        <input class="easyui-datebox" name="procdate" class="form-control" >
+                        </div>
+                        <div class="work">  
+                            <select multiple id="select1" class="work-select" name="proc[]">  
+                                <?php
+                                foreach ($procs as $proc) {
+                                    ?>
+                                    <option value="<?php echo $proc->period."-".$proc->name; ?>"><?php echo $proc->name ?></option>  
+                                    <?php
+                                }
+                                ?>                                  
+                            </select>  
+                            <a href="#" id="add">add &gt;&gt;</a>  
+                        </div>  
+                        <div class="work">  
+                            <select multiple="multiple" id="select2" class="work-select" name="procs[]"></select>  
+                            <a href="#" id="remove">&lt;&lt; remove</a>  
+                        </div> 
                         <div class="span6">
 
                             <br>
@@ -171,11 +215,11 @@
                                             <?php echo $created; ?>
                                         </td>  
                                         <td class="center">
-                                              <a class="btn-small icon-user" href="<?php echo base_url() . "index.php/file/view/" . $id; ?>"></a> |<a class=" btn-small icon-calendar" href="<?php echo base_url() . "index.php/file/schedule/" . $id; ?>"></a>
+                                            <a class="btn-small icon-user" href="<?php echo base_url() . "index.php/file/view/" . $id; ?>"></a> |<a class=" btn-small icon-calendar" href="<?php echo base_url() . "index.php/file/schedule/" . $id; ?>"></a>
                                         </td>
 
                                         <td class="center">
-                                            <a class="btn-flat btn-small icon-archive" href="<?php echo base_url() . "index.php/reciept/file/" .$id."/".$names."/".$client; ?>">receipt</a> |<a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/file/delete/" . $id; ?>"></a>
+                                            <a class="btn-flat btn-small icon-archive" href="<?php echo base_url() . "index.php/reciept/file/" . $id . "/" . $names . "/" . $client; ?>">receipt</a> |<a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/file/delete/" . $id; ?>"></a>
                                         </td>
                                     </tr>
                                     <?php
@@ -193,11 +237,45 @@
     </div>
 </div>
 
-<?php require_once(APPPATH . 'views/js-page.php'); ?>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<!--<![endif]-->
+
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<![endif]-->
+
+<!--[if !IE]>-->
+
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='<?php echo base_url(); ?>assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+</script>
+
+<!--<![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+window.jQuery || document.write("<script src='<?php echo base_url(); ?>assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if ("ontouchend" in document)
+        document.write("<script src='<?php echo base_url(); ?>assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+</script>
+
+<!-- Bootstrap 3.3.2 JS -->
+<script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js" type="text/javascript"></script>
+<!-- iCheck -->
+
+
+
+
 
 <script type="text/javascript">
     $(document).ready(function ()
     {
+
         $(".editbox").hide();
 
         $(".edit_tr").click(function ()
@@ -265,6 +343,25 @@
             $(".editbox").hide();
             $(".text").show();
         });
+        $('#add').click(function () {
+            return !$('#select1 option:selected').remove().appendTo('#select2');
+        });
+        $('#remove').click(function () {
+            return !$('#select2 option:selected').remove().appendTo('#select1');
+        });
+
+    });
+</script>
+<script type="text/javascript" src="<?= base_url(); ?>js/jquery.js"></script>
+<script type="text/javascript" src="<?= base_url(); ?>js/jquery.easyui.min.js"></script>
+<script src="<?= base_url(); ?>js/jquery.multi-select.js" type="text/javascript"></script>
+<script src="<?= base_url(); ?>plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="<?= base_url(); ?>plugins/datatables/dataTables.bootstrap.min.js" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#datatable").DataTable();
 
     });
 </script>

@@ -9,7 +9,7 @@ class Admin extends CI_Controller {
         parent::__construct();
         error_reporting(E_PARSE);
         $this->load->model('Md');
-        $this->load->library('session');
+       // $this->load->library('session');
         $this->load->library('encrypt');
     }
 
@@ -47,6 +47,26 @@ class Admin extends CI_Controller {
             $data['orgs'] = $query;
         
         $this->load->view('users-page',$data);
+    }
+     public function procedures() {
+        
+        
+        $data['users'] = array();
+         $data['orgs'] = array();
+         $data['procedures'] = array();
+        $query = $this->Md->query("SELECT * FROM users");
+        if ($query)
+            $data['users'] = $query;
+        
+         $query = $this->Md->query("SELECT * FROM organisation");
+        if ($query)
+            $data['orgs'] = $query;
+        
+         $query = $this->Md->query("SELECT * FROM procedures");
+        if ($query)
+            $data['procs'] = $query;
+        
+        $this->load->view('procedure-page',$data);
     }
 
     public function update() {
@@ -141,6 +161,7 @@ class Admin extends CI_Controller {
             echo '<span style="color:#f00"> ! already in use </span> <br>';
         }
     }
+    
 
     public function code() {
         $this->load->helper(array('form', 'url'));

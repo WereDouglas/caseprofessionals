@@ -146,7 +146,7 @@ class Schedule extends CI_Controller {
             }
 
             foreach ($attend as $t) {
-                $schs = array('org' => $this->session->userdata('orgid'), 'userID' => $t, 'scheduleID' => $scheduleID);
+              $schs = array('org' => $this->session->userdata('orgid'), 'userID' => $t, 'scheduleID' => $scheduleID);
               $id=  $this->Md->save($schs, 'attend');
                 
                 $contents = json_encode($schs);

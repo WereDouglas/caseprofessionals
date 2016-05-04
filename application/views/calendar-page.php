@@ -276,6 +276,9 @@ if (is_array($sch)) {
             case Low:
                 $className = 'label-grey';
                 break;
+            case File:
+                $className = 'label-blue';
+                break;
         }
 
         if (is_array($att)) {
