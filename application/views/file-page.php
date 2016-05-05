@@ -7,6 +7,8 @@
 <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>assets/all.min.css" />
 <link rel="stylesheet" href="<?= base_url(); ?>assets/jquery-ui.css">
 
+<link href="<?php echo base_url(); ?>bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
 <style type="text/css">  
 
     .work {  
@@ -76,10 +78,10 @@
 
                             </div>
                             Client<br>
-                            <input class="easyui-combobox" style="width:100px" id="client" name="client"  url="<?php echo base_url() . 'index.php/file/clients/'; ?>" valueField="id" textField="name">
+                            <input class="easyui-combobox form-control"   id="client" name="client"  url="<?php echo base_url() . 'index.php/file/clients/'; ?>" valueField="id" textField="name">
                             <br>
                             C/O<br>
-                            <input class="easyui-combobox" style="width:100px" id="co" name="co"  url="<?php echo base_url() . 'index.php/file/user/'; ?>" valueField="id" textField="name">
+                            <input class="easyui-combobox form-control"  id="co" name="co"  url="<?php echo base_url() . 'index.php/file/user/'; ?>" valueField="id" textField="name">
                             <div class="row-fluid">
                                 <label for="form-field-select-4">Choose Type</label>
                                 <select  name="types"  data-placeholder="Choose Type...">
@@ -94,39 +96,48 @@
                                 <textarea  class="form-control" name="details" class="" placeholder="details" ></textarea>
                             </div>
                         </div>
-                        <div class="form-group">
-                        <label class="label-top">Start Date:</label>
-                        <input class="easyui-datebox" name="procdate" class="form-control" >
-                        </div>
-                        <div class="work">  
-                            <select multiple id="select1" class="work-select" name="proc[]">  
-                                <?php
-                                foreach ($procs as $proc) {
-                                    ?>
-                                    <option value="<?php echo $proc->period."-".$proc->name; ?>"><?php echo $proc->name ?></option>  
+                        <div class=" span12">
+                            <h3>Add file process</h3>
+                            <div class="form-group">
+                                <label class="label-top">Start Date:</label>
+                                <div class="form-group">     
+                                    <input class="easyui-datebox" name="procdate" class="form-control" >
+                                </div>
+                            </div>
+                            <div class="work">  
+                                <select multiple id="select1" class="work-select" name="proc[]">  
                                     <?php
-                                }
-                                ?>                                  
-                            </select>  
-                            <a href="#" id="add">add &gt;&gt;</a>  
-                        </div>  
-                        <div class="work">  
-                            <select multiple="multiple" id="select2" class="work-select" name="procs[]"></select>  
-                            <a href="#" id="remove">&lt;&lt; remove</a>  
-                        </div> 
-                        <div class="span6">
-
-                            <br>
-                            <button type="submit" class="btn-primary btn btn-small">
-                                Save
-                                <i class="icon-ok icon-on-right"></i>
-                            </button>
-                            <button type="reset" class="btn btn-small">
-
-                                Reset
-                            </button>
+                                    foreach ($procs as $proc) {
+                                        ?>
+                                        <option value="<?php echo $proc->period . "-" . $proc->name; ?>"><?php echo $proc->name ?></option>  
+                                        <?php
+                                    }
+                                    ?>                                  
+                                </select>  
+                                <a href="#" id="add">add &gt;&gt;</a>  
+                            </div>  
+                            <div class="work">  
+                                <select multiple="multiple" id="select2" class="work-select" name="procs[]"></select>  
+                                <a href="#" id="remove">&lt;&lt; remove</a>  
+                            </div> 
                         </div>
+
+                        <hr>
+                        
                     </div>
+                    <div class="md">
+
+                            <div class="form-group">    
+                                <button type="submit" class="btn-primary btn btn-small">
+                                    Save
+                                    <i class="icon-ok icon-on-right"></i>
+                                </button>
+                                <button type="reset" class="btn btn-small">
+
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
                 </form> 
             </div><!-- /.box -->
 
