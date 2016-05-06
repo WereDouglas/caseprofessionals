@@ -46,7 +46,9 @@ class Sync extends CI_Controller {
     public function up() {
         $this->load->helper(array('form', 'url'));
         $object = $this->input->post('object');
-        $contenting = (array)json_decode($this->input->post('contents'));
+       $contenting = json_decode($this->input->post('contents'));
+      // var_dump($contenting);
+       
         $action = $this->input->post('action');
         $oid = $this->input->post('oid');
         $created = $this->input->post('created');
@@ -92,7 +94,7 @@ class Sync extends CI_Controller {
             if ($query) {
                 foreach ($query as $res) {
                     if ($res->name != $senderApplication) {
-                        $syc = array('org' => $orgID, 'object' => $object, 'contents' => json_decode($this->input->post('contents')), 'action' => $action, 'oid' => $oid, 'created' => $created, 'checksum' => $this->GUID(), 'client' => $res->name);
+                        $syc = array('org' => $orgID, 'object' => $object, 'contents' =>$this->input->post('contents'), 'action' => $action, 'oid' => $oid, 'created' => $created, 'checksum' => $this->GUID(), 'client' => $res->name);
                         $this->Md->save($syc, 'sync_data');
                     }
                 }
