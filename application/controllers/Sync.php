@@ -92,7 +92,7 @@ class Sync extends CI_Controller {
             if ($query) {
                 foreach ($query as $res) {
                     if ($res->name != $senderApplication) {
-                        $syc = array('org' => $orgID, 'object' => $object, 'contents' => $contents, 'action' => $action, 'oid' => $oid, 'created' => $created, 'checksum' => $this->GUID(), 'client' => $res->name);
+                        $syc = array('org' => $orgID, 'object' => $object, 'contents' => $this->input->post('contents'), 'action' => $action, 'oid' => $oid, 'created' => $created, 'checksum' => $this->GUID(), 'client' => $res->name);
                         $this->Md->save($syc, 'sync_data');
                     }
                 }
