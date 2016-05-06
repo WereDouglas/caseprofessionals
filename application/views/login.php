@@ -51,6 +51,8 @@
                                         <span class="red">Case</span>
                                         <span class="grey">Professional</span>
                                     </h1>
+                                    <small><a href="<?php echo base_url() . "files/Cp.apk"; ?>">Mobile Application</a> </small>
+                                 
 
                                 </div>
                             </div>
@@ -284,8 +286,9 @@
                                                     Back to login
                                                 </a>
                                             </div>
+                                            
                                         </div><!--/widget-body-->
-                                    </div><!--/signup-box-->
+                                             </div><!--/signup-box-->
                                 </div><!--/position-relative-->
                             </div>
                         </div>
@@ -293,6 +296,8 @@
                 </div><!--/.row-fluid-->
             </div>
         </div><!--/.main-container-->
+      
+
 
         <!--basic scripts-->
 
@@ -368,8 +373,8 @@ window.jQuery || document.write("<script src='<?= base_url(); ?>assets/js/jquery
 
 
                 });
-                
-                   $("#cname").blur(function () {
+
+                $("#cname").blur(function () {
 
                     var name = $(this).val();
                     if (name != null) {
@@ -390,8 +395,8 @@ window.jQuery || document.write("<script src='<?= base_url(); ?>assets/js/jquery
 
 
                 });
-                
-                   $("#code").blur(function () {
+
+                $("#code").blur(function () {
 
                     var code = $(this).val();
                     if (code != null) {
@@ -410,8 +415,8 @@ window.jQuery || document.write("<script src='<?= base_url(); ?>assets/js/jquery
                         $('#' + id).fadeIn();
                     }
                 });
-                
-                
+
+
             });
 
 
