@@ -73,13 +73,13 @@ class Sync extends CI_Controller {
                 $passwordf = $this->encrypt->encode($password, $key);
 
                 $users = array('id' => $userid, 'image' => $image, 'email' => $email, 'name' => $name, 'org' => $orgid, 'address' => $address, 'sync' => $sync, 'oid' => $oid, 'contact' => $contact, 'password' => $passwordf, 'types' => $type, 'level' => $level, 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
-                $contents = json_encode($users);
+                $conted = json_encode($users);
                 $this->Md->save($users, 'users');
                 $query = $this->Md->query("SELECT * FROM client where org = '" . $orgID . "'");
                 if ($query) {
                     foreach ($query as $res) {
                         if ($res->name != $senderApplication) {
-                            $syc = array('org' => $orgID, 'object' => $object, 'contents' =>$this->input->post('contents'), 'action' => $action, 'oid' => $oid, 'created' => $created, 'checksum' => $this->GUID(), 'client' => $res->name);
+                            $syc = array('org' => $orgID, 'object' => $object, 'contents' =>$conted, 'action' => $action, 'oid' => $oid, 'created' => $created, 'checksum' => $this->GUID(), 'client' => $res->name);
                             $this->Md->save($syc, 'sync_data');
                         }
                     }
@@ -92,7 +92,7 @@ class Sync extends CI_Controller {
             if ($query) {
                 foreach ($query as $res) {
                     if ($res->name != $senderApplication) {
-                        $syc = array('org' => $orgID, 'object' => $object, 'contents' => $this->input->post('contents'), 'action' => $action, 'oid' => $oid, 'created' => $created, 'checksum' => $this->GUID(), 'client' => $res->name);
+                        $syc = array('org' => $orgID, 'object' => $object, 'contents' => json_decode($this->input->post('contents')), 'action' => $action, 'oid' => $oid, 'created' => $created, 'checksum' => $this->GUID(), 'client' => $res->name);
                         $this->Md->save($syc, 'sync_data');
                     }
                 }
