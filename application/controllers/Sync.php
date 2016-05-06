@@ -46,7 +46,7 @@ class Sync extends CI_Controller {
     public function up() {
         $this->load->helper(array('form', 'url'));
         $object = $this->input->post('object');
-        $contents = (array)json_decode($this->input->post('contents'));
+        $contenting = (array)json_decode($this->input->post('contents'));
         $action = $this->input->post('action');
         $oid = $this->input->post('oid');
         $created = $this->input->post('created');
@@ -97,7 +97,7 @@ class Sync extends CI_Controller {
                     }
                 }
             }
-            $this->Md->save($contents, $object);
+            $this->Md->save($contenting, $object);
             echo "true";
             return;
         }
