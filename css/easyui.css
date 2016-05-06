@@ -557,6 +557,7 @@
   -moz-border-radius: 5px 5px 5px 5px;
   -webkit-border-radius: 5px 5px 5px 5px;
   border-radius: 5px 5px 5px 5px;
+  width: 100% !important;
 }
 .textbox .textbox-text {
   font-size: 12px;

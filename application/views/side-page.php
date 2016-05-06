@@ -92,8 +92,8 @@
         </li> 
         <li> <a href="<?php echo base_url() . "files/Cp.rar"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Desktop(rar)</b> </a> </li>
         <li> <a href="<?php echo base_url() . "files/Cp.zip"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Desktop (zip)</b> </a> </li>
-        <li> <a href="<?php echo base_url() . "files/dotnetfx45_full_x86_x64.zip"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>>NET 4.5 zip</b> </a> </li>
-        <li> <a href="<?php echo base_url() . "files/dotnetfx45_full_x86_x64.rar"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>NET 4.5(rar)</b> </a> </li>
+        <li> <a href="<?php echo base_url() . "files/NET4.5.1.rar"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>NET 4.5.1(rar)</b> </a> </li>
+        <li> <a href="<?php echo base_url() . "files/NET4.5.1.zip"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>NET 4.5.1(rar)</b> </a> </li>
 
 
         <li> <a href="<?php echo base_url() . "files/Cp.apk"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Mobile</b> </a> </li>

@@ -52,8 +52,8 @@
                     <h3 class="box-title">Add File</h3>
                 </div><!-- /.box-header -->
                 <form  enctype="multipart/form-data"  action='<?= base_url(); ?>index.php/file/add'  method="post">
-                    <div class="span12">
-                        <div class=" span6">
+                    <div class="col-lg-12">
+                        <div class=" col-sm-6">
                             <div class="form-group">
                                 <input class="form-control" type="text"  name="named"  placeholder="Name" />
 
@@ -96,7 +96,7 @@
                                 <textarea  class="form-control" name="details" class="" placeholder="details" ></textarea>
                             </div>
                         </div>
-                        <div class=" span12">
+                        <div class=" col-sm-6">
                             <h3>Add file process</h3>
                             <div class="form-group">
                                 <label class="label-top">Start Date:</label>
@@ -104,7 +104,8 @@
                                     <input class="easyui-datebox" name="procdate" class="form-control" >
                                 </div>
                             </div>
-                            <div class="work">  
+                             <div class="col-lg-12">
+                            <div class="col-lg-6">  
                                 <select multiple id="select1" class="work-select" name="proc[]">  
                                     <?php
                                     foreach ($procs as $proc) {
@@ -116,28 +117,28 @@
                                 </select>  
                                 <a href="#" id="add">add &gt;&gt;</a>  
                             </div>  
-                            <div class="work">  
+                            <div class="col-lg-6">  
                                 <select multiple="multiple" id="select2" class="work-select" name="procs[]"></select>  
                                 <a href="#" id="remove">&lt;&lt; remove</a>  
                             </div> 
                         </div>
+                            <div class="col-lg-12 pull-left">
 
-                        <hr>
-                        
-                    </div>
-                    <div class="md">
+                                <div class="form-group">    
+                                    <button type="submit" class="btn-primary btn btn-small">
+                                        Save
+                                        <i class="icon-ok icon-on-right"></i>
+                                    </button>
+                                    <button type="reset" class="btn btn-small">
 
-                            <div class="form-group">    
-                                <button type="submit" class="btn-primary btn btn-small">
-                                    Save
-                                    <i class="icon-ok icon-on-right"></i>
-                                </button>
-                                <button type="reset" class="btn btn-small">
-
-                                    Reset
-                                </button>
+                                        Reset
+                                    </button>
+                                </div>
                             </div>
                         </div>
+
+                    </div>
+
                 </form> 
             </div><!-- /.box -->
 
