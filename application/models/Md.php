@@ -15,6 +15,17 @@ class Md extends CI_Model {
         $this->db->where($field, $by);
         $this->db->update($table, $data);
     }
+     function update_all($value, $table ,$field) {
+
+        $sql = "UPDATE $table SET $field =? ";
+        $this->db->query($sql, array($value));
+        return $this->db->affected_rows();
+    }
+    function query_cell($string, $cell) {
+
+      
+        return $this->db->query($string)->row()->$cell;
+    }
 
     function query_single($string) {
 
