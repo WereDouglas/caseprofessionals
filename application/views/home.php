@@ -68,11 +68,15 @@
   <?php require_once(APPPATH . 'views/side-page.php'); ?>
         <div class="main-content">         
 
-
+<script language="javascript" type="text/javascript">
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+  }
+</script>
             <?php require_once(APPPATH . 'views/header-section.php'); ?>
 
             <div class="row-fluid ">
-                <iframe id="frame" name="frame" frameborder="no" border="0" scrolling="auto" height="1050"  style="padding: 10px;" width="450" class="span12" src="<?php echo base_url() . "index.php/schedule"; ?>"> </iframe>         
+                <iframe id="frame" name="frame" frameborder="no" border="0" onload="resizeIframe(this)" scrolling="no"  style="padding: 10px;" width="450" class="span12" src="<?php echo base_url() . "index.php/schedule"; ?>"> </iframe>         
             </div><!--/.row-fluid-->
 
         </div><!--/.main-content-->

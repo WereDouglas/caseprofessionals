@@ -298,7 +298,7 @@ if (is_array($sch)) {
                     }
         ?>
                         {
-                            title: '<?php echo $informations; ?>',
+                            title: '<?php echo $informations.'-'.$loop->name.'-'.' '.$loop->contact.'-'.$loop->email; ?>',
                             start: new Date(<?php echo $y; ?>, <?php echo $m; ?>, <?php echo $d; ?>),
                             className: '<?php echo $className; ?>'
 

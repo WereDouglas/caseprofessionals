@@ -76,6 +76,28 @@ class Mobile extends CI_Controller {
         }
     }
 
+    public function calendar() {
+
+        $this->load->helper(array('form', 'url'));
+        // $info = array('name' =>'true');
+        $userid = $this->input->post('userid');
+
+        $query = $this->Md->query("SELECT * FROM attend INNER JOIN schedule ON attend.scheduleID = schedule.id WHERE attend.userID ='" . $userid . "' AND attend.name<>'true'");
+        //update_dynamic($by, $field, $table, $data)       
+        echo json_encode($query);
+        //  $this->Md->update_dynamic($userid, "userID" ,"attend",$info);
+        return;
+    }
+
+    public function updated() {
+
+        $this->load->helper(array('form', 'url'));
+        $info = array('name' => 'true');
+        $userid = $this->input->post('userid');
+        $this->Md->update_dynamic($userid, "userID", "attend", $info);
+        return;
+    }
+
     public function users() {
 
 

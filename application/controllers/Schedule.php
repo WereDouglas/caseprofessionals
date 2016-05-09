@@ -28,8 +28,9 @@ class Schedule extends CI_Controller {
             $data['users'] = array();
         }
 
-        $query = $this->Md->query("SELECT * FROM schedule where org = '" . $this->session->userdata('orgid') . "' ");
-        //  var_dump($query);
+        //$query = $this->Md->query("SELECT * FROM schedule where org = '" . $this->session->userdata('orgid') . "' ");
+        // var_dump($query);
+        $query = $this->Md->query("SELECT * FROM attend INNER JOIN users ON attend.userID=users.id INNER JOIN schedule ON attend.scheduleID=schedule.id where attend.org = '" . $this->session->userdata('orgid') . "' ");
         if ($query) {
             $data['sch'] = $query;
         } else {
@@ -74,23 +75,24 @@ class Schedule extends CI_Controller {
             $this->session->sess_destroy();
             redirect('welcome', 'refresh');
         }
-        $query = $this->Md->query("SELECT * FROM users where org = '" . $this->session->userdata('orgid') . "' ");
-        //  var_dump($query);
-        if ($query) {
-            $data['users'] = $query;
-        } else {
-            $data['users'] = array();
-        }
+//        $query = $this->Md->query("SELECT * FROM attend INNER JOIN users ON attend.userID=users.id where org = '" . $this->session->userdata('orgid') . "' ");
+//        //  var_dump($query);
+//        if ($query) {
+//            $data['users'] = $query;
+//        } else {
+//            $data['users'] = array();
+//        }
 
-        $query = $this->Md->query("SELECT * FROM schedule where org = '" . $this->session->userdata('orgid') . "' ");
-        //  var_dump($query);
+        $query = $this->Md->query("SELECT * FROM attend INNER JOIN users ON attend.userID=users.id INNER JOIN schedule ON attend.scheduleID=schedule.id where attend.org = '" . $this->session->userdata('orgid') . "' ");
+      //  var_dump($query);
         if ($query) {
             $data['sch'] = $query;
         } else {
             $data['sch'] = array();
         }
-        $query = $this->Md->query("SELECT * FROM attend where org = '" . $this->session->userdata('orgid') . "'");
-        //  var_dump($query);
+        $query = $this->Md->query("SELECT * FROM attend INNER JOIN users ON attend.userID=users.id INNER JOIN schedule ON attend.scheduleID=schedule.id where attend.org = '" . $this->session->userdata('orgid') . "' ");
+      // var_dump($query);
+//       /return;
         if ($query) {
             $data['att'] = $query;
         } else {

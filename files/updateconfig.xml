@@ -1,0 +1,7 @@
+<UpdateConfig>
+  <CurrentVersion>10.2.3.4</CurrentVersion>
+  <IsMandatory>false</IsMandatory>
+  <LastMandatoryVersion>1.2.3.0</LastMandatoryVersion>
+  <PatchUri>http://localhost/caseprofessional/files/v1.zip</PatchUri>
+  <PatchSizeBytes>2390000</PatchSizeBytes>
+</UpdateConfig>

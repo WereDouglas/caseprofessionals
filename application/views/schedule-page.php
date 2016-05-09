@@ -47,14 +47,7 @@
                                     if (is_array($att)) {
                                         foreach ($att as $val) {
                                             if ($val->scheduleID == $loop->id) {
-
-                                                if (is_array($users)) {
-                                                    foreach ($users as $user) {
-                                                        if ($user->id == $val->userID) {                                                            
-                                                            echo $user->name .'  ' .$user->contact.'<br>';
-                                                        }
-                                                    }
-                                                }
+                                                echo $val->name . '  ' . $val->contact . '<br>';
                                             }
                                         }
                                     }
@@ -66,10 +59,10 @@
                                     <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/schedule/delete/" . $loop->id; ?>"></a>
                                 </td>
                             </tr>
-        <?php
-    }
-}
-?>
+                            <?php
+                        }
+                    }
+                    ?>
                 </tbody>
             </table>            
 
@@ -79,6 +72,6 @@
     </div>
 
 
-<?php require_once(APPPATH . 'views/js-page.php'); ?>
+    <?php require_once(APPPATH . 'views/js-page.php'); ?>
 
 

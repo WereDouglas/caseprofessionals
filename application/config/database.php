@@ -66,7 +66,7 @@ $query_builder = TRUE;
 /** start: hack for cross dev-machine database headaches **/
 $db_name = 'case';
 $db_username = 'root';
-$db_password = 'password';
+$db_password = '';
 
 if(file_exists(__DIR__ .'/db_local.php')){
     $db_local = include_once __DIR__ .'/db_local.php';
@@ -79,7 +79,7 @@ if(file_exists(__DIR__ .'/db_local.php')){
 
 $db['default'] = array(
     'dsn' => '',
-    'hostname' => 'serviceug.cloudapp.net',
+    'hostname' => 'localhost',
     'username' => $db_username,
     'password' => $db_password,
     'database' => $db_name,
