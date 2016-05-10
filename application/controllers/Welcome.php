@@ -19,6 +19,11 @@ class Welcome extends CI_Controller {
 
         $this->load->view('login');
     }
+    
+     public function version() {
+
+        $this->load->view('version');
+    }
 
     public function home() {
         if ($this->session->userdata('username') != "") {

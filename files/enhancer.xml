@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <item>
-<title>New version 1.2.4.1 is available for Case professional</title>
-<version>1.2.4.1</version>
+<title>New version 1.0.0.1 is available for Case professional</title>
+<version> 1.0.0.1</version>
 <url>http://localhost/caseprofessional/files/Cp.msi</url>
 <changelog>http://localhost/caseprofessional/files/releasenotes.html</changelog>
 </item>
