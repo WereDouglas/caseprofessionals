@@ -64,7 +64,7 @@ class Report extends CI_Controller {
         } else {
             $data['files'] = array();
         }
-        $this->load->view('view-graph', $data);
+       $this->load->view('view-graph', $data);
     }
 
     public function client() {

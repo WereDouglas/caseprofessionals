@@ -90,10 +90,10 @@
 
             </a>          
         </li> 
-        <li> <a href="<?php echo base_url() . "files/Cp.msi"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Desktop(WINDOWS INSTALLER)</b> </a> </li>
-        <li> <a href="https://www.microsoft.com/en-us/download/details.aspx?id=40779"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>NET 4.5.1(Online)</b> </a> </li>
+        <li> <a href="https://drive.google.com/open?id=0B9uE4DZJ5gypbTkxWDFwaWVORGM"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Desktop(WINDOWS INSTALLER)</b> </a> </li>
+        <li> <a href="https://www.microsoft.com/en-us/download/details.aspx?id=40779" target="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>NET 4.5.1(Online)</b> </a> </li>
 
-        <li> <a href="<?php echo base_url() . "files/NET4.5.1.zip"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>NET 4.5.1(zip)</b> </a> </li>
+<!--        <li> <a href="<?php echo base_url() . "files/NET4.5.1.zip"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>NET 4.5.1(zip)</b> </a> </li>-->
 
 
         <li> <a href="<?php echo base_url() . "files/Cp.apk"; ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Mobile</b> </a> </li>
