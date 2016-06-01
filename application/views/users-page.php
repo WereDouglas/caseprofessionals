@@ -11,7 +11,7 @@
                 <th>CONTACT</th>
                 <th>ADDRESS</th>
                 <th>EMAIL</th>
-                 <th>RESET PASSWORD</th>
+                <th>RESET PASSWORD</th>
                 <th>CREATED:</th>
                 <th>ACTION</th>
             </tr>
@@ -159,8 +159,15 @@
             $(".editbox").hide();
             $(".text").show();
         });
-        function NavigateToSite(ele) {
-        var selectedVal  = $(ele).attr("value");
+
+
+
+    });
+</script>
+<script>
+
+    function NavigateToSite(ele) {
+        var selectedVal = $(ele).attr("value");
         //var selectedVal = document.getElementById("myLink").getAttribute('value');
         //href= "index.php/patient/add_user/'
         $.post("<?php echo base_url() ?>index.php/admin/reset", {
@@ -170,7 +177,5 @@
         });
 
     }
-        
 
-    });
 </script>

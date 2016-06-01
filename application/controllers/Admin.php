@@ -12,11 +12,20 @@ class Admin extends CI_Controller {
         // $this->load->library('session');
         $this->load->library('encrypt');
     }
+     public function generateRandomString($length = 6) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+    }
      public function reset() {
         $password = $this->generateRandomString();
 
         $userid = trim($this->input->post('id'));
-
+       // $userid = 'CB501C98-74B4-4480-BFBE-6447CF3BBB18';
         //query_cell($string, $cell)
         $email = $this->Md->query_cell("SELECT * FROM users where id= '" . $userid . "'", 'email');
 
@@ -31,9 +40,9 @@ class Admin extends CI_Controller {
 
         $user = array('password' => $password_new);
         $this->Md->update($userid, $user, 'users');
-         echo 'New Password is reset please check mail( SPAM MAIL ESPECIALLY ) '.$password_new;
+         echo 'New Password is reset please check mail( SPAM MAIL ESPECIALLY ) '.$password;
 
-        $reciever = $this->Md->query_cell("SELECT email FROM user WHERE id ='$userid' ", 'email');
+        $reciever = $this->Md->query_cell("SELECT email FROM users WHERE id ='$userid' ", 'email');
         $message = $reciever . ' Your Password has been changed to  <b>'. $newer.'</b> for Afenet HR login panel';
         $subject = 'CHANGED PASSWORD FOR YOUR ONLINE CASEPROFESSIONAL ACCOUNT ';
         
