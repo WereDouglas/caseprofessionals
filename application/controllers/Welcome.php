@@ -93,7 +93,7 @@ class Welcome extends CI_Controller {
         if (!$get_user) {
 
             $results = $this->Md->get('email', $email, 'users');
-            var_dump($results);
+            //var_dump($results);
             foreach ($results as $resv) {
                 $key = $email;
                 $password = $this->encrypt->decode($resv->password, $key);

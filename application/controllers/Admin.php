@@ -12,6 +12,34 @@ class Admin extends CI_Controller {
         // $this->load->library('session');
         $this->load->library('encrypt');
     }
+     public function reset() {
+        $password = $this->generateRandomString();
+
+        $userid = trim($this->input->post('id'));
+
+        //query_cell($string, $cell)
+        $email = $this->Md->query_cell("SELECT * FROM users where id= '" . $userid . "'", 'email');
+
+
+        if ($email == "") {
+            echo 'No email specified';
+            return;
+        }
+        $key = $email;
+        $password_new = $this->encrypt->encode($password, $key);
+        $newer = $password;
+
+        $user = array('password' => $password_new);
+        $this->Md->update($userid, $user, 'users');
+         echo 'New Password is reset please check mail( SPAM MAIL ESPECIALLY ) '.$password_new;
+
+        $reciever = $this->Md->query_cell("SELECT email FROM user WHERE id ='$userid' ", 'email');
+        $message = $reciever . ' Your Password has been changed to  <b>'. $newer.'</b> for Afenet HR login panel';
+        $subject = 'CHANGED PASSWORD FOR YOUR ONLINE CASEPROFESSIONAL ACCOUNT ';
+        
+        $mail = array('message' => $message, 'subject' => 'REMINDER', 'schedule' => date('d-m-Y'), 'reciever' => $email, 'created' => date('Y-m-d H:i:s'), 'org' => "", 'sent' => 'false', 'guid' =>'');
+        $this->Md->save($mail, 'emails');
+    }
 
     public function index() {
         $pass = urldecode($this->uri->segment(3));
