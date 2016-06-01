@@ -22,7 +22,6 @@ class Md extends CI_Model {
         return $this->db->affected_rows();
     }
     function query_cell($string, $cell) {
-
       
         return $this->db->query($string)->row()->$cell;
     }

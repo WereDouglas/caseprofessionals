@@ -30,6 +30,7 @@
     </div>
     <div class="align-right">
 
+
         <a href="#collapseTwo" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle collapsed">
 
             <button class="  btn-sm">
@@ -49,8 +50,19 @@
         <div class="accordion-body collapse" id="collapseTwo">
             <div class="accordion-inner">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Add File</h3>
+                    <h3 class="box-title">Add File/Import</h3>
+ 
                 </div><!-- /.box-header -->
+                <a href="<?= base_url(); ?>images/CaseClientTemplate.xlsx">
+                    Download Template
+                    <img style= " height:auto; width:100%; "  src="<?= base_url(); ?>images/uploadsnippet.PNG" alt="Download Template" />
+                </a>
+                <form action="<?php echo base_url(); ?>index.php/file/import" method="post" class="container" name="upload_excel" enctype="multipart/form-data">
+                    <div class="row">
+                    <input type="file" name="file" id="file" class=" btn btn-primary pull-left col-md-3" >
+                    <button type="submit" id="submit" name="Import" class="btn btn-sm btn-success pull-right col-md-3">Import</button>
+                    </div>
+                </form>
                 <form  enctype="multipart/form-data"  action='<?= base_url(); ?>index.php/file/add'  method="post">
                     <div class="col-lg-12">
                         <div class=" col-sm-6">
@@ -104,24 +116,24 @@
                                     <input class="easyui-datebox" name="procdate" class="form-control" >
                                 </div>
                             </div>
-                             <div class="col-lg-12">
-                            <div class="col-lg-6">  
-                                <select multiple id="select1" class="work-select" name="proc[]">  
-                                    <?php
-                                    foreach ($procs as $proc) {
-                                        ?>
-                                        <option value="<?php echo $proc->period . "-" . $proc->name; ?>"><?php echo $proc->name ?></option>  
+                            <div class="col-lg-12">
+                                <div class="col-lg-6">  
+                                    <select multiple id="select1" class="work-select" name="proc[]">  
                                         <?php
-                                    }
-                                    ?>                                  
-                                </select>  
-                                <a href="#" id="add">add &gt;&gt;</a>  
-                            </div>  
-                            <div class="col-lg-6">  
-                                <select multiple="multiple" id="select2" class="work-select" name="procs[]"></select>  
-                                <a href="#" id="remove">&lt;&lt; remove</a>  
-                            </div> 
-                        </div>
+                                        foreach ($procs as $proc) {
+                                            ?>
+                                            <option value="<?php echo $proc->period . "-" . $proc->name; ?>"><?php echo $proc->name ?></option>  
+                                            <?php
+                                        }
+                                        ?>                                  
+                                    </select>  
+                                    <a href="#" id="add">add &gt;&gt;</a>  
+                                </div>  
+                                <div class="col-lg-6">  
+                                    <select multiple="multiple" id="select2" class="work-select" name="procs[]"></select>  
+                                    <a href="#" id="remove">&lt;&lt; remove</a>  
+                                </div> 
+                            </div>
                             <div class="col-lg-12 pull-left">
 
                                 <div class="form-group">    

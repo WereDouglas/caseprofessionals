@@ -30,6 +30,16 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Add New Client</h3>
                 </div><!-- /.box-header -->
+                 <a href="<?= base_url(); ?>images/CaseClientTemplate.xlsx">
+                    Download Template
+                    <img style= " height:auto; width:100%; "  src="<?= base_url(); ?>images/uploadsnippet.PNG" alt="Download Template" />
+                </a>
+                <form action="<?php echo base_url(); ?>index.php/client/import" method="post" class="container" name="upload_excel" enctype="multipart/form-data">
+                    <div class="row">
+                    <input type="file" name="file" id="file" class=" btn btn-primary pull-left col-md-3" >
+                    <button type="submit" id="submit" name="Import" class="btn btn-sm btn-success pull-right col-md-3">Import</button>
+                    </div>
+                </form>
                 <form  enctype="multipart/form-data"  action='<?= base_url(); ?>index.php/user/add_client'  method="post">
                     <div class="span12">
                         <div class=" span6">

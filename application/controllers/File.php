@@ -37,6 +37,140 @@ class File extends CI_Controller {
 
         $this->load->view('file-page', $data);
     }
+      public function import() {
+
+        if (isset($_POST["Import"])) {
+            $filename = $_FILES["file"]["tmp_name"];
+            // echo $filename;
+            if ($_FILES["file"]["size"] > 0) {
+                $file = fopen($filename, "r");
+                $file = $filename;
+                $this->load->library('excel');
+                $objPHPExcel = PHPExcel_IOFactory::load($file);
+                //      Get worksheet dimensions
+                $sheet = $objPHPExcel->getSheet(0);
+                $highestRow = $sheet->getHighestRow();
+                $highestColumn = $sheet->getHighestColumn();
+                // Loop through each row of the worksheet in turn
+                $budget = new stdClass();
+
+                 for ($row = 1; $row < 2; $row++) {
+                    //  Read a row of data into an array
+                    // echo $row;
+                    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+
+                    // var_dump($rowData[0]);
+                    // echo count($rowData[0]);
+                    for ($m = 0; $m < count($rowData[0]); $m++) {
+
+                        // echo $rowData[0][$m]."<br> ";
+                    }
+                }
+                for ($row = 2; $row <= $highestRow; $row++) {
+                    //  Read a row of data into an array
+                    // echo $row;
+                    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+
+                    // var_dump($rowData[0]);
+                    for ($d = 0; $d < count($rowData); $d++) {
+                        // var_dump($rowData[$d]);
+                        // echo $rowData[$d][13] . "<br>";
+                        //  echo $rowData[$d][1] . "<br>";
+                        //  echo $rowData[$d][2] . "<br>";
+                        //  echo $rowData[$d][3] . "<br>";
+                        $budget = new stdClass();
+
+                        if ($this->session->userdata('department') != "") {
+                            $department = $this->session->userdata('department');
+                        } else {
+                            $department = $str_replace("_", " ", $rowData[$d][1]);
+                        }
+                        if ($this->session->userdata('unit') != "") {
+                            $unit = $this->session->userdata('unit');
+                        } else {
+                            $unit = $rowData[$d][2];
+                        }
+                        if ($this->session->userdata('period') != "" || $this->session->userdata('period') != "none") {
+                            $period = $this->session->userdata('period');
+                        } else {
+                            $period = $$rowData[$d][55];
+                        }
+
+                        $instance = array('id' => $this->GUID(),
+                            'account' => $rowData[$d][13],
+                            'totalForeign' => $rowData[$d][24],
+                            'unit' => $unit,
+                            'department' => $department,
+                            'period' => $period,
+                            'submitted' => $this->session->userdata('email'),
+                            'created' => date('Y-m-d H:i:s'),
+                            'activity ' => $rowData[$d][3],
+                            'output' => $rowData[$d][4],
+                            'outcome' => $rowData[$d][5],
+                            'objectives' => $rowData[$d][6],
+                            'initiatives' => $rowData[$d][7],
+                            'performance' => $rowData[$d][8],
+                            'starts' => $rowData[$d][27],
+                            'starts' => $rowData[$d][28],
+                            'Procurement' => $rowData[$d][9],
+                            'category ' => $rowData[$d][10],
+                            'line' => $rowData[$d][11],
+                            'subline' => $rowData[$d][12],
+                            'funding ' => $rowData[$d][15],
+                            'description' => $rowData[$d][14],
+                            //**isssue
+                            'currency' => $rowData[$d][17],
+                            'rate' => $rowData[$d][18],
+                            'priceForeign' => $rowData[$d][19],
+                            'qty' => $rowData[$d][20],
+                            'persons' => $rowData[$d][21],
+                            'freq' => $rowData[$d][22],
+                            'priceLocal' => $rowData[$d][23],
+                            'totalForeign' => $rowData[$d][24],
+                            //**issue
+                            'flow' => $rowData[$d][10],
+                            'totalLocal' => $rowData[$d][23],
+                            'variance' => $rowData[$d][25],
+                            //**isssue
+                            'generation' => $rowData[$d][10],
+                            'Jan' => $rowData[$d][31],
+                            'Feb' => $rowData[$d][32],
+                            'Mar' => $rowData[$d][33],
+                            'Apr' => $rowData[$d][34],
+                            'May' => $rowData[$d][35],
+                            'Jun' => $rowData[$d][36],
+                            'Jul' => $rowData[$d][37],
+                            'Aug' => $rowData[$d][38],
+                            'Sep' => $rowData[$d][39],
+                            'Oct' => $rowData[$d][40],
+                            'Nov' => $rowData[$d][41],
+                            'Dec' => $rowData[$d][42],
+                            'Q1' => $rowData[$d][45],
+                            'Q2' => $rowData[$d][46],
+                            'Q3' => $rowData[$d][47],
+                            'Q4' => $rowData[$d][48],
+                            'other' => "",
+                            ///***issue
+                            'details ' => $rowData[$d][54],
+                            'Year ' => $rowData[$d][55],
+                        );
+
+                        //  $budget = json_encode($budget);
+                        //  $instance = array('account' => $rowData[$d][13], 'total' => $rowData[$d][24], 'enddate' => "", 'startdate' => "", 'initiative' => $rowData[$d][7], 'unit' => $rowData[$d][2], 'department' => str_replace("_", " ", $rowData[$d][1]), 'period' => $rowData[$d][55], 'orgID' => '', 'content' => $budget, 'by' => $this->session->userdata('email'), 'created' => date('Y-m-d H:i:s'));
+                        $id = $this->Md->save($instance, 'budgets');
+                    }
+                }
+                //  Insert row data array into your database of choice here
+            }
+//send the data in an array format
+
+            fclose($file);
+            // redirect('/all');
+        }
+
+        echo '<div class="alert alert-info">   <strong>Information uploaded!  </strong>	</div>';
+        redirect('file', 'refresh');
+    }
 
     public function clients() {
         $query = $this->Md->query("SELECT * FROM users  where org = '" . $this->session->userdata('orgid') . "' AND types='client' ORDER BY name DESC");
