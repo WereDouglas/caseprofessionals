@@ -110,6 +110,7 @@ class Welcome extends CI_Controller {
                     $code = $res->code;
                     $license = $res->keys;
                     $address = $res->address;
+                     $emails = $res->sync;
                 }
                 $this->session->set_userdata('name', $name);
                 $this->session->set_userdata('orgimage', $orgimage);
@@ -117,6 +118,7 @@ class Welcome extends CI_Controller {
                 $this->session->set_userdata('starts', $starts);
                 $this->session->set_userdata('ends', $ends);
                 $this->session->set_userdata('code', $code);
+                 $this->session->set_userdata('emails', $emails);
                 $this->session->set_userdata('license', $license);
                 $this->session->set_userdata('username', $resv->name);
                 $this->session->set_userdata('orgid', $resv->org);

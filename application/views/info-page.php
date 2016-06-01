@@ -29,6 +29,13 @@
                 </span>
                 
             </label><br>
+            <label>
+                <span class="block input-icon input-icon-right">
+                    <input type="text"   name="email" class="span12" value="<?php echo $this->session->userdata('emails'); ?>" />
+                     
+                </span>
+                
+            </label><br>
             Starts : <?php echo $this->session->userdata('starts'); ?><br>
             Expires : <?php echo $this->session->userdata('ends'); ?><br>
             Code:<?php echo $this->session->userdata('code'); ?><br>

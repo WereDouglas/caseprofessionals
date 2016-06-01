@@ -26,8 +26,9 @@ class Organisation extends CI_Controller {
             $name = $this->input->post('name');
             $address = $this->input->post('address');
             $code = $this->input->post('code');
+             $email = $this->input->post('email');
 
-            $org = array('id' => $id, 'name' => $name, 'address' => $address, 'code' => $code);
+            $org = array('id' => $id, 'name' => $name, 'address' => $address, 'code' => $code,'sync'=>$email);
 
             $content = json_encode($org);
             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
