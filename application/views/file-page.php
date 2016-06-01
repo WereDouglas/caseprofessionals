@@ -50,12 +50,12 @@
         <div class="accordion-body collapse" id="collapseTwo">
             <div class="accordion-inner">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Add File/Import</h3>
+                    <h3 class="box-title">Add / Import Files</h3>
  
                 </div><!-- /.box-header -->
-                <a href="<?= base_url(); ?>images/CaseClientTemplate.xlsx">
-                    Download Template
-                    <img style= " height:auto; width:100%; "  src="<?= base_url(); ?>images/uploadsnippet.PNG" alt="Download Template" />
+                <a href="<?= base_url(); ?>images/CaseFileTemplate.xlsx">
+                    Download Template<a class="text-danger text-capitalize text-bold">Please ensure that all names and data used for client and file handlers information is already registered in your database</a>
+                    <img style= " height:auto; width:100%; "  src="<?= base_url(); ?>images/UploadFileTemplate.PNG" alt="Download Template" />
                 </a>
                 <form action="<?php echo base_url(); ?>index.php/file/import" method="post" class="container" name="upload_excel" enctype="multipart/form-data">
                     <div class="row">

@@ -7,11 +7,12 @@ class File extends CI_Controller {
     function __construct() {
 
         parent::__construct();
-        error_reporting(E_PARSE);
+       error_reporting(E_PARSE);
         $this->load->model('Md');
         $this->load->library('session');
         $this->load->library('encrypt');
         date_default_timezone_set('Africa/Kampala');
+           $this->load->library('excel');
     }
 
     public function index() {
@@ -37,7 +38,10 @@ class File extends CI_Controller {
 
         $this->load->view('file-page', $data);
     }
-      public function import() {
+
+    public function import() {
+        
+       $orgid= $this->session->userdata('orgid');
 
         if (isset($_POST["Import"])) {
             $filename = $_FILES["file"]["tmp_name"];
@@ -45,24 +49,20 @@ class File extends CI_Controller {
             if ($_FILES["file"]["size"] > 0) {
                 $file = fopen($filename, "r");
                 $file = $filename;
-                $this->load->library('excel');
+
                 $objPHPExcel = PHPExcel_IOFactory::load($file);
                 //      Get worksheet dimensions
                 $sheet = $objPHPExcel->getSheet(0);
                 $highestRow = $sheet->getHighestRow();
                 $highestColumn = $sheet->getHighestColumn();
                 // Loop through each row of the worksheet in turn
-                $budget = new stdClass();
-
-                 for ($row = 1; $row < 2; $row++) {
+                for ($row = 1; $row < 2; $row++) {
                     //  Read a row of data into an array
                     // echo $row;
                     $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
-
                     // var_dump($rowData[0]);
                     // echo count($rowData[0]);
                     for ($m = 0; $m < count($rowData[0]); $m++) {
-
                         // echo $rowData[0][$m]."<br> ";
                     }
                 }
@@ -71,93 +71,54 @@ class File extends CI_Controller {
                     // echo $row;
                     $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
 
-                    // var_dump($rowData[0]);
+                    // var_dump($rowData);
                     for ($d = 0; $d < count($rowData); $d++) {
                         // var_dump($rowData[$d]);
-                        // echo $rowData[$d][13] . "<br>";
-                        //  echo $rowData[$d][1] . "<br>";
-                        //  echo $rowData[$d][2] . "<br>";
-                        //  echo $rowData[$d][3] . "<br>";
-                        $budget = new stdClass();
-
-                        if ($this->session->userdata('department') != "") {
-                            $department = $this->session->userdata('department');
+                        //echo $rowData[$d][0] . "<br>";
+                        $fileid = $this->GUID();
+                        //get($field, $value, $table)
+                        $namer = $this->Md->get('name', $rowData[$d][4], 'files');
+                        $filer = $this->Md->get('no', $rowData[$d][1], 'files');
+                        //echo $name.'<br>';
+                        //return;
+                       // var_dump($namer);
+                       // return;
+                        if ( strlen( $rowData[$d][0]) > 2  && count($namer) == 0 && count($filer) == 0) {
+                            //$users = array('id' => $userid, 'image' => " ", 'email' => $rowData[$d][2], 'name' => $rowData[$d][0], 'org' => $this->session->userdata('orgid'), 'address' => $rowData[$d][4], 'sync' => $rowData[$d][1], 'oid' => " ", 'contact' => $rowData[$d][3], 'password' => " ", 'types' => 'client', 'level' => '4', 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
+                            //$users = $this->Md->query_cell("SELECT * FROM users where name = '" .$rowData[$d][0] . "'", 'id');                         
+                            $query = $this->Md->query("SELECT * FROM users where name LIKE '".$rowData[$d][0]."' AND org= '".$this->session->userdata('orgid')."' LIMIT 1");
+                            if ($query) {
+                                foreach ($query as $res) {
+                                     $clientid =$res->id;
+                                }
+                            }                            
+                            $query2 = $this->Md->query("SELECT * FROM users where name LIKE '".$rowData[$d][10]."' AND org= '".$this->session->userdata('orgid')."'  LIMIT 1");
+                            if ($query2) {
+                                foreach ($query2 as $res2) {
+                                     $userid =$res2->id;
+                                }
+                            }
+                            if($clientid==" " || $userid==" "){                               
+                                
+                                continue;
+                            }
+                            //date('Y-m-d', strtotime($date))
+                            $files = array('id' => $fileid, 'users' => $clientid, 'org' => $orgid, 'details' => $rowData[$d][3], 'name' => $rowData[$d][4], 'types' =>$rowData[$d][2], 'created' => date('d-m-Y', strtotime($rowData[$d][9])), 'status' => 'T', 'no' => $rowData[$d][1], 'subject' => $rowData[$d][6], 'citation' => $rowData[$d][7], 'law' => $rowData[$d][8], 'co' => $userid);
+                            $this->Md->save($files, 'files');
+                            $contents =  array('id' => $fileid, 'users' => $clientid, 'org' => $orgid, 'details' => $rowData[$d][3], 'name' => $rowData[$d][4], 'types' =>$rowData[$d][2], 'created' => date('d-m-Y', strtotime($rowData[$d][9])), 'status' => 'T', 'no' => $rowData[$d][1], 'subject' => $rowData[$d][6], 'citation' => $rowData[$d][7], 'law' => $rowData[$d][8], 'co' => $userid);                        
+                            $content = json_encode($contents);
+                            $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
+                            if ($query) {
+                                foreach ($query as $res) {
+                                    $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'files', 'contents' => $content, 'action' => 'create', 'oid' => $fileid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
+                                    $this->Md->save($syc, 'sync_data');
+                                }
+                            }
+                            echo 'saving';
                         } else {
-                            $department = $str_replace("_", " ", $rowData[$d][1]);
-                        }
-                        if ($this->session->userdata('unit') != "") {
-                            $unit = $this->session->userdata('unit');
-                        } else {
-                            $unit = $rowData[$d][2];
-                        }
-                        if ($this->session->userdata('period') != "" || $this->session->userdata('period') != "none") {
-                            $period = $this->session->userdata('period');
-                        } else {
-                            $period = $$rowData[$d][55];
-                        }
 
-                        $instance = array('id' => $this->GUID(),
-                            'account' => $rowData[$d][13],
-                            'totalForeign' => $rowData[$d][24],
-                            'unit' => $unit,
-                            'department' => $department,
-                            'period' => $period,
-                            'submitted' => $this->session->userdata('email'),
-                            'created' => date('Y-m-d H:i:s'),
-                            'activity ' => $rowData[$d][3],
-                            'output' => $rowData[$d][4],
-                            'outcome' => $rowData[$d][5],
-                            'objectives' => $rowData[$d][6],
-                            'initiatives' => $rowData[$d][7],
-                            'performance' => $rowData[$d][8],
-                            'starts' => $rowData[$d][27],
-                            'starts' => $rowData[$d][28],
-                            'Procurement' => $rowData[$d][9],
-                            'category ' => $rowData[$d][10],
-                            'line' => $rowData[$d][11],
-                            'subline' => $rowData[$d][12],
-                            'funding ' => $rowData[$d][15],
-                            'description' => $rowData[$d][14],
-                            //**isssue
-                            'currency' => $rowData[$d][17],
-                            'rate' => $rowData[$d][18],
-                            'priceForeign' => $rowData[$d][19],
-                            'qty' => $rowData[$d][20],
-                            'persons' => $rowData[$d][21],
-                            'freq' => $rowData[$d][22],
-                            'priceLocal' => $rowData[$d][23],
-                            'totalForeign' => $rowData[$d][24],
-                            //**issue
-                            'flow' => $rowData[$d][10],
-                            'totalLocal' => $rowData[$d][23],
-                            'variance' => $rowData[$d][25],
-                            //**isssue
-                            'generation' => $rowData[$d][10],
-                            'Jan' => $rowData[$d][31],
-                            'Feb' => $rowData[$d][32],
-                            'Mar' => $rowData[$d][33],
-                            'Apr' => $rowData[$d][34],
-                            'May' => $rowData[$d][35],
-                            'Jun' => $rowData[$d][36],
-                            'Jul' => $rowData[$d][37],
-                            'Aug' => $rowData[$d][38],
-                            'Sep' => $rowData[$d][39],
-                            'Oct' => $rowData[$d][40],
-                            'Nov' => $rowData[$d][41],
-                            'Dec' => $rowData[$d][42],
-                            'Q1' => $rowData[$d][45],
-                            'Q2' => $rowData[$d][46],
-                            'Q3' => $rowData[$d][47],
-                            'Q4' => $rowData[$d][48],
-                            'other' => "",
-                            ///***issue
-                            'details ' => $rowData[$d][54],
-                            'Year ' => $rowData[$d][55],
-                        );
-
-                        //  $budget = json_encode($budget);
-                        //  $instance = array('account' => $rowData[$d][13], 'total' => $rowData[$d][24], 'enddate' => "", 'startdate' => "", 'initiative' => $rowData[$d][7], 'unit' => $rowData[$d][2], 'department' => str_replace("_", " ", $rowData[$d][1]), 'period' => $rowData[$d][55], 'orgID' => '', 'content' => $budget, 'by' => $this->session->userdata('email'), 'created' => date('Y-m-d H:i:s'));
-                        $id = $this->Md->save($instance, 'budgets');
+                            echo 'Repeated';
+                        }
                     }
                 }
                 //  Insert row data array into your database of choice here
@@ -165,11 +126,11 @@ class File extends CI_Controller {
 //send the data in an array format
 
             fclose($file);
-            // redirect('/all');
+        
         }
 
         echo '<div class="alert alert-info">   <strong>Information uploaded!  </strong>	</div>';
-        redirect('file', 'refresh');
+     redirect('file', 'refresh');
     }
 
     public function clients() {
@@ -417,8 +378,8 @@ class File extends CI_Controller {
             $end = "09:00";
             $details = $this->input->post('details');
             $priority = "File";
-            
-            $fileid=$fileid;
+
+            $fileid = $fileid;
 
 
             $scheduleID = $this->GUID();

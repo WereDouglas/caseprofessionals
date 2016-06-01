@@ -15,8 +15,6 @@ class Welcome extends CI_Controller {
 
     public function index() {
 
-
-
         $this->load->view('login');
     }
     
@@ -95,7 +93,7 @@ class Welcome extends CI_Controller {
         if (!$get_user) {
 
             $results = $this->Md->get('email', $email, 'users');
-            // var_dump($results);
+            var_dump($results);
             foreach ($results as $resv) {
                 $key = $email;
                 $password = $this->encrypt->decode($resv->password, $key);
@@ -136,8 +134,6 @@ class Welcome extends CI_Controller {
             }
 
             if ($password_now == $password) {
-
-
                 redirect('/welcome/home', 'refresh');
             } else {
                 $this->session->set_flashdata('msg', '<div class="alert alert-error">  <strong>  ! invalid login credentials</div>');

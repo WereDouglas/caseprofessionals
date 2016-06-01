@@ -67,33 +67,35 @@ class Client extends CI_Controller {
                     // echo $row;
                     $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
 
-                      var_dump($rowData);
+                     // var_dump($rowData);
                     for ($d = 0; $d < count($rowData); $d++) {
                        // var_dump($rowData[$d]);
-                        echo $rowData[$d][0] . "<br>";
-                        $namer = $this->Md->query_cell("SELECT * FROM users where name= '".$rowData[$d][0]."'", 'name');
+                        //echo $rowData[$d][0] . "<br>";
+                        $userid = $this->GUID();
+                        
+                        //get($field, $value, $table)
+                        $namer = $this->Md->get('name',$rowData[$d][0], 'users');
                         //echo $name.'<br>';
                         //return;
-                        if ($rowData[$d][0] != "" && $namer == "") {
-                            $users = array('id' => $this->GUID(), 'image' => " ", 'email' => $rowData[$d][2], 'name' => $rowData[$d][0], 'org' => $this->session->userdata('orgid'), 'address' => $rowData[$d][4], 'sync' => $rowData[$d][1], 'oid' => " ", 'contact' => $rowData[$d][3], 'password' => " ", 'types' => 'client', 'level' => '4', 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
-                            //  $this->Md->save($users, 'users');
-                            $content = array('id' => $this->GUID(), 'image' => " ", 'email' => $rowData[$d][2], 'name' => $rowData[$d][0], 'org' => $this->session->userdata('orgid'), 'address' => $rowData[$d][4], 'sync' => $rowData[$d][1], 'oid' => " ", 'contact' => $rowData[$d][3], 'password' => " ", 'types' => 'client', 'level' => '4', 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
+                        if ($rowData[$d][0] != "" && count($namer)==0) {
+                            $users = array('id' => $userid, 'image' => " ", 'email' => $rowData[$d][2], 'name' => $rowData[$d][0], 'org' => $this->session->userdata('orgid'), 'address' => $rowData[$d][4], 'sync' => $rowData[$d][1], 'oid' => " ", 'contact' => $rowData[$d][3], 'password' => " ", 'types' => 'client', 'level' => '4', 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
+                            $this->Md->save($users, 'users');
+                            $content = array('id' => $userid, 'image' => " ", 'email' => $rowData[$d][2], 'name' => $rowData[$d][0], 'org' => $this->session->userdata('orgid'), 'address' => $rowData[$d][4], 'sync' => $rowData[$d][1], 'oid' => " ", 'contact' => $rowData[$d][3], 'password' => " ", 'types' => 'client', 'level' => '4', 'created' => date('Y-m-d H:i:s'), 'status' => 'T');
                             $contents = json_encode($content);
                             $query = $this->Md->query("SELECT * FROM client where org = '" . $this->session->userdata('orgid') . "'");
                             if ($query) {
                                 foreach ($query as $res) {
                                     $syc = array('org' => $this->session->userdata('orgid'), 'object' => 'users', 'contents' => $contents, 'action' => 'create', 'oid' => $userid, 'created' => date('Y-m-d H:i:s'), 'checksum' => $this->GUID(), 'client' => $res->name);
-                                    //  $this->Md->save($syc, 'sync_data');
+                                   $this->Md->save($syc, 'sync_data');
                                 }
                             }
                             
-                              echo 'saving' . $name;
+                              echo 'saving';
                         } else {
 
-                            echo 'Repeated' . $name;
+                            echo 'Repeated';
                         }
-                    }
-                    return;
+                    }                   
                 }
                 //  Insert row data array into your database of choice here
             }
