@@ -140,7 +140,7 @@
                                                 </div>
                                                  <div class="time">
                                                     <i class="icon-folder"></i>
-                                                    <span class="pink"><?php echo $loop->email; ?></span>
+                                                    <span class=" yellow"><?php echo $loop->email; ?></span>
                                                 </div>
 
                                             </div>
