@@ -121,8 +121,8 @@
 
 
                                         <div class="itemdiv memberdiv">
-                                            <div class="user">
-                                                <img alt="<?php echo $loop->name; ?>" src="<?= base_url(); ?>uploads/<?php echo $loop->image; ?>" />
+                                            <div class="user" >
+                                                <img style=" border-radius:0px;" alt="<?php echo $loop->name; ?>" src="<?= base_url(); ?>uploads/<?php echo $loop->image; ?>" />
                                             </div>
 
                                             <div class="body">
@@ -185,14 +185,14 @@
                                             <div class="form-control-group">
                                                 <label class="control-label" for="name">Message Subject</label>
                                                 <div class="controls">
-                                                    <input type="text" class="form-control" name="subject" id="subject">
+                                                    <input type="text"  name="subject" id="subject">
                                                 </div>
                                             </div>
                                             <div class="row"><hr></div>
                                             <div class="form-control-group">
                                                 <label class="control-label" for="description">Message</label>
                                                 <div class="controls">
-                                                    <textarea class="form-control" name="message"  id="message" rows="3"></textarea>
+                                                    <textarea  name="message"  id="message" rows="3"></textarea>
                                                 </div>
                                                 <label class="control-label" for="description">Date Schedule</label>
                                                 <div class="control-group">
