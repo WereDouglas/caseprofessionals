@@ -14,6 +14,13 @@
                 <span class="menu-text">All Schedules </span>
             </a>
         </li>
+         <li>
+            <a href="<?php echo base_url() . "index.php/schedule/mail"; ?>" target="frame">
+                <i class="icon-envelope-alt"></i>
+                <span class="menu-text">Mail </span>
+            </a>
+        </li>
+        
 
         <?php
         if ($this->session->userdata('level') == 1 || $this->session->userdata('level') == 2) {

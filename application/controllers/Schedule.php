@@ -101,6 +101,33 @@ class Schedule extends CI_Controller {
 
         $this->load->view('schedule-page', $data);
     }
+    
+      public function mail() {
+
+        if ($this->session->userdata('username') == "") {
+            $this->session->sess_destroy();
+            redirect('welcome', 'refresh');
+        }
+
+         $query = $this->Md->query("SELECT * FROM users where org='".$this->session->userdata('orgid')."'");
+        //  var_dump($query);
+        if ($query) {
+            $data['users'] = $query;
+        } else {
+            $data['users'] = array();
+        }
+        $query = $this->Md->query("SELECT * FROM emails where org = '" . $this->session->userdata('emails') . "' ");
+        // var_dump($query);
+//       /return;
+        if ($query) {
+            $data['mails'] = $query;
+        } else {
+            $data['mails'] = array();
+        }
+
+        $this->load->view('mailer-page', $data);
+    }
+    
 
     public function GUID() {
         if (function_exists('com_create_guid') === true) {

@@ -127,6 +127,7 @@
                                 <th>CONTACT</th>
                                 <th>ADDRESS</th>
                                 <th>EMAIL</th>
+                                <th>RESET PASSWORD</th>
                                 <th>CREATED:</th>
                                 <th>ACTION</th>
                             </tr>
@@ -173,7 +174,15 @@
                                         </td>
                                         <td >
                                             <?php echo $email; ?>
-                                        </td>                                        
+                                        </td>      
+                                        <td>
+                                            <a href="#"  value="<?php echo $loop->id; ?>"  id="myLink" onclick="NavigateToSite(this)" class="tooltip-error text-danger" data-rel="tooltip" title="reset">
+                                                <span class="red">
+                                                    <i class="icon-lock bigger-120 text-danger"></i>
+                                                    Reset
+                                                </span>
+                                            </a>
+                                        </td>
 
                                         <td class="edit_td">
                                             <span id="created_<?php echo $id; ?>" class="text"><?php echo $created; ?></span>
@@ -183,6 +192,7 @@
                                         <td class="center">
                                             <a class="btn-danger btn-small icon-remove" href="<?php echo base_url() . "index.php/user/delete/" . $id; ?>"></a>
                                         </td>
+
                                     </tr>
                                     <?php
                                 }
@@ -289,7 +299,7 @@
                 $.post("<?php echo base_url() ?>index.php/organisation/exists", {
                     user: $(this).val()
                 }, function (response) {
-                   // alert(response);
+                    // alert(response);
                     $('#loading').hide();
                     setTimeout(finishAjax('loading', escape(response)), 400);
                 });
@@ -303,4 +313,19 @@
         });
 
     });
+</script>
+<script>
+
+    function NavigateToSite(ele) {
+        var selectedVal = $(ele).attr("value");
+        //var selectedVal = document.getElementById("myLink").getAttribute('value');
+        //href= "index.php/patient/add_user/'
+        $.post("<?php echo base_url() ?>index.php/admin/reset", {
+            id: selectedVal
+        }, function (response) {
+            alert(response);
+        });
+
+    }
+
 </script>

@@ -7,7 +7,7 @@ class Message extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        error_reporting(E_PARSE);
+        //error_reporting(E_PARSE);
         $this->load->library('email');
         $this->load->library('upload');
         $this->load->model('Md');
@@ -99,6 +99,28 @@ class Message extends CI_Controller {
         return;
     }
 
+    public function save() {
+        
+        $guid = $this->GUID();
+
+        $schedule = $this->input->post('starts');
+        if ($schedule == "") {
+            $schedule = date('d-m-Y');
+        }
+        foreach ($this->input->post('ccs') as $cc) {
+
+            $mail = array('message' => $this->input->post('message'), 'subject' => $this->input->post('subject'), 'schedule' => $schedule, 'reciever' => $cc,  'created' => date('Y-m-d H:i:s'), 'org' => $this->session->userdata('emails'), 'sent' => 'false', 'guid' => $guid);
+            $this->Md->save($mail, 'emails');
+          
+        }
+        $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong> Saved and mail will be sent on' . $schedule. '	</strong>									
+						</div>');
+          redirect('/schedule/mail', 'refresh');
+      
+        return;
+    }
+
     public function mailing() {
 
         $today = date('d-m-Y');
@@ -118,17 +140,51 @@ class Message extends CI_Controller {
                 'newline' => "\r\n"
             ));
 
-            $this->email->from($res->org,'Case Professional');
-            $this->email->to($res->reciever);            
+            $this->email->from($res->org, 'Case Professional');
+            $this->email->to($res->reciever);
             $this->email->subject($res->subject);
             $this->email->message($res->message);
             $this->email->send();
             echo $this->email->print_debugger();
-          
-            
             $data = array('sent' => 'true');
             $this->Md->update($res->id, $data, 'emails');
             echo 'Sent ' . $res->reciever . '<br>';
+        }
+    }
+
+    public function users() {
+        $query = $this->Md->query("SELECT * FROM users where  org='" . $this->session->userdata('orgid') . "'");
+        echo json_encode($query);
+    }
+
+    public function delete() {
+
+        if ($this->session->userdata('level') == 1) {
+            $this->load->helper(array('form', 'url'));
+            $id = $this->uri->segment(3);
+
+            $query = $this->Md->delete($id, 'emails');
+            if ($this->db->affected_rows() > 0) {
+
+                $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong>
+                                                Information deleted	</strong>									
+						</div>');
+                redirect('schedule/mail', 'refresh');
+            } else {
+                $this->session->set_flashdata('msg', '<div class="alert alert-error">
+                                                   
+                                                <strong>
+                                             Action Failed	</strong>									
+						</div>');
+                redirect('schedule/email', 'refresh');
+            }
+        } else {
+            $this->session->set_flashdata('msg', '<div class="alert alert-error">                                                   
+                                                <strong>
+                                                 You cannot carry out this action ' . '	</strong>									
+						</div>');
+            redirect('/schedule/mail', 'refresh');
         }
     }
 
