@@ -3,10 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/wamp/www/caseprofessional/application/controllers/User.php</file>
+            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Message.php</file>
+            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Welcome.php</file>
+            <file>file:/C:/wamp/www/caseprofessional/application/controllers/File.php</file>
+            <file>file:/C:/wamp/www/caseprofessional/application/views/file-page.php</file>
+            <file>file:/C:/wamp/www/caseprofessional/application/views/users-page.php</file>
             <file>file:/C:/wamp/www/caseprofessional/application/views/header-section.php</file>
+            <file>file:/C:/wamp/www/caseprofessional/application/models/Md.php</file>
+            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Schedule.php</file>
             <file>file:/C:/wamp/www/caseprofessional/application/views/header.php</file>
             <file>file:/C:/wamp/www/caseprofessional/application/views/side-page.php</file>
+            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Admin.php</file>
+            <file>file:/C:/wamp/www/caseprofessional/application/controllers/Client.php</file>
+            <file>file:/C:/wamp/www/caseprofessional/application/views/login.php</file>
         </group>
     </open-files>
 </project-private>

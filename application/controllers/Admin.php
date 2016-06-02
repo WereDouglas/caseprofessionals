@@ -43,10 +43,10 @@ class Admin extends CI_Controller {
          echo 'New Password is reset please check mail( SPAM MAIL ESPECIALLY ) '.$password;
 
         $reciever = $this->Md->query_cell("SELECT email FROM users WHERE id ='$userid' ", 'email');
-        $message = $reciever . ' Your Password has been changed to  <b>'. $newer.'</b> for Afenet HR login panel';
+        $message = $reciever . ' Your Password has been changed to  <b>'. $newer.'</b> for Caseprofessional login panel';
         $subject = 'CHANGED PASSWORD FOR YOUR ONLINE CASEPROFESSIONAL ACCOUNT ';
         
-        $mail = array('message' => $message, 'subject' => 'REMINDER', 'schedule' => date('d-m-Y'), 'reciever' => $email, 'created' => date('Y-m-d H:i:s'), 'org' => "", 'sent' => 'false', 'guid' =>'');
+        $mail = array('message' => $message, 'subject' => $subject, 'schedule' => date('d-m-Y'), 'reciever' => $email, 'created' => date('Y-m-d H:i:s'), 'org' => "", 'sent' => 'false', 'guid' =>'');
         $this->Md->save($mail, 'emails');
     }
 
