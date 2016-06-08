@@ -82,7 +82,6 @@
                 <span class="menu-text"> Synchronisation Logs </span>
             </a>
         </li>
-
         <li>
             <a href="<?php echo base_url() . "index.php/welcome/info"; ?>" target="frame">
                 <i class="icon-cogs"></i>
