@@ -23,8 +23,6 @@ class Message extends CI_Controller {
 
     public function mailer() {
 
-
-
         $guid = $this->GUID();
         $id = $this->session->userdata('orgID');
         $result = $this->Md->query("SELECT * FROM organizations WHERE orgID='" . $id . "'");
@@ -117,6 +115,19 @@ class Message extends CI_Controller {
                                                 <strong> Saved and mail will be sent on' . $schedule. '	</strong>									
 						</div>');
           redirect('/schedule/mail', 'refresh');
+      
+        return;
+    }
+     public function appmail() {
+        
+        $guid = $this->GUID();
+
+        $schedule = $this->input->post('starts');
+        if ($schedule == "") {
+            $schedule = date('d-m-Y');
+        }       
+            $mail = array('message' => $this->input->post('message'), 'subject' => $this->input->post('subject'), 'schedule' => $schedule, 'reciever' => $this->input->post('email'),  'created' => date('Y-m-d H:i:s'), 'org' => $this->input->post('org'), 'sent' => 'false', 'guid' => $guid);
+            $this->Md->save($mail, 'emails');
       
         return;
     }
