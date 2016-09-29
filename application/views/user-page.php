@@ -53,7 +53,7 @@
                                     <option value="Associate" />Associates
                                     <option value="Contract lawyer" />Contract lawyer
                                     <option value="Of counsel" />Of counsel
-                                    <option value="Law clerks" />Law clerks
+                                    <option value="Law clerks" />Clerks
                                     <option value="Paralegals" />Paralegals
                                     <option value="Administrative " />Administrative 
                                 </select>
